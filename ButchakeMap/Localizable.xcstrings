@@ -241,6 +241,38 @@
         }
       }
     },
+    "Drafts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drafts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書き"
+          }
+        }
+      }
+    },
+    "Drafts you save from the Post tab appear here." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drafts you save from the Post tab appear here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿タブで下書き保存した投稿がここに表示されます。"
+          }
+        }
+      }
+    },
     "Edit Post" : {
       "localizations" : {
         "en" : {
@@ -417,6 +449,22 @@
         }
       }
     },
+    "My Posts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Posts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分の投稿"
+          }
+        }
+      }
+    },
     "New Post" : {
       "localizations" : {
         "en" : {
@@ -449,6 +497,22 @@
         }
       }
     },
+    "No drafts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No drafts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書きはありません"
+          }
+        }
+      }
+    },
     "No posts yet" : {
       "localizations" : {
         "en" : {
@@ -461,6 +525,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "まだ投稿がありません"
+          }
+        }
+      }
+    },
+    "No saved posts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No saved posts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存した三大はまだありません"
           }
         }
       }
@@ -721,6 +801,22 @@
         }
       }
     },
+    "Saved" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存した三大"
+          }
+        }
+      }
+    },
     "Scan to see this post" : {
       "localizations" : {
         "en" : {
@@ -801,6 +897,22 @@
         }
       }
     },
+    "Share your big three from the Post tab." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your big three from the Post tab."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿タブからあなたの三大を投稿してみましょう。"
+          }
+        }
+      }
+    },
     "Some fields need your attention." : {
       "localizations" : {
         "en" : {
@@ -829,6 +941,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "スポット %lld"
+          }
+        }
+      }
+    },
+    "Tap the star on a post to save it here." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the star on a post to save it here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿のスターを押すと、ここに保存されます。"
           }
         }
       }

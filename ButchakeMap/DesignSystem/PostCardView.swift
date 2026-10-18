@@ -14,7 +14,7 @@ struct PostCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
-                CategoryThumbnail(category: post.category)
+                PostThumbnail(post: post)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(post.title)
                         .font(.headline)
@@ -62,6 +62,22 @@ struct SpotNameRow: View {
         } icon: {
             Image(systemName: "\(spot.order).circle.fill")
                 .foregroundStyle(Color.brandPrimary)
+        }
+    }
+}
+
+/// 投稿カードのサムネイル。スポットの写真があれば 1 枚目を、無ければカテゴリのアイコンを出す
+struct PostThumbnail: View {
+    let post: Post
+    var size: CGFloat = 56
+
+    var body: some View {
+        if let photoData = post.coverPhotoData {
+            SpotPhotoImage(data: photoData)
+                .frame(width: size, height: size)
+                .clipShape(.rect(cornerRadius: 12))
+        } else {
+            CategoryThumbnail(category: post.category, size: size)
         }
     }
 }

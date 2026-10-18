@@ -8,6 +8,7 @@
 import SwiftUI
 
 /// シェアカード（タイトル・エリア・カテゴリ・3 スポット・ブランド名・投稿 URL の QR コード）
+/// スポットの写真は載せない。4:5 の限られた面積では 3 スポットの名前と QR コードを読みやすく保つことを優先する
 struct ShareCardView: View {
     /// カードの大きさ（pt）。SNS のフィードで切れにくい 4:5 の縦長にする
     static let size = CGSize(width: 360, height: 450)

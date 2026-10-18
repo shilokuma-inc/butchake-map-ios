@@ -152,7 +152,13 @@ struct SpotDetailCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SpotPhotoPlaceholder(category: category)
+            if let photoData = spot.photoData {
+                SpotPhotoImage(data: photoData)
+                    .frame(height: SpotPhotoPlaceholder.height)
+                    .clipShape(.rect(cornerRadius: 12))
+            } else {
+                SpotPhotoPlaceholder(category: category)
+            }
             HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Image(systemName: "\(spot.order).circle.fill")
                     .font(.title2)
@@ -229,6 +235,9 @@ struct OpenInMapsButton: View {
 
 /// 写真の無いスポットに出すカテゴリのプレースホルダー
 struct SpotPhotoPlaceholder: View {
+    /// 写真・プレースホルダーの高さ。写真があるときも同じ高さで出す
+    static let height: CGFloat = 140
+
     let category: Category
 
     var body: some View {
@@ -236,7 +245,7 @@ struct SpotPhotoPlaceholder: View {
             .font(.system(size: 40))
             .foregroundStyle(Color.brandAccent)
             .frame(maxWidth: .infinity)
-            .frame(height: 140)
+            .frame(height: Self.height)
             .background(Color.brandAccent.opacity(0.12), in: .rect(cornerRadius: 12))
             .accessibilityHidden(true)
     }
@@ -266,6 +275,22 @@ struct SpotPhotoPlaceholder: View {
         PostDetailView(postID: repository.myPosts[0].id)
     }
     .environment(repository)
+}
+
+#Preview("写真のあるスポット") {
+    SpotDetailCard(
+        spot: Spot(
+            order: 1,
+            name: "レトロ喫茶 ぶっちゃけ",
+            address: "東京都台東区",
+            recommendation: "固めのプリンが名物。",
+            photoData: UIImage(systemName: "cup.and.saucer.fill")?.pngData()
+        ),
+        category: .gourmet
+    )
+    .padding()
+    .background(Color(.systemGroupedBackground))
+    .environment(MockDataRepository.preview)
 }
 
 #Preview("削除済み") {

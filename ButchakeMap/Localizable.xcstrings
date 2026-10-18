@@ -1265,22 +1265,6 @@
         }
       }
     },
-    "This screen is under construction." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This screen is under construction."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この画面は準備中です。"
-          }
-        }
-      }
-    },
     "Title" : {
       "localizations" : {
         "en" : {

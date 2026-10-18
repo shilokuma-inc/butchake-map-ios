@@ -31,7 +31,7 @@ nonisolated enum Category: String, CaseIterable, Codable, Identifiable, Sendable
         }
     }
 
-    /// 写真の無いスポットに出すプレースホルダーの SF Symbol
+    /// カテゴリのアイコン。バッジと、写真の無いスポットのプレースホルダーに出す SF Symbol
     var symbolName: String {
         switch self {
         case .gourmet:

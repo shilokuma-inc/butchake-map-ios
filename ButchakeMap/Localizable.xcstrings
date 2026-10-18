@@ -49,6 +49,22 @@
         }
       }
     },
+    "Add Photo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Photo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を追加"
+          }
+        }
+      }
+    },
     "Address" : {
       "localizations" : {
         "en" : {
@@ -241,6 +257,22 @@
         }
       }
     },
+    "Choose Another Photo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Another Photo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を選び直す"
+          }
+        }
+      }
+    },
     "Choose Location on Map" : {
       "localizations" : {
         "en" : {
@@ -301,6 +333,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "旅先で見つけたぶっちゃけ三大を集めています。"
+          }
+        }
+      }
+    },
+    "Couldn't load the photo." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load the photo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を読み込めませんでした。"
           }
         }
       }
@@ -1101,6 +1149,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "位置を解除"
+          }
+        }
+      }
+    },
+    "Remove Photo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Photo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写真を削除"
           }
         }
       }

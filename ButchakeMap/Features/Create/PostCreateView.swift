@@ -123,6 +123,15 @@ private struct PostFormContent: View {
             textField("Place Name", text: spot.name, field: .spotName(order: order))
             textField("Address", text: spot.address, field: .spotAddress(order: order))
             locationRows(spot: spot.wrappedValue)
+            SpotPhotoPickerRow(
+                photoData: spot.wrappedValue.photoData,
+                onPick: { data in
+                    viewModel.setPhoto(data, forSpot: order)
+                },
+                onRemove: {
+                    viewModel.removePhoto(forSpot: order)
+                }
+            )
             textField("Honest Comment", text: spot.recommendation, field: .spotRecommendation(order: order), axis: .vertical)
         } header: {
             Text("Spot \(order)")

@@ -103,8 +103,51 @@ struct SpotDetailCard: View {
                         .font(.body)
                 }
             }
+            OpenInMapsButton(spot: spot)
         }
         .cardStyle()
+    }
+}
+
+/// スポットを外部のマップアプリで開くボタン。Google Maps アプリがあれば Apple マップと選ばせる
+struct OpenInMapsButton: View {
+    @Environment(\.openURL) private var openURL
+    @State private var isChoosingApp = false
+    let spot: Spot
+
+    var body: some View {
+        // 座標も名前も住所も無く URL を作れないスポットにはボタンを出さない
+        if ExternalMapLink.url(for: spot, in: .appleMaps) != nil {
+            Button("Open in Maps", systemImage: "map", action: open)
+                .font(.subheadline.weight(.semibold))
+                .buttonStyle(.bordered)
+                .tint(Color.brandPrimary)
+                .confirmationDialog("Open in Maps", isPresented: $isChoosingApp, titleVisibility: .visible) {
+                    ForEach(ExternalMapApp.allCases) { app in
+                        Button {
+                            open(in: app)
+                        } label: {
+                            Text(app.displayName)
+                        }
+                    }
+                }
+        }
+    }
+
+    private func open() {
+        let apps = ExternalMapLink.availableApps { UIApplication.shared.canOpenURL($0) }
+        if apps.count > 1 {
+            isChoosingApp = true
+        } else {
+            open(in: .appleMaps)
+        }
+    }
+
+    private func open(in app: ExternalMapApp) {
+        guard let url = ExternalMapLink.url(for: spot, in: app) else {
+            return
+        }
+        openURL(url)
     }
 }
 
@@ -129,6 +172,16 @@ struct SpotPhotoPlaceholder: View {
         PostDetailView(postID: repository.publishedPosts[0].id)
     }
     .environment(repository)
+}
+
+#Preview("座標の無いスポット") {
+    SpotDetailCard(
+        spot: Spot(order: 1, name: "レトロ喫茶 ぶっちゃけ", address: "東京都台東区", recommendation: "固めのプリンが名物。"),
+        category: .gourmet
+    )
+    .padding()
+    .background(Color(.systemGroupedBackground))
+    .environment(MockDataRepository.preview)
 }
 
 #Preview("削除済み") {

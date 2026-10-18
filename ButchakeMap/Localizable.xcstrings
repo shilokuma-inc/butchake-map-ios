@@ -1,6 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Apple Maps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Maps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple マップ"
+          }
+        }
+      }
+    },
     "Big Three Letdowns" : {
       "localizations" : {
         "en" : {
@@ -29,6 +45,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ぶっちゃけmap"
+          }
+        }
+      }
+    },
+    "Google Maps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Maps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google マップ"
           }
         }
       }
@@ -189,6 +221,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "まだ投稿がありません"
+          }
+        }
+      }
+    },
+    "Open in Maps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Maps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "マップで開く"
           }
         }
       }

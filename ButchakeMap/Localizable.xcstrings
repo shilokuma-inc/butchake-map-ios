@@ -353,6 +353,22 @@
         }
       }
     },
+    "Delete this post?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this post?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この投稿を削除しますか？"
+          }
+        }
+      }
+    },
     "Delete your account?" : {
       "localizations" : {
         "en" : {
@@ -445,6 +461,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿タブで下書き保存した投稿がここに表示されます。"
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集"
           }
         }
       }
@@ -689,6 +721,22 @@
         }
       }
     },
+    "More" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "その他"
+          }
+        }
+      }
+    },
     "Move the map to put the pin on the spot." : {
       "localizations" : {
         "en" : {
@@ -909,6 +957,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿"
+          }
+        }
+      }
+    },
+    "Post Details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post Details"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿詳細"
           }
         }
       }
@@ -1325,6 +1389,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今週のぶっちゃけ"
+          }
+        }
+      }
+    },
+    "This can't be undone." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This can't be undone."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この操作は取り消せません。"
           }
         }
       }

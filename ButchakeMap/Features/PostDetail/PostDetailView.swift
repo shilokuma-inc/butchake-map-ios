@@ -5,9 +5,13 @@
 
 import SwiftUI
 
-/// 投稿詳細（3 スポットとぶっちゃけコメント）
+/// 投稿詳細（3 スポットとぶっちゃけコメント）。自分の投稿はツールバーのメニューから編集・削除できる
 struct PostDetailView: View {
     @Environment(MockDataRepository.self) private var repository
+    @Environment(\.dismiss) private var dismiss
+    /// 編集で作成画面（シート）に開いている投稿。開いた時点の値を持ち、保存してもフォームを作り直さない
+    @State private var editingPost: Post?
+    @State private var isConfirmingDeletion = false
     let postID: Post.ID
 
     private var viewModel: PostDetailViewModel {
@@ -24,9 +28,21 @@ struct PostDetailView: View {
                     systemImage: "exclamationmark.magnifyingglass",
                     description: Text("This post may have been deleted.")
                 )
+                .navigationTitle(Text("Post Details"))
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        // シート・確認は Group に付け、削除で投稿が見つからなくなっても出し続ける
+        .sheet(item: $editingPost) { post in
+            editor(post: post)
+        }
+        .confirmationDialog("Delete this post?", isPresented: $isConfirmingDeletion, titleVisibility: .visible) {
+            Button(role: .destructive, action: delete) {
+                Text("Delete")
+            }
+        } message: {
+            Text("This can't be undone.")
+        }
     }
 
     private func content(post: Post) -> some View {
@@ -40,10 +56,64 @@ struct PostDetailView: View {
             .padding()
         }
         .background(Color(.systemGroupedBackground))
+        .navigationTitle(post.title)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 ShareCardButton(post: post)
             }
+            if viewModel.canEditOrDelete {
+                ToolbarItem(placement: .topBarTrailing) {
+                    ownerMenu
+                }
+            }
+        }
+    }
+
+    /// 自分の投稿にだけ出す編集・削除のメニュー
+    private var ownerMenu: some View {
+        Menu {
+            Button {
+                editingPost = viewModel.editablePost
+            } label: {
+                Label("Edit", systemImage: "pencil")
+            }
+            Button(role: .destructive) {
+                isConfirmingDeletion = true
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        } label: {
+            Label("More", systemImage: "ellipsis.circle")
+        }
+    }
+
+    /// 編集の作成画面。都道府県の選択で push するので NavigationStack に入れる。
+    /// 入力を誤って失わないよう、下にスワイプでは閉じずキャンセルで閉じる
+    private func editor(post: Post) -> some View {
+        NavigationStack {
+            PostFormView(post: post) { outcome in
+                if PostDetailViewModel.closesEditor(after: outcome) {
+                    editingPost = nil
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        editingPost = nil
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
+            }
+        }
+        .interactiveDismissDisabled()
+        .environment(repository)
+    }
+
+    /// 確認の後に削除し、消せたら詳細を閉じて一覧に戻る
+    private func delete() {
+        if viewModel.delete() {
+            dismiss()
         }
     }
 
@@ -188,6 +258,14 @@ struct SpotPhotoPlaceholder: View {
     .padding()
     .background(Color(.systemGroupedBackground))
     .environment(MockDataRepository.preview)
+}
+
+#Preview("自分の投稿（編集・削除できる）") {
+    let repository = MockDataRepository.preview
+    return NavigationStack {
+        PostDetailView(postID: repository.myPosts[0].id)
+    }
+    .environment(repository)
 }
 
 #Preview("削除済み") {

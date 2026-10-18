@@ -168,6 +168,59 @@ struct MyPageViewModelTests {
     }
 
     @Test
+    func deleteDraftRemovesItImmediately() {
+        let older = post(title: "古い下書き", daysAgo: 2, isDraft: true)
+        let newer = post(title: "新しい下書き", daysAgo: 1, isDraft: true)
+        let repository = MockDataRepository(posts: [older, newer], currentUserName: me)
+        let viewModel = MyPageViewModel(repository: repository, section: .drafts)
+
+        viewModel.deleteDraft(newer)
+
+        #expect(viewModel.posts.map(\.title) == ["古い下書き"])
+        #expect(repository.post(id: newer.id) == nil)
+    }
+
+    @Test
+    func deleteDraftKeepsPublishedAndOthersPosts() {
+        let published = post(title: "公開")
+        let othersDraft = post(title: "他人の下書き", author: "他人", isDraft: true)
+        let repository = MockDataRepository(posts: [published, othersDraft], currentUserName: me)
+        let viewModel = MyPageViewModel(repository: repository, section: .drafts)
+
+        viewModel.deleteDraft(published)
+        viewModel.deleteDraft(othersDraft)
+
+        #expect(repository.posts.count == 2)
+        #expect(viewModel.posts(in: .myPosts).map(\.title) == ["公開"])
+    }
+
+    @Test
+    func publishingDraftMovesItFromDraftsToMyPosts() throws {
+        let draft = post(title: "下書き", isDraft: true)
+        let repository = MockDataRepository(posts: [draft], currentUserName: me)
+        let viewModel = MyPageViewModel(repository: repository, section: .drafts)
+
+        try repository.publish(draft, isNew: false)
+
+        #expect(viewModel.posts.isEmpty)
+        #expect(viewModel.posts(in: .myPosts).map(\.title) == ["下書き"])
+    }
+
+    @Test
+    func postTurnedIntoDraftLeavesMyPostsAndSaved() throws {
+        let published = post(title: "公開", isStarred: true)
+        let repository = MockDataRepository(posts: [published], currentUserName: me)
+        let viewModel = MyPageViewModel(repository: repository)
+
+        repository.delete(postID: published.id)
+        try repository.saveDraft(published, isNew: true)
+
+        #expect(viewModel.posts(in: .myPosts).isEmpty)
+        #expect(viewModel.posts(in: .saved).isEmpty)
+        #expect(viewModel.posts(in: .drafts).map(\.title) == ["公開"])
+    }
+
+    @Test
     func draftTitleIsNilWhenBlank() {
         #expect(MyPageViewModel.draftTitle(of: post(title: "", isDraft: true)) == nil)
         #expect(MyPageViewModel.draftTitle(of: post(title: " 　\n", isDraft: true)) == nil)

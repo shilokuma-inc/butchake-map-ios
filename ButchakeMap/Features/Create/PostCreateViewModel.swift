@@ -2,7 +2,7 @@
 //  PostCreateViewModel.swift
 //  ButchakeMap
 //
-//  投稿の作成・編集フォームのロジック（入力チェック・スポットの位置の選択・下書き保存・公開）。
+//  投稿の作成・編集フォームのロジック（入力チェック・スポットの位置と写真の選択・下書き保存・公開）。
 //  入力中の投稿は MockDataRepository に入れる前の一時的な状態なので、例外としてここにコピーを持つ。
 //  保存・公開は Repository を経由し、ホーム・マイページなどの画面へすぐに反映される。
 //
@@ -212,6 +212,24 @@ final class PostCreateViewModel {
         return (degrees * scale).rounded() / scale
     }
 
+    // MARK: - スポットの写真
+
+    /// スポットの写真を決める（選び直しも同じ）。data は SpotPhotoProcessor で縮小・JPEG 圧縮したもの
+    func setPhoto(_ data: Data, forSpot order: Int) {
+        guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
+            return
+        }
+        post.spots[index].photoData = data
+    }
+
+    /// スポットの写真を削除する
+    func removePhoto(forSpot order: Int) {
+        guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
+            return
+        }
+        post.spots[index].photoData = nil
+    }
+
     // MARK: - 保存・公開
 
     /// 下書き保存し、成功したら新規ならフォームを新しい空の下書きに戻す
@@ -243,11 +261,11 @@ final class PostCreateViewModel {
 
     // MARK: - Private
 
-    /// 文字を入れた項目か、位置を選んだスポットがあるか（カテゴリ・投稿者属性を選んだだけでは数えない）
+    /// 文字を入れた項目か、位置・写真を選んだスポットがあるか（カテゴリ・投稿者属性を選んだだけでは数えない）
     private var hasInput: Bool {
         let texts = [post.title, post.prefecture, post.city] + post.spots.flatMap { [$0.name, $0.address, $0.recommendation] }
         return texts.contains { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-            || post.spots.contains { $0.coordinate != nil }
+            || post.spots.contains { $0.coordinate != nil || $0.photoData != nil }
     }
 
     /// 前後の空白・改行を除いた投稿

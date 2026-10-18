@@ -177,4 +177,30 @@ struct PostCreateLocationTests {
         let published = try #require(repository.post(id: postID))
         #expect(published.spots[0].latitude == 36.5717 && published.spots[0].longitude == 136.6565)
     }
+
+    // MARK: - 地図を動かす前の確定
+
+    @Test
+    func pickerRequiresMoveOnlyWithoutLocationAndPrefecture() {
+        let (viewModel, _) = makeViewModel()
+        #expect(viewModel.locationPickerRequiresMove(forSpot: 1))
+
+        viewModel.post.prefecture = Prefecture.ishikawa.rawValue
+        #expect(!viewModel.locationPickerRequiresMove(forSpot: 1))
+
+        viewModel.post.prefecture = ""
+        viewModel.setLocation(kanazawa, forSpot: 1)
+        #expect(!viewModel.locationPickerRequiresMove(forSpot: 1))
+        #expect(viewModel.locationPickerRequiresMove(forSpot: 2))
+    }
+
+    @Test
+    func pickerRequiresMoveAgainAfterClearingLocation() {
+        let (viewModel, _) = makeViewModel()
+        viewModel.setLocation(kanazawa, forSpot: 1)
+
+        viewModel.clearLocation(forSpot: 1)
+
+        #expect(viewModel.locationPickerRequiresMove(forSpot: 1))
+    }
 }

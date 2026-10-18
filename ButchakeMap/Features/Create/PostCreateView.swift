@@ -131,6 +131,13 @@ private struct PostFormContent: View {
                 },
                 onRemove: {
                     viewModel.removePhoto(forSpot: order)
+                },
+                onLoadingChange: { isLoading in
+                    if isLoading {
+                        viewModel.beginPhotoLoading()
+                    } else {
+                        viewModel.endPhotoLoading()
+                    }
                 }
             )
             textField("Honest Comment", text: spot.recommendation, field: .spotRecommendation(order: order), axis: .vertical)
@@ -169,6 +176,7 @@ private struct PostFormContent: View {
                     .bold()
                     .frame(maxWidth: .infinity)
             }
+            .disabled(viewModel.isLoadingPhoto)
             if viewModel.showsSaveDraftButton {
                 Button(action: viewModel.saveDraft) {
                     Text("Save Draft")

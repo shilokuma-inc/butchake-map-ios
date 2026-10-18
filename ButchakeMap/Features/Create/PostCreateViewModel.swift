@@ -111,6 +111,8 @@ final class PostCreateViewModel {
     private(set) var showsRequiredErrors = false
     /// 直近の保存・公開の結果。アラートを閉じたら nil に戻す
     var outcome: Outcome?
+    /// 読み込み・縮小中の写真の数。読み込み中に保存・公開すると選んだ写真が落ちるので、0 になるまで保存・公開させない
+    private(set) var loadingPhotoCount = 0
 
     /// - Parameter post: 編集する既存の投稿。nil なら自分の新しい下書きを作る
     init(post: Post?, repository: MockDataRepository) {
@@ -131,6 +133,11 @@ final class PostCreateViewModel {
         Self.validate(post, requiresAll: true).isEmpty
     }
 
+    /// 写真を読み込み中か。読み込み中は「公開する」「下書き保存」を押せない
+    var isLoadingPhoto: Bool {
+        loadingPhotoCount > 0
+    }
+
     /// 「下書き保存」を出すか。公開済みの投稿は下書きに戻せないので出さない
     var showsSaveDraftButton: Bool {
         isNew || post.isDraft
@@ -138,7 +145,7 @@ final class PostCreateViewModel {
 
     /// 下書き保存できるか。何か入力してあり、文字数の上限を超えていないこと（未入力の項目があってもよい）
     var canSaveDraft: Bool {
-        showsSaveDraftButton && hasInput && Self.validate(post, requiresAll: false).isEmpty
+        showsSaveDraftButton && !isLoadingPhoto && hasInput && Self.validate(post, requiresAll: false).isEmpty
     }
 
     /// 入力欄ごとのエラーを返す。前後の空白・改行は除いて数える
@@ -232,6 +239,16 @@ final class PostCreateViewModel {
         post.spots[index].photoData = data
     }
 
+    /// 写真の読み込みを始めたときに呼ぶ。終わったとき（失敗・取り消しも）に endPhotoLoading() と対で呼ぶ
+    func beginPhotoLoading() {
+        loadingPhotoCount += 1
+    }
+
+    /// 写真の読み込みが終わったとき（失敗・取り消しも）に呼ぶ
+    func endPhotoLoading() {
+        loadingPhotoCount = max(0, loadingPhotoCount - 1)
+    }
+
     /// スポットの写真を削除する
     func removePhoto(forSpot order: Int) {
         guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
@@ -257,6 +274,9 @@ final class PostCreateViewModel {
 
     /// 公開し、成功したら新規ならフォームを新しい空の下書きに戻す。必須項目が足りなければエラーを出して何もしない
     func publish() {
+        guard !isLoadingPhoto else {
+            return
+        }
         showsRequiredErrors = true
         guard canPublish else {
             return

@@ -13,6 +13,8 @@ struct SpotPhotoPickerRow: View {
     let photoData: Data?
     let onPick: (Data) -> Void
     let onRemove: () -> Void
+    /// 読み込みを始めたとき（true）と終えたとき（false。失敗・取り消しも）に呼ぶ。読み込み中に保存・公開させないため
+    var onLoadingChange: (Bool) -> Void = { _ in }
 
     /// PhotosPicker で選んだ項目。読み込み終えたら nil に戻し、同じ写真も選び直せるようにする
     @State private var selection: PhotosPickerItem?
@@ -27,7 +29,6 @@ struct SpotPhotoPickerRow: View {
         }
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                // PhotosPicker の label は MainActor の外で組み立てられるので、@State は label の外で読む
                 PhotosPicker(selection: $selection, matching: .images) {
                     if photoData == nil {
                         Label("Add Photo", systemImage: "photo.badge.plus")
@@ -65,6 +66,10 @@ struct SpotPhotoPickerRow: View {
         }
         isLoading = true
         loadFailed = false
+        onLoadingChange(true)
+        defer {
+            onLoadingChange(false)
+        }
         let data = await SpotPhotoProcessor.loadJPEGData(from: selection)
         guard !Task.isCancelled else {
             return

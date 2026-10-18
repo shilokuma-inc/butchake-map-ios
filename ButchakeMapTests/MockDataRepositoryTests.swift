@@ -120,13 +120,13 @@ struct MockDataRepositoryTests {
     // MARK: - 作成・編集・削除
 
     @Test
-    func saveDraftAddsThenReplaces() {
+    func saveDraftAddsThenReplaces() throws {
         let repository = MockDataRepository(posts: [], currentUserName: "自分")
         var draft = Post.newDraft(authorName: "自分")
         draft.title = "一回目"
-        repository.saveDraft(draft)
+        try repository.saveDraft(draft, isNew: true)
         draft.title = "二回目"
-        repository.saveDraft(draft)
+        try repository.saveDraft(draft, isNew: false)
         #expect(repository.posts.count == 1)
         #expect(repository.drafts.map(\.title) == ["二回目"])
         #expect(repository.publishedPosts.isEmpty)
@@ -136,7 +136,7 @@ struct MockDataRepositoryTests {
     func publishDraftMovesItToPublishedWithNewDate() throws {
         let draft = makePost(authorName: "自分", createdAt: Date(timeIntervalSince1970: 0), isDraft: true)
         let repository = MockDataRepository(posts: [draft], currentUserName: "自分")
-        repository.publish(draft)
+        try repository.publish(draft, isNew: false)
         let published = try #require(repository.post(id: draft.id))
         #expect(!published.isDraft)
         #expect(published.createdAt > Date(timeIntervalSince1970: 0))
@@ -145,15 +145,86 @@ struct MockDataRepositoryTests {
     }
 
     @Test
-    func publishEditOfPublishedPostKeepsCreatedAt() {
+    func publishEditOfPublishedPostKeepsCreatedAt() throws {
         let createdAt = Date(timeIntervalSince1970: 1_000)
         var post = makePost(title: "前", createdAt: createdAt)
         let repository = MockDataRepository(posts: [post])
         post.title = "後"
-        repository.publish(post)
+        try repository.publish(post, isNew: false)
         #expect(repository.posts.count == 1)
         #expect(repository.post(id: post.id)?.title == "後")
         #expect(repository.post(id: post.id)?.createdAt == createdAt)
+    }
+
+    @Test
+    func publishNewPostAddsItWithNewDate() throws {
+        let repository = MockDataRepository(posts: [], currentUserName: "自分")
+        let post = makePost(authorName: "自分", createdAt: Date(timeIntervalSince1970: 0), isDraft: true)
+        try repository.publish(post, isNew: true)
+        let published = try #require(repository.post(id: post.id))
+        #expect(!published.isDraft)
+        #expect(published.createdAt > Date(timeIntervalSince1970: 0))
+        #expect(repository.myPosts.map(\.id) == [post.id])
+    }
+
+    @Test
+    func publishEditKeepsStoredCreatedAtEvenIfPassedDateDiffers() throws {
+        let createdAt = Date(timeIntervalSince1970: 1_000)
+        var post = makePost(createdAt: createdAt)
+        let repository = MockDataRepository(posts: [post])
+        post.createdAt = Date(timeIntervalSince1970: 5_000)
+        try repository.publish(post, isNew: false)
+        #expect(repository.post(id: post.id)?.createdAt == createdAt)
+    }
+
+    @Test
+    func saveDraftOfPublishedPostIsRejectedAndKeepsIt() {
+        let createdAt = Date(timeIntervalSince1970: 1_000)
+        var post = makePost(title: "公開済み", authorName: "自分", createdAt: createdAt)
+        let repository = MockDataRepository(posts: [post], currentUserName: "自分")
+        post.title = "書き換え"
+        #expect(throws: PostSaveError.alreadyPublished) {
+            try repository.saveDraft(post, isNew: false)
+        }
+        let stored = repository.post(id: post.id)
+        #expect(stored?.isDraft == false)
+        #expect(stored?.title == "公開済み")
+        #expect(stored?.createdAt == createdAt)
+        #expect(repository.drafts.isEmpty)
+    }
+
+    @Test
+    func savingDeletedPostDoesNotRestoreIt() {
+        let draft = makePost(authorName: "自分", isDraft: true)
+        let published = makePost(authorName: "自分")
+        let repository = MockDataRepository(posts: [draft, published], currentUserName: "自分")
+        repository.delete(postID: draft.id)
+        repository.delete(postID: published.id)
+        #expect(throws: PostSaveError.notFound) {
+            try repository.saveDraft(draft, isNew: false)
+        }
+        #expect(throws: PostSaveError.notFound) {
+            try repository.publish(draft, isNew: false)
+        }
+        #expect(throws: PostSaveError.notFound) {
+            try repository.publish(published, isNew: false)
+        }
+        #expect(repository.posts.isEmpty)
+    }
+
+    @Test
+    func addingNewPostWithExistingIDIsRejected() {
+        let post = makePost(title: "元", authorName: "自分", isDraft: true)
+        let repository = MockDataRepository(posts: [post], currentUserName: "自分")
+        var duplicate = post
+        duplicate.title = "重複"
+        #expect(throws: PostSaveError.alreadyExists) {
+            try repository.saveDraft(duplicate, isNew: true)
+        }
+        #expect(throws: PostSaveError.alreadyExists) {
+            try repository.publish(duplicate, isNew: true)
+        }
+        #expect(repository.posts == [post])
     }
 
     @Test

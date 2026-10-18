@@ -321,6 +321,22 @@
         }
       }
     },
+    "Scan to see this post" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan to see this post"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読み取って投稿を見る"
+          }
+        }
+      }
+    },
     "Scenery & Sightseeing" : {
       "localizations" : {
         "en" : {
@@ -349,6 +365,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "検索"
+          }
+        }
+      }
+    },
+    "Share" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有"
           }
         }
       }

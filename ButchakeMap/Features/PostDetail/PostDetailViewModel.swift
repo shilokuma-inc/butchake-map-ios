@@ -21,7 +21,12 @@ struct PostDetailViewModel {
 
     /// 番号順のスポット
     var spots: [Spot] {
-        post?.spots.sorted { $0.order < $1.order } ?? []
+        post.map(Self.orderedSpots) ?? []
+    }
+
+    /// 投稿のスポットを番号順に並べる
+    static func orderedSpots(of post: Post) -> [Spot] {
+        post.spots.sorted { $0.order < $1.order }
     }
 
     var isMine: Bool {

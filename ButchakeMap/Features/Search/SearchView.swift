@@ -43,9 +43,11 @@ struct SearchView: View {
 
     private var prefectureMenu: some View {
         HStack {
+            // VoiceOver では Picker のラベルで「都道府県」と読むので、見出しの Label は読ませない（二重に読まれるため）
             Label("Prefecture", systemImage: "mappin.and.ellipse")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             Spacer(minLength: 0)
             Picker(selection: $filter.prefecture) {
                 Text("All Prefectures")

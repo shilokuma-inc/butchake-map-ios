@@ -26,7 +26,7 @@ struct SettingsView: View {
                     Text("Version")
                 }
                 LabeledContent {
-                    Text("Device Setting")
+                    Text("Same as Device")
                 } label: {
                     Text("Language")
                 }

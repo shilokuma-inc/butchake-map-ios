@@ -349,6 +349,7 @@ final class PostCreateViewModel {
         self.outcome = outcome
         if isNew {
             post = .newDraft(authorName: repository.currentUserName)
+            failedPhotoSpots = []
         } else if let saved = repository.post(id: post.id) {
             post = saved
         }

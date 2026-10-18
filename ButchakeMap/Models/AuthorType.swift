@@ -19,7 +19,7 @@ nonisolated enum AuthorType: String, CaseIterable, Codable, Identifiable, Sendab
         case .local:
             "Local"
         case .repeater:
-            "Repeater"
+            "Repeat Visitor"
         case .traveler:
             "Traveler"
         }

@@ -77,6 +77,9 @@ struct HomeView: View {
                 }
             }
         }
+        // UI テストでフィードの中の投稿を探せるよう、まとまりとして識別子を付ける（中の要素はそのまま読める）
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("home.feed")
     }
 }
 

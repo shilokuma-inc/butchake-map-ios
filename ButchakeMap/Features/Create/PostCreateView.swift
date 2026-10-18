@@ -100,6 +100,7 @@ private struct PostFormContent: View {
                     }
                 }
                 .pickerStyle(.navigationLink)
+                .accessibilityIdentifier(Self.accessibilityIdentifier(for: .prefecture))
                 errorText(for: .prefecture)
             }
             textField("City", text: $viewModel.post.city, field: .city)
@@ -109,12 +110,14 @@ private struct PostFormContent: View {
                         .tag(category)
                 }
             }
+            .accessibilityIdentifier("postForm.category")
             Picker("Author Type", selection: $viewModel.post.authorType) {
                 ForEach(AuthorType.allCases) { authorType in
                     Text(authorType.displayName)
                         .tag(authorType)
                 }
             }
+            .accessibilityIdentifier("postForm.authorType")
         }
     }
 
@@ -153,7 +156,7 @@ private struct PostFormContent: View {
                     .foregroundStyle(Color.brandPrimary)
                 SpotLocationPreview(title: spot.name, coordinate: coordinate)
             }
-            Button("Choose Again on Map", systemImage: "map") {
+            Button("Change Location", systemImage: "map") {
                 locationPickerOrder = LocationPickerOrder(id: order)
             }
             Button("Remove Location", systemImage: "mappin.slash", role: .destructive) {
@@ -174,12 +177,14 @@ private struct PostFormContent: View {
                     .frame(maxWidth: .infinity)
             }
             .disabled(viewModel.isLoadingPhoto)
+            .accessibilityIdentifier("postForm.publish")
             if viewModel.showsSaveDraftButton {
                 Button(action: viewModel.saveDraft) {
                     Text("Save Draft")
                         .frame(maxWidth: .infinity)
                 }
                 .disabled(!viewModel.canSaveDraft)
+                .accessibilityIdentifier("postForm.saveDraft")
             }
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
@@ -204,7 +209,26 @@ private struct PostFormContent: View {
         VStack(alignment: .leading, spacing: 4) {
             TextField(title, text: text, axis: axis)
                 .lineLimit(axis == .vertical ? 3 : 1, reservesSpace: true)
+                .accessibilityIdentifier(Self.accessibilityIdentifier(for: field))
             errorText(for: field)
+        }
+    }
+
+    /// UI テストで入力欄を探す識別子（表示言語によらない）
+    private static func accessibilityIdentifier(for field: PostCreateViewModel.Field) -> String {
+        switch field {
+        case .title:
+            "postForm.title"
+        case .prefecture:
+            "postForm.prefecture"
+        case .city:
+            "postForm.city"
+        case .spotName(let order):
+            "postForm.spot\(order).name"
+        case .spotAddress(let order):
+            "postForm.spot\(order).address"
+        case .spotRecommendation(let order):
+            "postForm.spot\(order).comment"
         }
     }
 

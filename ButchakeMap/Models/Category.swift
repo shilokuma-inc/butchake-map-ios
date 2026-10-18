@@ -19,7 +19,7 @@ nonisolated enum Category: String, CaseIterable, Codable, Identifiable, Sendable
     var displayName: LocalizedStringResource {
         switch self {
         case .gourmet:
-            "Gourmet"
+            "Food"
         case .scenery:
             "Scenery & Sightseeing"
         case .disappointment:

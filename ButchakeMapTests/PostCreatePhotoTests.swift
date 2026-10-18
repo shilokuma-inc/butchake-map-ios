@@ -238,6 +238,20 @@ struct PostCreatePhotoTests {
     }
 
     @Test
+    func newDraftAfterPublishDoesNotShowPreviousLoadError() async {
+        let (viewModel, _) = makeViewModel()
+        viewModel.post = filledPost()
+        viewModel.loadPhoto(forSpot: 1) { nil }
+        await viewModel.waitForPhotoLoads()
+        #expect(viewModel.failedPhotoSpots == [1])
+
+        viewModel.publish()
+
+        #expect(viewModel.outcome == .published)
+        #expect(viewModel.failedPhotoSpots.isEmpty)
+    }
+
+    @Test
     func loadForUnknownSpotIsIgnored() {
         let (viewModel, _) = makeViewModel()
 

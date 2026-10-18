@@ -230,6 +230,22 @@ struct PostDetailViewModelTests {
         #expect(PostDetailViewModel.closesEditor(after: .published))
         #expect(PostDetailViewModel.closesEditor(after: .failed(.notFound)))
         #expect(PostDetailViewModel.closesEditor(after: .failed(.notMine)))
-        #expect(!PostDetailViewModel.closesEditor(after: .failed(.alreadyPublished)))
+    }
+
+    /// 下書き保存の後と、閉じなくてよい失敗（公開済み・保存済み）では作成画面を閉じない
+    @Test(arguments: [
+        PostCreateViewModel.Outcome.savedDraft,
+        .failed(.alreadyPublished),
+        .failed(.alreadyExists)
+    ])
+    func editorStaysOpenAfterOutcome(_ outcome: PostCreateViewModel.Outcome) {
+        #expect(!PostDetailViewModel.closesEditor(after: outcome))
+    }
+
+    @Test
+    func orderedSpotsSortsSpotsOfGivenPost() {
+        let target = post(spotOrders: [2, 3, 1])
+
+        #expect(PostDetailViewModel.orderedSpots(of: target).map(\.order) == [1, 2, 3])
     }
 }

@@ -12,6 +12,8 @@ struct PostDetailView: View {
     /// 編集で作成画面（シート）に開いている投稿。開いた時点の値を持ち、保存してもフォームを作り直さない
     @State private var editingPost: Post?
     @State private var isConfirmingDeletion = false
+    /// 削除した投稿。詳細を閉じて戻るアニメーションの間、「投稿が見つかりません」ではなく消す前の内容を出し続ける
+    @State private var deletedPost: Post?
     let postID: Post.ID
 
     private var viewModel: PostDetailViewModel {
@@ -20,7 +22,7 @@ struct PostDetailView: View {
 
     var body: some View {
         Group {
-            if let post = viewModel.post {
+            if let post = viewModel.post ?? deletedPost {
                 content(post: post)
             } else {
                 ContentUnavailableView(
@@ -49,7 +51,8 @@ struct PostDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 header(post: post)
-                ForEach(viewModel.spots) { spot in
+                // 削除後の戻るアニメーション中も出せるよう、Repository ではなく受け取った投稿から並べる
+                ForEach(PostDetailViewModel.orderedSpots(of: post)) { spot in
                     SpotDetailCard(spot: spot, category: post.category)
                 }
             }
@@ -110,10 +113,16 @@ struct PostDetailView: View {
         .environment(repository)
     }
 
-    /// 確認の後に削除し、消せたら詳細を閉じて一覧に戻る
+    /// 確認の後に詳細を閉じてから削除し、一覧に戻る。
+    /// 戻る間に「投稿が見つかりません」が見えないよう、消す前の投稿を deletedPost に残して出し続ける
     private func delete() {
-        if viewModel.delete() {
-            dismiss()
+        guard viewModel.canEditOrDelete, let post = viewModel.post else {
+            return
+        }
+        deletedPost = post
+        dismiss()
+        if !viewModel.delete() {
+            deletedPost = nil
         }
     }
 
@@ -204,6 +213,8 @@ struct OpenInMapsButton: View {
                 .font(.subheadline.weight(.semibold))
                 .buttonStyle(.bordered)
                 .tint(Color.brandPrimary)
+                // 3 スポットのボタンが同じ読み上げにならないよう、VoiceOver ではスポット名も読む
+                .accessibilityLabel(accessibilityLabel)
                 .confirmationDialog("Open in Maps", isPresented: $isChoosingApp, titleVisibility: .visible) {
                     ForEach(ExternalMapApp.allCases) { app in
                         Button {
@@ -214,6 +225,12 @@ struct OpenInMapsButton: View {
                     }
                 }
         }
+    }
+
+    /// VoiceOver で読む「<スポット名> をマップで開く」。名前が無ければ「マップで開く」
+    private var accessibilityLabel: Text {
+        let name = spot.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        return name.isEmpty ? Text("Open in Maps") : Text("Open \(name) in Maps")
     }
 
     private func open() {

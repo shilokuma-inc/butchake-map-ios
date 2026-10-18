@@ -238,6 +238,75 @@ struct PostCreateViewModelTests {
         #expect(viewModel.post.id == draft.id)
     }
 
+    @Test
+    func editingKeepsLikesAndStarsMadeElsewhere() throws {
+        let published = filledPost(isDraft: false)
+        let repository = makeRepository(posts: [published])
+        let viewModel = PostCreateViewModel(post: published, repository: repository)
+        repository.toggleLike(postID: published.id)
+        repository.toggleStar(postID: published.id)
+        viewModel.post.title = "直した"
+
+        viewModel.publish()
+
+        let saved = try #require(repository.post(id: published.id))
+        #expect(saved.title == "直した")
+        #expect(saved.isLiked && saved.likeCount == published.likeCount + 1)
+        #expect(saved.isStarred && saved.starCount == published.starCount + 1)
+    }
+
+    @Test
+    func editingKeepsFormAfterSaving() {
+        let draft = filledPost()
+        let repository = makeRepository(posts: [draft])
+        let viewModel = PostCreateViewModel(post: draft, repository: repository)
+        viewModel.post.title = "書き直し"
+
+        viewModel.saveDraft()
+
+        #expect(!viewModel.isNew)
+        #expect(viewModel.post.id == draft.id)
+        #expect(viewModel.post.title == "書き直し")
+
+        viewModel.publish()
+
+        #expect(viewModel.outcome == .published)
+        #expect(viewModel.post.id == draft.id)
+        #expect(!viewModel.post.isDraft)
+        #expect(!viewModel.showsSaveDraftButton)
+    }
+
+    @Test
+    func draftPublishedElsewhereCannotBeSavedAsDraft() {
+        let draft = filledPost()
+        let repository = makeRepository(posts: [draft])
+        let viewModel = PostCreateViewModel(post: draft, repository: repository)
+        try? repository.publish(draft, isNew: false)
+        viewModel.post.title = "下書きのつもり"
+
+        viewModel.saveDraft()
+
+        #expect(viewModel.outcome == .failed(.alreadyPublished))
+        #expect(repository.post(id: draft.id)?.isDraft == false)
+        #expect(repository.post(id: draft.id)?.title == draft.title)
+    }
+
+    @Test
+    func publishTrimsWhitespace() throws {
+        let repository = makeRepository()
+        let viewModel = PostCreateViewModel(post: nil, repository: repository)
+        var post = filledPost()
+        post.title = "  前後に空白  "
+        post.spots[0].name = "\nスポット\n"
+        viewModel.post = post
+
+        viewModel.publish()
+
+        let published = try #require(repository.post(id: post.id))
+        #expect(published.title == "前後に空白")
+        #expect(published.spots[0].name == "スポット")
+    }
+
     // MARK: - 都道府県
 
     @Test

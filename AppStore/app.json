@@ -7,10 +7,10 @@
     "screenshotDemoSource: 撮影モードの Swift ファイル。screenshots.json の scene が ScreenshotDemo.Scene にあるかを突き合わせる。",
     "appIcon: クリエイティブアセットに載せるアプリアイコン。"
   ],
-  "project": "IOSTemplateApp.xcodeproj",
-  "scheme": "IOSTemplateApp",
+  "project": "ButchakeMap.xcodeproj",
+  "scheme": "ButchakeMap",
   "configuration": "Release",
-  "simulatorPrefix": "IOSTemplateApp",
-  "screenshotDemoSource": "IOSTemplateApp/Screenshot/ScreenshotDemo.swift",
-  "appIcon": "IOSTemplateApp/Assets.xcassets/AppIcon.appiconset/AppIcon.png"
+  "simulatorPrefix": "ButchakeMap",
+  "screenshotDemoSource": "ButchakeMap/Screenshot/ScreenshotDemo.swift",
+  "appIcon": "ButchakeMap/Assets.xcassets/AppIcon.appiconset/AppIcon.png"
 }

@@ -1,13 +1,13 @@
 //
-//  IOSTemplateAppUITests.swift
-//  IOSTemplateAppUITests
+//  ButchakeMapUITests.swift
+//  ButchakeMapUITests
 //
 //  Created by 村石 拓海 on 2024/05/12.
 //
 
 import XCTest
 
-final class IOSTemplateAppUITests: XCTestCase {
+final class ButchakeMapUITests: XCTestCase {
     override func setUpWithError() throws {
         // UI テストでは失敗した時点で即座に止める
         continueAfterFailure = false

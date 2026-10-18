@@ -17,6 +17,22 @@
         }
       }
     },
+    "Butchake Map" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Butchake Map"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ぶっちゃけmap"
+          }
+        }
+      }
+    },
     "Gourmet" : {
       "localizations" : {
         "en" : {
@@ -61,6 +77,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ホーム"
+          }
+        }
+      }
+    },
+    "Latest Posts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latest Posts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新着の投稿"
+          }
+        }
+      }
+    },
+    "Like" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Like"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いいね"
           }
         }
       }
@@ -113,6 +161,22 @@
         }
       }
     },
+    "No posts yet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No posts yet"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだ投稿がありません"
+          }
+        }
+      }
+    },
     "Other" : {
       "localizations" : {
         "en" : {
@@ -161,6 +225,22 @@
         }
       }
     },
+    "Save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      }
+    },
     "Scenery & Sightseeing" : {
       "localizations" : {
         "en" : {
@@ -193,6 +273,22 @@
         }
       }
     },
+    "This Week's Picks" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Week's Picks"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週のぶっちゃけ"
+          }
+        }
+      }
+    },
     "This screen is under construction." : {
       "localizations" : {
         "en" : {
@@ -221,6 +317,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "旅好き"
+          }
+        }
+      }
+    },
+    "Trending" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trending"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "急上昇"
           }
         }
       }

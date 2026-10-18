@@ -17,6 +17,38 @@
         }
       }
     },
+    "All" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて"
+          }
+        }
+      }
+    },
+    "All Prefectures" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All Prefectures"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべての都道府県"
+          }
+        }
+      }
+    },
     "Apple Maps" : {
       "localizations" : {
         "en" : {
@@ -61,6 +93,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ぶっちゃけmap"
+          }
+        }
+      }
+    },
+    "Clear Filters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Filters"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "条件をクリア"
           }
         }
       }
@@ -225,6 +273,22 @@
         }
       }
     },
+    "No Results" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Results"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "見つかりませんでした"
+          }
+        }
+      }
+    },
     "No posts yet" : {
       "localizations" : {
         "en" : {
@@ -301,6 +365,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿が見つかりません"
+          }
+        }
+      }
+    },
+    "Prefecture" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefecture"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "都道府県"
           }
         }
       }
@@ -497,6 +577,22 @@
         }
       }
     },
+    "Title or spot name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title or spot name"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイトル・スポット名"
+          }
+        }
+      }
+    },
     "Traveler" : {
       "localizations" : {
         "en" : {
@@ -525,6 +621,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "急上昇"
+          }
+        }
+      }
+    },
+    "Try a different keyword, prefecture, or category." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try a different keyword, prefecture, or category."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キーワード・都道府県・カテゴリを変えて探してみてください。"
           }
         }
       }

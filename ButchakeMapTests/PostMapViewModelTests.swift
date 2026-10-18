@@ -116,6 +116,22 @@ struct PostMapViewModelTests {
     }
 
     @Test
+    func postTurnedIntoDraftRemovesPinsAndLookups() throws {
+        let target = post()
+        let repository = MockDataRepository(posts: [target])
+        let viewModel = PostMapViewModel(repository: repository)
+        let pinID = try #require(viewModel.pins.first).id
+
+        // 公開済みの投稿は下書きに戻せないので、同じ ID の下書きに置き換えて確かめる
+        repository.delete(postID: target.id)
+        try repository.saveDraft(target, isNew: true)
+
+        #expect(viewModel.pins.isEmpty)
+        #expect(viewModel.post(for: pinID) == nil)
+        #expect(viewModel.spot(for: pinID) == nil)
+    }
+
+    @Test
     func toggleLikeAndStarUpdateRepository() throws {
         let target = post()
         let repository = MockDataRepository(posts: [target])

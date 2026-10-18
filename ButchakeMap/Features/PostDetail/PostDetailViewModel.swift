@@ -11,9 +11,12 @@ struct PostDetailViewModel {
     let repository: MockDataRepository
     let postID: Post.ID
 
-    /// 表示する投稿。削除されていれば nil
+    /// 表示する投稿。削除されていれば nil。下書きは公開前なので、ID で開かれても見つからない扱いにする
     var post: Post? {
-        repository.post(id: postID)
+        guard let post = repository.post(id: postID), !post.isDraft else {
+            return nil
+        }
+        return post
     }
 
     /// 番号順のスポット
@@ -25,11 +28,18 @@ struct PostDetailViewModel {
         post.map(repository.isMine) ?? false
     }
 
+    /// 表示できない（削除済み・下書きの）投稿には何もしない
     func toggleLike() {
+        guard post != nil else {
+            return
+        }
         repository.toggleLike(postID: postID)
     }
 
     func toggleStar() {
+        guard post != nil else {
+            return
+        }
         repository.toggleStar(postID: postID)
     }
 }

@@ -239,6 +239,24 @@ struct MockDataRepositoryTests {
         #expect(repository.starredPosts.isEmpty)
     }
 
+    @Test
+    func updatingKeepsStoredAuthorName() throws {
+        let draft = makePost(authorName: "自分", isDraft: true)
+        let repository = MockDataRepository(posts: [draft], currentUserName: "自分")
+        var edited = draft
+        edited.authorName = "書き換えた名前"
+        edited.title = "編集後"
+
+        try repository.saveDraft(edited, isNew: false)
+        #expect(try #require(repository.post(id: draft.id)).authorName == "自分")
+        #expect(repository.drafts.map(\.title) == ["編集後"])
+
+        try repository.publish(edited, isNew: false)
+        let published = try #require(repository.post(id: draft.id))
+        #expect(published.authorName == "自分")
+        #expect(repository.myPosts.map(\.id) == [draft.id])
+    }
+
     // MARK: - モデル
 
     @Test

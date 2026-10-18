@@ -9,21 +9,22 @@ import SwiftUI
 struct MyPageView: View {
     @Environment(MockDataRepository.self) private var repository
     @State private var section: MyPageSection = .myPosts
+    /// 下書きの行は List の中で Button から push するので、遷移先をここに積む
+    @State private var path = NavigationPath()
 
     private var viewModel: MyPageViewModel {
         MyPageViewModel(repository: repository, section: section)
     }
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ProfileHeader(viewModel: viewModel)
-                        .padding(.horizontal)
-                    sectionPicker
-                    content
+        NavigationStack(path: $path) {
+            Group {
+                // スワイプでの削除（.swipeActions）は List の中でしか使えないので、下書きの一覧だけ List にする
+                if section == .drafts && !viewModel.posts.isEmpty {
+                    draftList
+                } else {
+                    cardList
                 }
-                .padding(.vertical)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle(Text("My Page"))
@@ -41,7 +42,64 @@ struct MyPageView: View {
                 }
             }
             .postDetailDestination()
+            .navigationDestination(for: DraftDestination.self) { destination in
+                DraftEditView(postID: destination.postID)
+            }
         }
+    }
+
+    /// プロフィールと一覧の切り替え
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ProfileHeader(viewModel: viewModel)
+                .padding(.horizontal)
+            sectionPicker
+        }
+    }
+
+    /// 自分の投稿・保存した三大の一覧（下書きが無いときの案内も出す）
+    private var cardList: some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 16) {
+                header
+                content
+            }
+            .padding(.vertical)
+        }
+    }
+
+    /// 下書きの一覧。行をタップすると作成画面で開き、スワイプで削除できる
+    private var draftList: some View {
+        List {
+            header
+                .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 8, trailing: 0))
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+            ForEach(viewModel.posts) { draft in
+                Button {
+                    path.append(DraftDestination(postID: draft.id))
+                } label: {
+                    DraftRow(draft: draft)
+                }
+                .buttonStyle(.plain)
+                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                    Button(role: .destructive) {
+                        viewModel.deleteDraft(draft)
+                    } label: {
+                        Label {
+                            Text("Delete")
+                        } icon: {
+                            Image(systemName: "trash")
+                        }
+                    }
+                }
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+            }
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
     }
 
     private var sectionPicker: some View {
@@ -69,12 +127,6 @@ struct MyPageView: View {
                 }
             } description: {
                 Text(section.emptyDescription)
-            }
-        } else if section == .drafts {
-            // 下書きを作成画面で開いて編集する・スワイプで削除するのは次のタスクで入れる。今は一覧に出すだけ
-            ForEach(posts) { draft in
-                DraftRow(draft: draft)
-                    .padding(.horizontal)
             }
         } else {
             ForEach(posts) { post in
@@ -152,7 +204,7 @@ private struct ProfileStat: View {
     }
 }
 
-/// 下書きの一覧の 1 行。タイトル未入力なら「無題の下書き」と出す
+/// 下書きの一覧の 1 行。タイトル未入力なら「無題の下書き」と出す。タップで編集画面を開く
 private struct DraftRow: View {
     let draft: Post
 

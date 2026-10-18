@@ -174,4 +174,33 @@ struct SearchViewModelTests {
         #expect(updated.isStarred && updated.starCount == 1)
         #expect(viewModel.results(for: SearchFilter()).first?.isLiked == true)
     }
+
+    @Test
+    func deletedPostDisappearsFromResultsAndPrefectures() {
+        let deleted = post(title: "消える寿司", prefecture: "石川県")
+        let kept = post(title: "残る寿司")
+        let repository = MockDataRepository(posts: [deleted, kept])
+        let viewModel = SearchViewModel(repository: repository)
+        #expect(viewModel.results(for: SearchFilter(keyword: "寿司")).count == 2)
+
+        repository.delete(postID: deleted.id)
+
+        #expect(viewModel.results(for: SearchFilter(keyword: "寿司")).map(\.title) == ["残る寿司"])
+        #expect(viewModel.prefectures == ["東京都"])
+    }
+
+    @Test
+    func postTurnedIntoDraftDisappearsFromResults() throws {
+        let target = post(title: "下書きに戻す寿司", prefecture: "石川県")
+        let repository = MockDataRepository(posts: [target])
+        let viewModel = SearchViewModel(repository: repository)
+
+        // 公開済みの投稿は下書きに戻せないので、同じ ID の下書きに置き換えて確かめる
+        repository.delete(postID: target.id)
+        try repository.saveDraft(target, isNew: true)
+
+        #expect(viewModel.results(for: SearchFilter()).isEmpty)
+        #expect(viewModel.results(for: SearchFilter(keyword: "寿司")).isEmpty)
+        #expect(viewModel.prefectures.isEmpty)
+    }
 }

@@ -2,12 +2,14 @@
 //  PostCreateViewModel.swift
 //  ButchakeMap
 //
-//  投稿の作成・編集フォームのロジック（入力チェック・下書き保存・公開）。
+//  投稿の作成・編集フォームのロジック（入力チェック・スポットの位置の選択・下書き保存・公開）。
 //  入力中の投稿は MockDataRepository に入れる前の一時的な状態なので、例外としてここにコピーを持つ。
 //  保存・公開は Repository を経由し、ホーム・マイページなどの画面へすぐに反映される。
 //
 
+import CoreLocation
 import Foundation
+import MapKit
 import Observation
 
 @Observable
@@ -21,6 +23,17 @@ final class PostCreateViewModel {
         static let spotAddress = 100
         static let spotRecommendation = 200
     }
+
+    /// スポットの位置を選ぶ地図の初期表示の幅（度）
+    enum LocationSpan {
+        /// 既に位置を選んであるとき。周りの店や通りが見える程度まで寄せる
+        static let selected = 0.01
+        /// 都道府県だけ選んであるとき。県庁所在地の周りの市町村が見える程度
+        static let prefecture = 1.0
+    }
+
+    /// 選んだ位置の緯度・経度を丸める小数点以下の桁数（約 0.1 m）
+    static let coordinateFractionDigits = 6
 
     /// 入力欄
     enum Field: Hashable {
@@ -127,7 +140,7 @@ final class PostCreateViewModel {
     }
 
     /// 入力欄ごとのエラーを返す。前後の空白・改行は除いて数える
-    /// - Parameter requiresAll: true なら公開に必要な項目（住所以外のすべて）の未入力もエラーにする
+    /// - Parameter requiresAll: true なら公開に必要な項目（住所・位置以外のすべて）の未入力もエラーにする
     static func validate(_ post: Post, requiresAll: Bool) -> [Field: FieldError] {
         var errors: [Field: FieldError] = [:]
         func check(_ text: String, _ field: Field, limit: Int, isRequired: Bool = true) {
@@ -149,6 +162,52 @@ final class PostCreateViewModel {
             check(spot.recommendation, .spotRecommendation(order: spot.order), limit: Limit.spotRecommendation)
         }
         return errors
+    }
+
+    // MARK: - スポットの位置
+
+    /// 位置を選ぶ地図の初期表示の範囲: 選んだ位置 → 選んだ都道府県の県庁所在地の辺り → 日本全体の順に決める
+    func locationPickerRegion(forSpot order: Int) -> MKCoordinateRegion {
+        Self.locationPickerRegion(for: post.spots.first { $0.order == order }, prefecture: post.prefecture)
+    }
+
+    /// スポットの位置を決める。緯度・経度は小数点以下 6 桁に丸める
+    func setLocation(_ coordinate: CLLocationCoordinate2D, forSpot order: Int) {
+        guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
+            return
+        }
+        post.spots[index].latitude = Self.rounded(coordinate.latitude)
+        post.spots[index].longitude = Self.rounded(coordinate.longitude)
+    }
+
+    /// スポットの位置を解除する
+    func clearLocation(forSpot order: Int) {
+        guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
+            return
+        }
+        post.spots[index].latitude = nil
+        post.spots[index].longitude = nil
+    }
+
+    static func locationPickerRegion(for spot: Spot?, prefecture: String) -> MKCoordinateRegion {
+        if let coordinate = spot?.coordinate {
+            return MKCoordinateRegion(
+                center: coordinate,
+                span: MKCoordinateSpan(latitudeDelta: LocationSpan.selected, longitudeDelta: LocationSpan.selected)
+            )
+        }
+        if let center = Prefecture(rawValue: prefecture)?.capitalCoordinate {
+            return MKCoordinateRegion(
+                center: center,
+                span: MKCoordinateSpan(latitudeDelta: LocationSpan.prefecture, longitudeDelta: LocationSpan.prefecture)
+            )
+        }
+        return PostMapViewModel.japanRegion
+    }
+
+    private static func rounded(_ degrees: Double) -> Double {
+        let scale = pow(10, Double(coordinateFractionDigits))
+        return (degrees * scale).rounded() / scale
     }
 
     // MARK: - 保存・公開
@@ -182,10 +241,11 @@ final class PostCreateViewModel {
 
     // MARK: - Private
 
-    /// 文字を入れた項目があるか（カテゴリ・投稿者属性を選んだだけでは数えない）
+    /// 文字を入れた項目か、位置を選んだスポットがあるか（カテゴリ・投稿者属性を選んだだけでは数えない）
     private var hasInput: Bool {
         let texts = [post.title, post.prefecture, post.city] + post.spots.flatMap { [$0.name, $0.address, $0.recommendation] }
         return texts.contains { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            || post.spots.contains { $0.coordinate != nil }
     }
 
     /// 前後の空白・改行を除いた投稿

@@ -11,15 +11,16 @@ import SwiftUI
 struct SpotPhotoPickerRow: View {
     /// 選んである写真（縮小・JPEG 圧縮済み）。nil なら未選択
     let photoData: Data?
-    let onPick: (Data) -> Void
+    /// 写真を読み込み中か
+    let isLoading: Bool
+    /// 直近の読み込みに失敗したか
+    let loadFailed: Bool
+    /// PhotosPicker で項目を選んだとき。読み込みは行が画面外に出ても続くよう、呼び出し側（ViewModel）で行う
+    let onSelect: (PhotosPickerItem) -> Void
     let onRemove: () -> Void
-    /// 読み込みを始めたとき（true）と終えたとき（false。失敗・取り消しも）に呼ぶ。読み込み中に保存・公開させないため
-    var onLoadingChange: (Bool) -> Void = { _ in }
 
-    /// PhotosPicker で選んだ項目。読み込み終えたら nil に戻し、同じ写真も選び直せるようにする
+    /// PhotosPicker で選んだ項目。渡したらすぐ nil に戻し、同じ写真も選び直せるようにする
     @State private var selection: PhotosPickerItem?
-    @State private var isLoading = false
-    @State private var loadFailed = false
 
     var body: some View {
         if let photoData {
@@ -48,51 +49,39 @@ struct SpotPhotoPickerRow: View {
                     .foregroundStyle(.red)
             }
         }
-        // 選び直したら前の読み込みは取り消され、後から選んだ写真だけが残る
-        .task(id: selection) {
-            await load()
+        .onChange(of: selection) {
+            guard let selection else {
+                return
+            }
+            onSelect(selection)
+            self.selection = nil
         }
         if photoData != nil {
-            Button("Remove Photo", systemImage: "trash", role: .destructive) {
-                loadFailed = false
-                onRemove()
-            }
+            Button("Remove Photo", systemImage: "trash", role: .destructive, action: onRemove)
         }
-    }
-
-    private func load() async {
-        guard let selection else {
-            return
-        }
-        isLoading = true
-        loadFailed = false
-        onLoadingChange(true)
-        defer {
-            onLoadingChange(false)
-        }
-        let data = await SpotPhotoProcessor.loadJPEGData(from: selection)
-        guard !Task.isCancelled else {
-            return
-        }
-        isLoading = false
-        if let data {
-            onPick(data)
-        } else {
-            loadFailed = true
-        }
-        self.selection = nil
     }
 }
 
 #Preview {
     Form {
         Section("Spot 1") {
-            SpotPhotoPickerRow(photoData: nil, onPick: { _ in }, onRemove: {})
+            SpotPhotoPickerRow(photoData: nil, isLoading: false, loadFailed: false, onSelect: { _ in }, onRemove: {})
         }
         Section("Spot 2") {
             SpotPhotoPickerRow(
                 photoData: UIImage(systemName: "photo")?.pngData(),
-                onPick: { _ in },
+                isLoading: false,
+                loadFailed: false,
+                onSelect: { _ in },
+                onRemove: {}
+            )
+        }
+        Section("Spot 3") {
+            SpotPhotoPickerRow(
+                photoData: nil,
+                isLoading: true,
+                loadFailed: true,
+                onSelect: { _ in },
                 onRemove: {}
             )
         }

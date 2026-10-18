@@ -126,18 +126,15 @@ private struct PostFormContent: View {
             locationRows(spot: spot.wrappedValue)
             SpotPhotoPickerRow(
                 photoData: spot.wrappedValue.photoData,
-                onPick: { data in
-                    viewModel.setPhoto(data, forSpot: order)
+                isLoading: viewModel.loadingPhotoSpots.contains(order),
+                loadFailed: viewModel.failedPhotoSpots.contains(order),
+                onSelect: { item in
+                    viewModel.loadPhoto(forSpot: order) {
+                        await SpotPhotoProcessor.loadJPEGData(from: item)
+                    }
                 },
                 onRemove: {
                     viewModel.removePhoto(forSpot: order)
-                },
-                onLoadingChange: { isLoading in
-                    if isLoading {
-                        viewModel.beginPhotoLoading()
-                    } else {
-                        viewModel.endPhotoLoading()
-                    }
                 }
             )
             textField("Honest Comment", text: spot.recommendation, field: .spotRecommendation(order: order), axis: .vertical)
@@ -186,6 +183,9 @@ private struct PostFormContent: View {
             }
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
+                if viewModel.isLoadingPhoto {
+                    Text("Loading photos. You can publish or save once they're ready.")
+                }
                 if viewModel.showsRequiredErrors && !viewModel.canPublish {
                     Text("Some fields need your attention.")
                         .foregroundStyle(.red)

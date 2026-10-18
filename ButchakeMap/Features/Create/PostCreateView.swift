@@ -19,9 +19,14 @@ struct PostCreateView: View {
 struct PostFormView: View {
     @Environment(MockDataRepository.self) private var repository
     let post: Post?
+    /// 保存・公開の結果のアラートを閉じたときに呼ぶ。編集画面を閉じるかどうかは呼び出し側が決める
+    var onOutcomeDismissed: (PostCreateViewModel.Outcome) -> Void = { _ in }
 
     var body: some View {
-        PostFormContent(viewModel: PostCreateViewModel(post: post, repository: repository))
+        PostFormContent(
+            viewModel: PostCreateViewModel(post: post, repository: repository),
+            onOutcomeDismissed: onOutcomeDismissed
+        )
             // 違う投稿を渡されたらフォーム（ViewModel）を作り直す
             .id(post?.id)
     }
@@ -31,8 +36,11 @@ struct PostFormView: View {
 private struct PostFormContent: View {
     @State private var viewModel: PostCreateViewModel
 
-    init(viewModel: PostCreateViewModel) {
+    let onOutcomeDismissed: (PostCreateViewModel.Outcome) -> Void
+
+    init(viewModel: PostCreateViewModel, onOutcomeDismissed: @escaping (PostCreateViewModel.Outcome) -> Void) {
         _viewModel = State(initialValue: viewModel)
+        self.onOutcomeDismissed = onOutcomeDismissed
     }
 
     private var title: LocalizedStringKey {
@@ -155,8 +163,9 @@ private struct PostFormContent: View {
         Binding {
             viewModel.outcome != nil
         } set: { isPresented in
-            if !isPresented {
+            if !isPresented, let outcome = viewModel.outcome {
                 viewModel.outcome = nil
+                onOutcomeDismissed(outcome)
             }
         }
     }

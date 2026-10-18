@@ -17,6 +17,22 @@
         }
       }
     },
+    "Address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "住所"
+          }
+        }
+      }
+    },
     "All" : {
       "localizations" : {
         "en" : {
@@ -49,6 +65,22 @@
         }
       }
     },
+    "All fields except addresses are required to publish." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All fields except addresses are required to publish."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開するには住所以外のすべての項目を入力してください。"
+          }
+        }
+      }
+    },
     "Apple Maps" : {
       "localizations" : {
         "en" : {
@@ -61,6 +93,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apple マップ"
+          }
+        }
+      }
+    },
+    "Author Type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Author Type"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿者の属性"
+          }
+        }
+      }
+    },
+    "Basic Info" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basic Info"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "基本情報"
           }
         }
       }
@@ -97,6 +161,38 @@
         }
       }
     },
+    "Category" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Category"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カテゴリ"
+          }
+        }
+      }
+    },
+    "City" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "City"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "市区町村"
+          }
+        }
+      }
+    },
     "Clear Filters" : {
       "localizations" : {
         "en" : {
@@ -109,6 +205,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "条件をクリア"
+          }
+        }
+      }
+    },
+    "Couldn't save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't save"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存できませんでした"
+          }
+        }
+      }
+    },
+    "Draft saved" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draft saved"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書きを保存しました"
+          }
+        }
+      }
+    },
+    "Edit Post" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Post"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿を編集"
           }
         }
       }
@@ -273,6 +417,22 @@
         }
       }
     },
+    "New Post" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Post"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新規投稿"
+          }
+        }
+      }
+    },
     "No Results" : {
       "localizations" : {
         "en" : {
@@ -301,6 +461,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "まだ投稿がありません"
+          }
+        }
+      }
+    },
+    "Not selected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not selected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未選択"
           }
         }
       }
@@ -337,6 +513,22 @@
         }
       }
     },
+    "Place Name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Place Name"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "店名・施設名"
+          }
+        }
+      }
+    },
     "Post" : {
       "localizations" : {
         "en" : {
@@ -369,6 +561,22 @@
         }
       }
     },
+    "Post published" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post published"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開しました"
+          }
+        }
+      }
+    },
     "Prefecture" : {
       "localizations" : {
         "en" : {
@@ -381,6 +589,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "都道府県"
+          }
+        }
+      }
+    },
+    "Publish" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publish"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開する"
+          }
+        }
+      }
+    },
+    "Published posts can't be saved as drafts." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Published posts can't be saved as drafts."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開済みの投稿は下書きに戻せません。"
           }
         }
       }
@@ -433,6 +673,22 @@
         }
       }
     },
+    "Required" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Required"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "入力してください"
+          }
+        }
+      }
+    },
     "Save" : {
       "localizations" : {
         "en" : {
@@ -445,6 +701,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保存"
+          }
+        }
+      }
+    },
+    "Save Draft" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save Draft"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書き保存"
           }
         }
       }
@@ -497,6 +769,22 @@
         }
       }
     },
+    "Select a prefecture" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a prefecture"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "都道府県を選んでください"
+          }
+        }
+      }
+    },
     "Share" : {
       "localizations" : {
         "en" : {
@@ -509,6 +797,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有"
+          }
+        }
+      }
+    },
+    "Some fields need your attention." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some fields need your attention."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "入力内容を確認してください。"
           }
         }
       }
@@ -545,6 +849,22 @@
         }
       }
     },
+    "This post has already been saved." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This post has already been saved."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この投稿はすでに保存されています。"
+          }
+        }
+      }
+    },
     "This post may have been deleted." : {
       "localizations" : {
         "en" : {
@@ -573,6 +893,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "この画面は準備中です。"
+          }
+        }
+      }
+    },
+    "Title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイトル"
           }
         }
       }
@@ -641,6 +977,22 @@
         }
       }
     },
+    "Up to %lld characters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up to %lld characters"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 文字以内で入力してください"
+          }
+        }
+      }
+    },
     "View Post" : {
       "localizations" : {
         "en" : {
@@ -653,6 +1005,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿を見る"
+          }
+        }
+      }
+    },
+    "Your post now appears on Home." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your post now appears on Home."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ホームなどに表示されるようになりました。"
           }
         }
       }

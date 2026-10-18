@@ -63,11 +63,18 @@ struct ShareCardTests {
     @Test
     @MainActor
     func rendersShareCardAtExportSize() throws {
-        let renderer = ImageRenderer(content: ShareCardView(post: post()))
-        renderer.scale = ShareCardView.renderScale
-        let image = try #require(renderer.cgImage)
+        let image = try #require(ShareCardButton.renderUIImage(post: post())?.cgImage)
 
         #expect(image.width == 1_080)
         #expect(image.height == 1_350)
+    }
+
+    @Test
+    @MainActor
+    func renderedShareCardContainsReadableQRCode() throws {
+        let target = post()
+        let image = try #require(ShareCardButton.renderUIImage(post: target)?.cgImage)
+
+        #expect(decode(image) == [target.shareURL.absoluteString])
     }
 }

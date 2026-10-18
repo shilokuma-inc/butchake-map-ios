@@ -130,6 +130,64 @@ struct PostCreatePhotoTests {
         #expect(viewModel.post.spots.map(\.photoData) == [nil, anotherPhoto, nil])
     }
 
+    // MARK: - 読み込み中
+
+    @Test
+    func cannotPublishWhileLoadingPhoto() {
+        let (viewModel, repository) = makeViewModel()
+        viewModel.post = filledPost()
+        viewModel.beginPhotoLoading()
+
+        #expect(viewModel.isLoadingPhoto)
+        viewModel.publish()
+
+        #expect(viewModel.outcome == nil)
+        #expect(!viewModel.showsRequiredErrors)
+        #expect(repository.publishedPosts.isEmpty)
+    }
+
+    @Test
+    func cannotSaveDraftWhileLoadingPhoto() {
+        let (viewModel, repository) = makeViewModel()
+        viewModel.post.title = "途中の三大"
+        #expect(viewModel.canSaveDraft)
+        viewModel.beginPhotoLoading()
+
+        #expect(!viewModel.canSaveDraft)
+        viewModel.saveDraft()
+
+        #expect(viewModel.outcome == nil)
+        #expect(repository.drafts.isEmpty)
+    }
+
+    @Test
+    func canSaveAgainAfterAllLoadsEnd() {
+        let (viewModel, _) = makeViewModel()
+        viewModel.post = filledPost()
+        viewModel.beginPhotoLoading()
+        viewModel.beginPhotoLoading()
+
+        viewModel.endPhotoLoading()
+        #expect(viewModel.isLoadingPhoto)
+        #expect(!viewModel.canSaveDraft)
+
+        viewModel.endPhotoLoading()
+        #expect(!viewModel.isLoadingPhoto)
+        #expect(viewModel.canSaveDraft)
+        viewModel.publish()
+        #expect(viewModel.outcome == .published)
+    }
+
+    @Test
+    func extraEndPhotoLoadingDoesNotGoNegative() {
+        let (viewModel, _) = makeViewModel()
+
+        viewModel.endPhotoLoading()
+        viewModel.beginPhotoLoading()
+
+        #expect(viewModel.isLoadingPhoto)
+    }
+
     // MARK: - カードのサムネイル
 
     @Test

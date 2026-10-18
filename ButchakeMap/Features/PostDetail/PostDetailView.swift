@@ -82,7 +82,8 @@ struct SpotDetailCard: View {
                 Image(systemName: "\(spot.order).circle.fill")
                     .font(.title2)
                     .foregroundStyle(Color.brandPrimary)
-                    .accessibilityHidden(true)
+                    // VoiceOver で ①②③ の順番を「スポット 1」のように読ませる
+                    .accessibilityLabel(Text("Spot \(spot.order)"))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(spot.name)
                         .font(.headline)

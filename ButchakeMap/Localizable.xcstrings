@@ -353,6 +353,22 @@
         }
       }
     },
+    "Spot %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spot %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スポット %lld"
+          }
+        }
+      }
+    },
     "This Week's Picks" : {
       "localizations" : {
         "en" : {

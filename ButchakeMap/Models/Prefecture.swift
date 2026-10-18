@@ -3,6 +3,7 @@
 //  ButchakeMap
 //
 
+import CoreLocation
 import Foundation
 
 /// 47 都道府県（JIS の都道府県コード順）。rawValue は Post.prefecture に入れる日本語の名前で、表示言語によらずそのまま出す
@@ -56,4 +57,59 @@ nonisolated enum Prefecture: String, CaseIterable, Identifiable, Sendable {
     case okinawa = "沖縄県"
 
     var id: Self { self }
+
+    /// 都道府県庁の所在地の座標。投稿作成で位置を選ぶ地図を、選んだ都道府県の辺りから始めるのに使う
+    var capitalCoordinate: CLLocationCoordinate2D? {
+        Self.capitalCoordinates[self].map { CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }
+    }
+
+    private static let capitalCoordinates: [Self: (latitude: Double, longitude: Double)] = [
+        .hokkaido: (latitude: 43.0642, longitude: 141.3469),
+        .aomori: (latitude: 40.8244, longitude: 140.7400),
+        .iwate: (latitude: 39.7036, longitude: 141.1527),
+        .miyagi: (latitude: 38.2688, longitude: 140.8721),
+        .akita: (latitude: 39.7186, longitude: 140.1024),
+        .yamagata: (latitude: 38.2404, longitude: 140.3633),
+        .fukushima: (latitude: 37.7503, longitude: 140.4676),
+        .ibaraki: (latitude: 36.3418, longitude: 140.4468),
+        .tochigi: (latitude: 36.5657, longitude: 139.8836),
+        .gunma: (latitude: 36.3912, longitude: 139.0608),
+        .saitama: (latitude: 35.8570, longitude: 139.6489),
+        .chiba: (latitude: 35.6051, longitude: 140.1233),
+        .tokyo: (latitude: 35.6895, longitude: 139.6917),
+        .kanagawa: (latitude: 35.4478, longitude: 139.6425),
+        .niigata: (latitude: 37.9026, longitude: 139.0236),
+        .toyama: (latitude: 36.6953, longitude: 137.2113),
+        .ishikawa: (latitude: 36.5947, longitude: 136.6256),
+        .fukui: (latitude: 36.0652, longitude: 136.2216),
+        .yamanashi: (latitude: 35.6642, longitude: 138.5684),
+        .nagano: (latitude: 36.6513, longitude: 138.1810),
+        .gifu: (latitude: 35.3912, longitude: 136.7223),
+        .shizuoka: (latitude: 34.9769, longitude: 138.3831),
+        .aichi: (latitude: 35.1802, longitude: 136.9066),
+        .mie: (latitude: 34.7303, longitude: 136.5086),
+        .shiga: (latitude: 35.0045, longitude: 135.8686),
+        .kyoto: (latitude: 35.0214, longitude: 135.7556),
+        .osaka: (latitude: 34.6863, longitude: 135.5200),
+        .hyogo: (latitude: 34.6913, longitude: 135.1830),
+        .nara: (latitude: 34.6851, longitude: 135.8329),
+        .wakayama: (latitude: 34.2260, longitude: 135.1675),
+        .tottori: (latitude: 35.5039, longitude: 134.2377),
+        .shimane: (latitude: 35.4723, longitude: 133.0505),
+        .okayama: (latitude: 34.6618, longitude: 133.9344),
+        .hiroshima: (latitude: 34.3966, longitude: 132.4596),
+        .yamaguchi: (latitude: 34.1859, longitude: 131.4714),
+        .tokushima: (latitude: 34.0658, longitude: 134.5593),
+        .kagawa: (latitude: 34.3401, longitude: 134.0434),
+        .ehime: (latitude: 33.8416, longitude: 132.7657),
+        .kochi: (latitude: 33.5597, longitude: 133.5311),
+        .fukuoka: (latitude: 33.6064, longitude: 130.4181),
+        .saga: (latitude: 33.2494, longitude: 130.2988),
+        .nagasaki: (latitude: 32.7448, longitude: 129.8737),
+        .kumamoto: (latitude: 32.7898, longitude: 130.7417),
+        .oita: (latitude: 33.2382, longitude: 131.6126),
+        .miyazaki: (latitude: 31.9111, longitude: 131.4239),
+        .kagoshima: (latitude: 31.5602, longitude: 130.5581),
+        .okinawa: (latitude: 26.2124, longitude: 127.6809)
+    ]
 }

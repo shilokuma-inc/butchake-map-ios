@@ -127,26 +127,48 @@ struct ShareCardButton: View {
         Group {
             if let cardImage {
                 ShareLink(item: cardImage, preview: SharePreview(post.title, image: cardImage)) {
-                    Label("Share", systemImage: "square.and.arrow.up")
+                    label
                 }
             } else {
-                ProgressView()
+                // 描き終わるまで（描けなかったときも）押せない共有ボタンを出す
+                Button {} label: {
+                    label
+                }
+                .disabled(true)
             }
         }
-        // 投稿の内容が変わったら描き直す
-        .task(id: post) {
-            cardImage = Self.render(post: post)
+        // カードに出す内容が変わったときだけ描き直す（いいね・スターでは描き直さない）
+        .task(id: ShareCardContent(post: post)) {
+            cardImage = Self.renderUIImage(post: post).map(Image.init(uiImage:))
         }
     }
 
+    private var label: some View {
+        Label("Share", systemImage: "square.and.arrow.up")
+    }
+
     /// シェアカードを画像にする（ImageRenderer は MainActor で使う）
-    static func render(post: Post) -> Image? {
+    static func renderUIImage(post: Post) -> UIImage? {
         let renderer = ImageRenderer(content: ShareCardView(post: post))
         renderer.scale = ShareCardView.renderScale
-        guard let uiImage = renderer.uiImage else {
-            return nil
-        }
-        return Image(uiImage: uiImage)
+        return renderer.uiImage
+    }
+}
+
+/// シェアカードに出す項目。これが変わったときだけカードを描き直す
+private struct ShareCardContent: Hashable {
+    let id: Post.ID
+    let title: String
+    let area: String
+    let category: Category
+    let spots: [Spot]
+
+    init(post: Post) {
+        id = post.id
+        title = post.title
+        area = post.area
+        category = post.category
+        spots = post.spots
     }
 }
 

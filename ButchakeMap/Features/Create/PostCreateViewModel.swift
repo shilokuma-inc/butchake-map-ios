@@ -2,7 +2,7 @@
 //  PostCreateViewModel.swift
 //  ButchakeMap
 //
-//  投稿の作成・編集フォームのロジック（入力チェック・スポットの位置の選択・下書き保存・公開）。
+//  投稿の作成・編集フォームのロジック（入力チェック・スポットの位置と写真の選択・下書き保存・公開）。
 //  入力中の投稿は MockDataRepository に入れる前の一時的な状態なので、例外としてここにコピーを持つ。
 //  保存・公開は Repository を経由し、ホーム・マイページなどの画面へすぐに反映される。
 //
@@ -111,6 +111,12 @@ final class PostCreateViewModel {
     private(set) var showsRequiredErrors = false
     /// 直近の保存・公開の結果。アラートを閉じたら nil に戻す
     var outcome: Outcome?
+    /// 写真を読み込み・縮小中のスポットの order。読み込み中に保存・公開すると選んだ写真が落ちるので、空になるまで保存・公開させない
+    private(set) var loadingPhotoSpots: Set<Int> = []
+    /// 直近の写真の読み込みに失敗したスポットの order
+    private(set) var failedPhotoSpots: Set<Int> = []
+    /// スポットごとの写真の読み込み。フォームの行が画面外に出ても取り消されないよう、View ではなく ViewModel に持つ
+    @ObservationIgnored private var photoLoadTasks: [Int: Task<Void, Never>] = [:]
 
     /// - Parameter post: 編集する既存の投稿。nil なら自分の新しい下書きを作る
     init(post: Post?, repository: MockDataRepository) {
@@ -131,6 +137,11 @@ final class PostCreateViewModel {
         Self.validate(post, requiresAll: true).isEmpty
     }
 
+    /// 写真を読み込み中か。読み込み中は「公開する」「下書き保存」を押せない
+    var isLoadingPhoto: Bool {
+        !loadingPhotoSpots.isEmpty
+    }
+
     /// 「下書き保存」を出すか。公開済みの投稿は下書きに戻せないので出さない
     var showsSaveDraftButton: Bool {
         isNew || post.isDraft
@@ -138,7 +149,7 @@ final class PostCreateViewModel {
 
     /// 下書き保存できるか。何か入力してあり、文字数の上限を超えていないこと（未入力の項目があってもよい）
     var canSaveDraft: Bool {
-        showsSaveDraftButton && hasInput && Self.validate(post, requiresAll: false).isEmpty
+        showsSaveDraftButton && !isLoadingPhoto && hasInput && Self.validate(post, requiresAll: false).isEmpty
     }
 
     /// 入力欄ごとのエラーを返す。前後の空白・改行は除いて数える
@@ -171,6 +182,12 @@ final class PostCreateViewModel {
     /// 位置を選ぶ地図の初期表示の範囲: 選んだ位置 → 選んだ都道府県の県庁所在地の辺り → 日本全体の順に決める
     func locationPickerRegion(forSpot order: Int) -> MKCoordinateRegion {
         Self.locationPickerRegion(for: post.spots.first { $0.order == order }, prefecture: post.prefecture)
+    }
+
+    /// 位置を選ぶ地図を一度動かすまで確定させないか。選んだ位置も都道府県も無く日本全体を出すときは、
+    /// 地図の中心が海の上なので、そのまま確定すると意味の無い位置になる
+    func locationPickerRequiresMove(forSpot order: Int) -> Bool {
+        Self.locationPickerRequiresMove(for: post.spots.first { $0.order == order }, prefecture: post.prefecture)
     }
 
     /// スポットの位置を決める。緯度・経度は小数点以下 6 桁に丸める
@@ -207,9 +224,70 @@ final class PostCreateViewModel {
         return PostMapViewModel.japanRegion
     }
 
+    static func locationPickerRequiresMove(for spot: Spot?, prefecture: String) -> Bool {
+        spot?.coordinate == nil && Prefecture(rawValue: prefecture) == nil
+    }
+
     private static func rounded(_ degrees: Double) -> Double {
         let scale = pow(10, Double(coordinateFractionDigits))
         return (degrees * scale).rounded() / scale
+    }
+
+    // MARK: - スポットの写真
+
+    /// スポットの写真を決める（選び直しも同じ）。data は SpotPhotoProcessor で縮小・JPEG 圧縮したもの
+    func setPhoto(_ data: Data, forSpot order: Int) {
+        guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
+            return
+        }
+        post.spots[index].photoData = data
+    }
+
+    /// スポットの写真を読み込んで決める。load は縮小・JPEG 圧縮したデータを返す（失敗したら nil）。
+    /// 読み込み中に選び直したら前の読み込みは取り消し、後から選んだ写真だけを残す。失敗したら前の写真は残す
+    func loadPhoto(forSpot order: Int, using load: @escaping @Sendable () async -> Data?) {
+        guard post.spots.contains(where: { $0.order == order }) else {
+            return
+        }
+        photoLoadTasks[order]?.cancel()
+        loadingPhotoSpots.insert(order)
+        failedPhotoSpots.remove(order)
+        photoLoadTasks[order] = Task {
+            let data = await load()
+            guard !Task.isCancelled else {
+                return
+            }
+            photoLoadTasks[order] = nil
+            loadingPhotoSpots.remove(order)
+            if let data {
+                setPhoto(data, forSpot: order)
+            } else {
+                failedPhotoSpots.insert(order)
+            }
+        }
+    }
+
+    /// 読み込み中の写真がすべて終わるまで待つ（テスト用）
+    func waitForPhotoLoads() async {
+        for task in photoLoadTasks.values {
+            await task.value
+        }
+    }
+
+    /// スポットの写真を削除する。読み込み中ならその読み込みも取り消す
+    func removePhoto(forSpot order: Int) {
+        guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
+            return
+        }
+        cancelPhotoLoad(forSpot: order)
+        failedPhotoSpots.remove(order)
+        post.spots[index].photoData = nil
+    }
+
+    private func cancelPhotoLoad(forSpot order: Int) {
+        photoLoadTasks[order]?.cancel()
+        photoLoadTasks[order] = nil
+        loadingPhotoSpots.remove(order)
     }
 
     // MARK: - 保存・公開
@@ -229,6 +307,9 @@ final class PostCreateViewModel {
 
     /// 公開し、成功したら新規ならフォームを新しい空の下書きに戻す。必須項目が足りなければエラーを出して何もしない
     func publish() {
+        guard !isLoadingPhoto else {
+            return
+        }
         showsRequiredErrors = true
         guard canPublish else {
             return
@@ -243,11 +324,11 @@ final class PostCreateViewModel {
 
     // MARK: - Private
 
-    /// 文字を入れた項目か、位置を選んだスポットがあるか（カテゴリ・投稿者属性を選んだだけでは数えない）
+    /// 文字を入れた項目か、位置・写真を選んだスポットがあるか（カテゴリ・投稿者属性を選んだだけでは数えない）
     private var hasInput: Bool {
         let texts = [post.title, post.prefecture, post.city] + post.spots.flatMap { [$0.name, $0.address, $0.recommendation] }
         return texts.contains { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-            || post.spots.contains { $0.coordinate != nil }
+            || post.spots.contains { $0.coordinate != nil || $0.photoData != nil }
     }
 
     /// 前後の空白・改行を除いた投稿

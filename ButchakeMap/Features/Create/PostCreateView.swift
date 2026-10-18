@@ -68,7 +68,8 @@ private struct PostFormContent: View {
         .sheet(item: $locationPickerOrder) { picker in
             SpotLocationPickerView(
                 order: picker.id,
-                initialRegion: viewModel.locationPickerRegion(forSpot: picker.id)
+                initialRegion: viewModel.locationPickerRegion(forSpot: picker.id),
+                requiresMove: viewModel.locationPickerRequiresMove(forSpot: picker.id)
             ) { coordinate in
                 viewModel.setLocation(coordinate, forSpot: picker.id)
             }
@@ -123,6 +124,19 @@ private struct PostFormContent: View {
             textField("Place Name", text: spot.name, field: .spotName(order: order))
             textField("Address", text: spot.address, field: .spotAddress(order: order))
             locationRows(spot: spot.wrappedValue)
+            SpotPhotoPickerRow(
+                photoData: spot.wrappedValue.photoData,
+                isLoading: viewModel.loadingPhotoSpots.contains(order),
+                loadFailed: viewModel.failedPhotoSpots.contains(order),
+                onSelect: { item in
+                    viewModel.loadPhoto(forSpot: order) {
+                        await SpotPhotoProcessor.loadJPEGData(from: item)
+                    }
+                },
+                onRemove: {
+                    viewModel.removePhoto(forSpot: order)
+                }
+            )
             textField("Honest Comment", text: spot.recommendation, field: .spotRecommendation(order: order), axis: .vertical)
         } header: {
             Text("Spot \(order)")
@@ -159,6 +173,7 @@ private struct PostFormContent: View {
                     .bold()
                     .frame(maxWidth: .infinity)
             }
+            .disabled(viewModel.isLoadingPhoto)
             if viewModel.showsSaveDraftButton {
                 Button(action: viewModel.saveDraft) {
                     Text("Save Draft")
@@ -168,6 +183,9 @@ private struct PostFormContent: View {
             }
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
+                if viewModel.isLoadingPhoto {
+                    Text("Loading photos. You can publish or save once they're ready.")
+                }
                 if viewModel.showsRequiredErrors && !viewModel.canPublish {
                     Text("Some fields need your attention.")
                         .foregroundStyle(.red)

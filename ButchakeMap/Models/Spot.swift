@@ -19,6 +19,8 @@ nonisolated struct Spot: Identifiable, Codable, Hashable, Sendable {
     var recommendation: String
     /// 写真の URL（任意）。モック投稿では nil にし、カテゴリのプレースホルダーを出す
     var photoUrl: String?
+    /// 投稿作成で選んだ写真（縮小・JPEG 圧縮済み）。永続化せずメモリ上だけに持つ。nil ならカテゴリのプレースホルダーを出す
+    var photoData: Data?
 
     /// 緯度・経度が両方あるときだけ座標を返す
     var coordinate: CLLocationCoordinate2D? {

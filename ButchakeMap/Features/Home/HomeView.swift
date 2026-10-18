@@ -100,7 +100,7 @@ struct HomeCarouselCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .top) {
-                CategoryThumbnail(category: post.category, size: 44)
+                PostThumbnail(post: post, size: 44)
                 Spacer(minLength: 0)
                 StarButton(post: post, action: onStar)
             }

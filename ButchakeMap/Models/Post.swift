@@ -31,6 +31,11 @@ nonisolated struct Post: Identifiable, Codable, Hashable, Sendable {
         [prefecture, city].filter { !$0.isEmpty }.joined(separator: " ")
     }
 
+    /// カードのサムネイルに出す写真。写真のあるスポットのうち order が最も小さいもの（無ければ nil）
+    var coverPhotoData: Data? {
+        spots.sorted { $0.order < $1.order }.first { $0.photoData != nil }?.photoData
+    }
+
     /// 入力前の空の下書き。スポットは order 1〜3 の空の枠を持つ
     static func newDraft(authorName: String, authorType: AuthorType = .traveler) -> Self {
         Self(

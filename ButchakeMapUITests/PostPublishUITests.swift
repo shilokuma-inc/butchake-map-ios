@@ -43,16 +43,22 @@ final class PostPublishUITests: XCTestCase {
         app.scroll(to: publish)
         publish.tap()
 
-        let alert = app.alerts.firstMatch
-        XCTAssertTrue(alert.waitForExistence(timeout: UITestTimeout.element), "公開の結果のアラートが出ない")
+        // 失敗のアラート（Couldn't save）で先に進まないよう、公開できたときのタイトルで待つ
+        let alert = app.alerts["Post published"]
+        XCTAssertTrue(alert.waitForExistence(timeout: UITestTimeout.element), "公開できたときのアラートが出ない")
         alert.buttons.firstMatch.tap()
 
         app.tab(at: TabIndex.home).tap()
+        // フィードはカルーセルの下の LazyVStack にあり、画面の小さい機種ではスクロールするまで作られない
         let feed = app.element(identifier: "home.feed")
-        XCTAssertTrue(feed.waitForExistence(timeout: UITestTimeout.element), "ホームのフィードが無い")
+        var swipes = 0
+        while !feed.waitForExistence(timeout: 1) && swipes < 6 {
+            app.swipeUp()
+            swipes += 1
+        }
+        XCTAssertTrue(feed.exists, "ホームのフィードが無い")
         let post = feed.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", title)).firstMatch
         XCTAssertTrue(post.waitForExistence(timeout: UITestTimeout.element), "公開した投稿がホームのフィードに無い")
-        app.scroll(to: post)
     }
 
     // MARK: - Private

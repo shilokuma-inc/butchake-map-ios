@@ -14,10 +14,12 @@ final class ButchakeMapUITests: XCTestCase {
     }
 
     @MainActor
-    func testLaunchShowsContentView() throws {
+    func testLaunchShowsFiveTabs() throws {
         let app = XCUIApplication()
         app.launch()
 
-        XCTAssertTrue(app.staticTexts["Hello, world!"].waitForExistence(timeout: 5))
+        let tabBar = app.tabBars.firstMatch
+        XCTAssertTrue(tabBar.waitForExistence(timeout: 5))
+        XCTAssertEqual(tabBar.buttons.count, 5)
     }
 }

@@ -170,7 +170,8 @@ private struct ProfileHeader: View {
                 }
                 Spacer(minLength: 0)
             }
-            HStack {
+            // 件数の文言が 2 行に折り返しても数字の高さがそろうよう、上でそろえる
+            HStack(alignment: .top) {
                 ProfileStat(title: "Posts", value: viewModel.count(in: .myPosts))
                 Divider()
                 ProfileStat(title: "Saved", value: viewModel.count(in: .saved))
@@ -193,10 +194,12 @@ private struct ProfileStat: View {
             Text(value, format: .number)
                 .font(.headline)
                 .monospacedDigit()
+            // 「保存した三大」「Likes Received」は文字を大きくすると 1 行に収まらないので、切らずに 2 行まで折り返す
             Text(title)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .lineLimit(1)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
                 .minimumScaleFactor(0.8)
         }
         .frame(maxWidth: .infinity)

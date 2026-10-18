@@ -24,4 +24,16 @@ nonisolated enum AuthorType: String, CaseIterable, Codable, Identifiable, Sendab
             "Traveler"
         }
     }
+
+    /// バッジに出す SF Symbol
+    var symbolName: String {
+        switch self {
+        case .local:
+            "house.fill"
+        case .repeater:
+            "arrow.triangle.2.circlepath"
+        case .traveler:
+            "airplane"
+        }
+    }
 }

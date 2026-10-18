@@ -156,6 +156,19 @@ struct PostMapViewModelTests {
     }
 
     @Test
+    func regionSpanIsCappedForFarApartCoordinates() {
+        let coordinates = [
+            CLLocationCoordinate2D(latitude: -80.0, longitude: -170.0),
+            CLLocationCoordinate2D(latitude: 80.0, longitude: 170.0)
+        ]
+
+        let region = PostMapViewModel.region(fitting: coordinates)
+
+        #expect(region.span.latitudeDelta == PostMapViewModel.maximumLatitudeSpan)
+        #expect(region.span.longitudeDelta == PostMapViewModel.maximumLongitudeSpan)
+    }
+
+    @Test
     func initialRegionFallsBackToJapanWithoutPins() {
         let viewModel = PostMapViewModel(repository: MockDataRepository(posts: []))
 

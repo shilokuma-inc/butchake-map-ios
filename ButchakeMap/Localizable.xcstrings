@@ -961,6 +961,22 @@
         }
       }
     },
+    "Open %@ in Maps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open %@ in Maps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ をマップで開く"
+          }
+        }
+      }
+    },
     "Open in Maps" : {
       "localizations" : {
         "en" : {

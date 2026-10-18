@@ -204,6 +204,8 @@ struct OpenInMapsButton: View {
                 .font(.subheadline.weight(.semibold))
                 .buttonStyle(.bordered)
                 .tint(Color.brandPrimary)
+                // 3 スポットのボタンが同じ読み上げにならないよう、VoiceOver ではスポット名も読む
+                .accessibilityLabel(accessibilityLabel)
                 .confirmationDialog("Open in Maps", isPresented: $isChoosingApp, titleVisibility: .visible) {
                     ForEach(ExternalMapApp.allCases) { app in
                         Button {
@@ -214,6 +216,12 @@ struct OpenInMapsButton: View {
                     }
                 }
         }
+    }
+
+    /// VoiceOver で読む「<スポット名> をマップで開く」。名前が無ければ「マップで開く」
+    private var accessibilityLabel: Text {
+        let name = spot.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        return name.isEmpty ? Text("Open in Maps") : Text("Open \(name) in Maps")
     }
 
     private func open() {

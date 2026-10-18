@@ -44,6 +44,7 @@ struct HomeView: View {
                                 )
                             }
                             .buttonStyle(.plain)
+                            .postCardAccessibilityActions(post: post) { viewModel.toggleStar(post) }
                         }
                     }
                     .padding(.horizontal)
@@ -67,6 +68,11 @@ struct HomeView: View {
                         )
                     }
                     .buttonStyle(.plain)
+                    .postCardAccessibilityActions(
+                        post: post,
+                        onLike: { viewModel.toggleLike(post) },
+                        onStar: { viewModel.toggleStar(post) }
+                    )
                     .padding(.horizontal)
                 }
             }

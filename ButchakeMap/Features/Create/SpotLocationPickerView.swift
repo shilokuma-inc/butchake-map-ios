@@ -12,16 +12,37 @@ struct SpotLocationPickerView: View {
     @Environment(\.dismiss) private var dismiss
     let order: Int
     let initialRegion: MKCoordinateRegion
+    /// true なら、地図を初期表示の中心から動かすまで「この位置にする」を押せない
+    let requiresMove: Bool
     let onPick: (CLLocationCoordinate2D) -> Void
+
+    /// 初期表示の中心から動かしたとみなす緯度・経度の差（度）。約 10 m
+    private static let moveTolerance = 0.0001
 
     /// 地図の中心（ピンの位置）。地図を動かし終えるたびに更新する
     @State private var center: CLLocationCoordinate2D
 
-    init(order: Int, initialRegion: MKCoordinateRegion, onPick: @escaping (CLLocationCoordinate2D) -> Void) {
+    init(
+        order: Int,
+        initialRegion: MKCoordinateRegion,
+        requiresMove: Bool = false,
+        onPick: @escaping (CLLocationCoordinate2D) -> Void
+    ) {
         self.order = order
         self.initialRegion = initialRegion
+        self.requiresMove = requiresMove
         self.onPick = onPick
         _center = State(initialValue: initialRegion.center)
+    }
+
+    /// 「この位置にする」を押せるか。初期表示のまま確定させたくないときは、中心が動いてから押せるようにする
+    /// （onMapCameraChange は表示しただけでも呼ばれるので、呼ばれたかではなく中心の位置で判断する）
+    private var canConfirm: Bool {
+        guard requiresMove else {
+            return true
+        }
+        return abs(center.latitude - initialRegion.center.latitude) > Self.moveTolerance
+            || abs(center.longitude - initialRegion.center.longitude) > Self.moveTolerance
     }
 
     var body: some View {
@@ -60,6 +81,7 @@ struct SpotLocationPickerView: View {
                             dismiss()
                         }
                         .bold()
+                        .disabled(!canConfirm)
                     }
                 }
         }
@@ -110,7 +132,7 @@ struct SpotLocationPreview: View {
 }
 
 #Preview {
-    SpotLocationPickerView(order: 1, initialRegion: PostMapViewModel.japanRegion) { _ in }
+    SpotLocationPickerView(order: 1, initialRegion: PostMapViewModel.japanRegion, requiresMove: true) { _ in }
         .environment(MockDataRepository.preview)
 }
 

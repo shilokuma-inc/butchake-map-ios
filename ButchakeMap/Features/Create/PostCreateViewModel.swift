@@ -173,6 +173,12 @@ final class PostCreateViewModel {
         Self.locationPickerRegion(for: post.spots.first { $0.order == order }, prefecture: post.prefecture)
     }
 
+    /// 位置を選ぶ地図を一度動かすまで確定させないか。選んだ位置も都道府県も無く日本全体を出すときは、
+    /// 地図の中心が海の上なので、そのまま確定すると意味の無い位置になる
+    func locationPickerRequiresMove(forSpot order: Int) -> Bool {
+        Self.locationPickerRequiresMove(for: post.spots.first { $0.order == order }, prefecture: post.prefecture)
+    }
+
     /// スポットの位置を決める。緯度・経度は小数点以下 6 桁に丸める
     func setLocation(_ coordinate: CLLocationCoordinate2D, forSpot order: Int) {
         guard let index = post.spots.firstIndex(where: { $0.order == order }) else {
@@ -205,6 +211,10 @@ final class PostCreateViewModel {
             )
         }
         return PostMapViewModel.japanRegion
+    }
+
+    static func locationPickerRequiresMove(for spot: Spot?, prefecture: String) -> Bool {
+        spot?.coordinate == nil && Prefecture(rawValue: prefecture) == nil
     }
 
     private static func rounded(_ degrees: Double) -> Double {

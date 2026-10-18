@@ -68,7 +68,8 @@ private struct PostFormContent: View {
         .sheet(item: $locationPickerOrder) { picker in
             SpotLocationPickerView(
                 order: picker.id,
-                initialRegion: viewModel.locationPickerRegion(forSpot: picker.id)
+                initialRegion: viewModel.locationPickerRegion(forSpot: picker.id),
+                requiresMove: viewModel.locationPickerRequiresMove(forSpot: picker.id)
             ) { coordinate in
                 viewModel.setLocation(coordinate, forSpot: picker.id)
             }

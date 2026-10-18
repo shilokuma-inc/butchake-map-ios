@@ -273,6 +273,22 @@
         }
       }
     },
+    "Delete" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        }
+      }
+    },
     "Delete Account" : {
       "localizations" : {
         "en" : {
@@ -317,6 +333,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "端末の設定"
+          }
+        }
+      }
+    },
+    "Draft not found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draft not found"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書きが見つかりません"
           }
         }
       }
@@ -1197,6 +1229,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今週のぶっちゃけ"
+          }
+        }
+      }
+    },
+    "This draft may have been deleted or published." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This draft may have been deleted or published."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この下書きは削除されたか、公開された可能性があります。"
           }
         }
       }

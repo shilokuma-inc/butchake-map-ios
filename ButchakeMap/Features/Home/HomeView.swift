@@ -25,6 +25,7 @@ struct HomeView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle(Text("Butchake Map"))
+            .postDetailDestination()
         }
     }
 
@@ -36,10 +37,13 @@ struct HomeView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 12) {
                         ForEach(posts) { post in
-                            HomeCarouselCard(
-                                post: post,
-                                onStar: { viewModel.toggleStar(post) }
-                            )
+                            NavigationLink(value: PostDestination(postID: post.id)) {
+                                HomeCarouselCard(
+                                    post: post,
+                                    onStar: { viewModel.toggleStar(post) }
+                                )
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                     .padding(.horizontal)
@@ -55,11 +59,14 @@ struct HomeView: View {
                 ContentUnavailableView("No posts yet", systemImage: "tray")
             } else {
                 ForEach(viewModel.feedPosts) { post in
-                    PostCardView(
-                        post: post,
-                        onLike: { viewModel.toggleLike(post) },
-                        onStar: { viewModel.toggleStar(post) }
-                    )
+                    NavigationLink(value: PostDestination(postID: post.id)) {
+                        PostCardView(
+                            post: post,
+                            onLike: { viewModel.toggleLike(post) },
+                            onStar: { viewModel.toggleStar(post) }
+                        )
+                    }
+                    .buttonStyle(.plain)
                     .padding(.horizontal)
                 }
             }

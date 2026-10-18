@@ -81,6 +81,22 @@
         }
       }
     },
+    "Honest Comment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Honest Comment"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ぶっちゃけコメント"
+          }
+        }
+      }
+    },
     "Latest Posts" : {
       "localizations" : {
         "en" : {
@@ -209,6 +225,22 @@
         }
       }
     },
+    "Post not found" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post not found"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿が見つかりません"
+          }
+        }
+      }
+    },
     "Repeater" : {
       "localizations" : {
         "en" : {
@@ -285,6 +317,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今週のぶっちゃけ"
+          }
+        }
+      }
+    },
+    "This post may have been deleted." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This post may have been deleted."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この投稿は削除された可能性があります。"
           }
         }
       }

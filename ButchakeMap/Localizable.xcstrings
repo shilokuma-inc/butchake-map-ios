@@ -241,6 +241,22 @@
         }
       }
     },
+    "Collecting honest big threes from my travels." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecting honest big threes from my travels."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旅先で見つけたぶっちゃけ三大を集めています。"
+          }
+        }
+      }
+    },
     "Couldn't save" : {
       "localizations" : {
         "en" : {
@@ -465,6 +481,22 @@
         }
       }
     },
+    "Last saved %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last saved %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最終保存: %@"
+          }
+        }
+      }
+    },
     "Latest Posts" : {
       "localizations" : {
         "en" : {
@@ -493,6 +525,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "いいね"
+          }
+        }
+      }
+    },
+    "Likes Received" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likes Received"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もらったいいね"
+          }
+        }
+      }
+    },
+    "List" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一覧"
           }
         }
       }
@@ -765,6 +829,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "公開しました"
+          }
+        }
+      }
+    },
+    "Posts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿"
           }
         }
       }
@@ -1277,6 +1357,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "キーワード・都道府県・カテゴリを変えて探してみてください。"
+          }
+        }
+      }
+    },
+    "Untitled Draft" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untitled Draft"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無題の下書き"
           }
         }
       }

@@ -22,6 +22,8 @@ struct PostFormView: View {
 
     var body: some View {
         PostFormContent(viewModel: PostCreateViewModel(post: post, repository: repository))
+            // 違う投稿を渡されたらフォーム（ViewModel）を作り直す
+            .id(post?.id)
     }
 }
 

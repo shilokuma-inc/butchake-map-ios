@@ -153,7 +153,7 @@ final class PostCreateViewModel {
 
     // MARK: - 保存・公開
 
-    /// 下書き保存し、成功したらフォームを新しい空の下書きに戻す
+    /// 下書き保存し、成功したら新規ならフォームを新しい空の下書きに戻す
     func saveDraft() {
         guard canSaveDraft else {
             return
@@ -166,7 +166,7 @@ final class PostCreateViewModel {
         }
     }
 
-    /// 公開し、成功したらフォームを新しい空の下書きに戻す。必須項目が足りなければエラーを出して何もしない
+    /// 公開し、成功したら新規ならフォームを新しい空の下書きに戻す。必須項目が足りなければエラーを出して何もしない
     func publish() {
         showsRequiredErrors = true
         guard canPublish else {
@@ -201,10 +201,14 @@ final class PostCreateViewModel {
         return trimmed
     }
 
+    /// 新規なら空の下書きに戻し、既存の投稿の編集なら保存した内容をフォームに残す
     private func finish(with outcome: Outcome) {
         self.outcome = outcome
-        post = .newDraft(authorName: repository.currentUserName)
-        isNew = true
+        if isNew {
+            post = .newDraft(authorName: repository.currentUserName)
+        } else if let saved = repository.post(id: post.id) {
+            post = saved
+        }
         showsRequiredErrors = false
     }
 }

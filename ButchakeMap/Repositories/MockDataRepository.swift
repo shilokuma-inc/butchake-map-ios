@@ -123,12 +123,21 @@ final class MockDataRepository {
         return index
     }
 
+    /// 新規なら追加する。更新なら、いいね・スター・投稿者は保存済みの値を保ち、フォームで編集できる項目だけを差し替える
+    /// （編集中に別の画面で押したいいね・スターを、フォームを開いた時点の値で上書きしないため）
     private func store(_ post: Post, at index: Int?) {
-        if let index {
-            posts[index] = post
-        } else {
+        guard let index else {
             posts.append(post)
+            return
         }
+        var updated = post
+        let stored = posts[index]
+        updated.authorName = stored.authorName
+        updated.likeCount = stored.likeCount
+        updated.starCount = stored.starCount
+        updated.isLiked = stored.isLiked
+        updated.isStarred = stored.isStarred
+        posts[index] = updated
     }
 }
 

@@ -147,8 +147,8 @@ struct MockDataRepositoryTests {
     @Test
     func publishEditOfPublishedPostKeepsCreatedAt() throws {
         let createdAt = Date(timeIntervalSince1970: 1_000)
-        var post = makePost(title: "前", createdAt: createdAt)
-        let repository = MockDataRepository(posts: [post])
+        var post = makePost(title: "前", authorName: "自分", createdAt: createdAt)
+        let repository = MockDataRepository(posts: [post], currentUserName: "自分")
         post.title = "後"
         try repository.publish(post, isNew: false)
         #expect(repository.posts.count == 1)
@@ -170,8 +170,8 @@ struct MockDataRepositoryTests {
     @Test
     func publishEditKeepsStoredCreatedAtEvenIfPassedDateDiffers() throws {
         let createdAt = Date(timeIntervalSince1970: 1_000)
-        var post = makePost(createdAt: createdAt)
-        let repository = MockDataRepository(posts: [post])
+        var post = makePost(authorName: "自分", createdAt: createdAt)
+        let repository = MockDataRepository(posts: [post], currentUserName: "自分")
         post.createdAt = Date(timeIntervalSince1970: 5_000)
         try repository.publish(post, isNew: false)
         #expect(repository.post(id: post.id)?.createdAt == createdAt)
@@ -229,9 +229,9 @@ struct MockDataRepositoryTests {
 
     @Test
     func deleteRemovesPostEverywhere() {
-        let post = makePost()
+        let post = makePost(authorName: "自分")
         let other = makePost(title: "残る")
-        let repository = MockDataRepository(posts: [post, other])
+        let repository = MockDataRepository(posts: [post, other], currentUserName: "自分")
         repository.toggleStar(postID: post.id)
         repository.delete(postID: post.id)
         #expect(repository.post(id: post.id) == nil)

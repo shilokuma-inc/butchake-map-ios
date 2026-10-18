@@ -95,6 +95,8 @@ final class PostCreateViewModel {
                 "Published posts can't be saved as drafts."
             case .failed(.alreadyExists):
                 "This post has already been saved."
+            case .failed(.notMine):
+                "You can only edit your own posts."
             }
         }
     }

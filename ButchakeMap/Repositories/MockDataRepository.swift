@@ -76,7 +76,7 @@ final class MockDataRepository {
 
     /// 下書きとして保存する。保存した時刻を createdAt にする
     /// - Parameter isNew: true なら新しい投稿として追加し、false なら同じ id の下書きを置き換える
-    /// - Throws: 新規なのに同じ id がある / 更新先が削除されている / 更新先が公開済み（下書きには戻せない）とき
+    /// - Throws: 新規なのに同じ id がある / 更新先が削除されている / 更新先が他人の投稿 / 更新先が公開済み（下書きには戻せない）とき
     func saveDraft(_ post: Post, isNew: Bool) throws(PostSaveError) {
         let index = try storedIndex(of: post.id, isNew: isNew)
         if let index, !posts[index].isDraft {
@@ -90,7 +90,7 @@ final class MockDataRepository {
 
     /// 公開する。新規・下書きの投稿は公開した時刻を createdAt にし、公開済みの投稿の編集では元の createdAt を保つ
     /// - Parameter isNew: true なら新しい投稿として追加し、false なら同じ id の投稿を置き換える
-    /// - Throws: 新規なのに同じ id がある / 更新先が削除されているとき
+    /// - Throws: 新規なのに同じ id がある / 更新先が削除されている / 更新先が他人の投稿のとき
     func publish(_ post: Post, isNew: Bool) throws(PostSaveError) {
         let index = try storedIndex(of: post.id, isNew: isNew)
         var published = post
@@ -103,12 +103,19 @@ final class MockDataRepository {
         store(published, at: index)
     }
 
-    func delete(postID: Post.ID) {
+    /// 自分の投稿（公開済み・下書き）を削除する。他人の投稿・見つからない投稿は消さない
+    /// - Returns: 削除したか
+    @discardableResult
+    func delete(postID: Post.ID) -> Bool {
+        guard let post = post(id: postID), isMine(post) else {
+            return false
+        }
         posts.removeAll { $0.id == postID }
+        return true
     }
 
-    /// 新規なら同じ id が無いことを、更新なら同じ id があることを確かめ、置き換える位置を返す（新規は nil）。
-    /// 編集中に別の画面で削除された投稿を、保存で復活させないため
+    /// 新規なら同じ id が無いことを、更新なら同じ id の自分の投稿があることを確かめ、置き換える位置を返す（新規は nil）。
+    /// 編集中に別の画面で削除された投稿を保存で復活させない・他人の投稿を書き換えないため
     private func storedIndex(of postID: Post.ID, isNew: Bool) throws(PostSaveError) -> Int? {
         let index = posts.firstIndex { $0.id == postID }
         if isNew {
@@ -119,6 +126,10 @@ final class MockDataRepository {
         }
         guard let index else {
             throw .notFound
+        }
+        // 渡された投稿の authorName ではなく、保存済みの投稿者で判定する
+        guard isMine(posts[index]) else {
+            throw .notMine
         }
         return index
     }
@@ -149,6 +160,8 @@ nonisolated enum PostSaveError: Error, Equatable, Sendable {
     case notFound
     /// 公開済みの投稿は下書きに戻せない
     case alreadyPublished
+    /// 他人の投稿は書き換えられない
+    case notMine
 }
 
 extension MockDataRepository {

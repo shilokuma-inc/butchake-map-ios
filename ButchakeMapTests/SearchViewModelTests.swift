@@ -179,7 +179,7 @@ struct SearchViewModelTests {
     func deletedPostDisappearsFromResultsAndPrefectures() {
         let deleted = post(title: "消える寿司", prefecture: "石川県")
         let kept = post(title: "残る寿司")
-        let repository = MockDataRepository(posts: [deleted, kept])
+        let repository = MockDataRepository(posts: [deleted, kept], currentUserName: "テスト")
         let viewModel = SearchViewModel(repository: repository)
         #expect(viewModel.results(for: SearchFilter(keyword: "寿司")).count == 2)
 
@@ -192,7 +192,7 @@ struct SearchViewModelTests {
     @Test
     func postTurnedIntoDraftDisappearsFromResults() throws {
         let target = post(title: "下書きに戻す寿司", prefecture: "石川県")
-        let repository = MockDataRepository(posts: [target])
+        let repository = MockDataRepository(posts: [target], currentUserName: "テスト")
         let viewModel = SearchViewModel(repository: repository)
 
         // 公開済みの投稿は下書きに戻せないので、同じ ID の下書きに置き換えて確かめる

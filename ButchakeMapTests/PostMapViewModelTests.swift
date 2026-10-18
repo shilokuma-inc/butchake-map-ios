@@ -104,7 +104,7 @@ struct PostMapViewModelTests {
     @Test
     func deletedPostRemovesPinsAndLookups() throws {
         let target = post()
-        let repository = MockDataRepository(posts: [target])
+        let repository = MockDataRepository(posts: [target], currentUserName: "テスト")
         let viewModel = PostMapViewModel(repository: repository)
         let pinID = try #require(viewModel.pins.first).id
 
@@ -118,7 +118,7 @@ struct PostMapViewModelTests {
     @Test
     func postTurnedIntoDraftRemovesPinsAndLookups() throws {
         let target = post()
-        let repository = MockDataRepository(posts: [target])
+        let repository = MockDataRepository(posts: [target], currentUserName: "テスト")
         let viewModel = PostMapViewModel(repository: repository)
         let pinID = try #require(viewModel.pins.first).id
 

@@ -1569,6 +1569,22 @@
         }
       }
     },
+    "You can only edit your own posts." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can only edit your own posts."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分の投稿だけ編集できます。"
+          }
+        }
+      }
+    },
     "Your post now appears on Home." : {
       "localizations" : {
         "en" : {

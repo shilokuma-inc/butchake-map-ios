@@ -60,7 +60,7 @@ struct PostDetailViewModelTests {
 
     @Test
     func deletedPostBecomesNil() {
-        let target = post()
+        let target = post(authorName: MockData.currentUserName)
         let repository = MockDataRepository(posts: [target])
         let viewModel = PostDetailViewModel(repository: repository, postID: target.id)
 

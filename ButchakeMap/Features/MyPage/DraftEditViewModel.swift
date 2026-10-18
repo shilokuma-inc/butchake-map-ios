@@ -28,10 +28,10 @@ struct DraftEditViewModel {
 
     /// 結果のアラートを閉じた後に編集画面を閉じてマイページに戻るか。
     /// 公開したら下書きではなくなるので閉じ、下書き保存は続けて編集できるよう残す。
-    /// 編集中に削除されて保存・公開できなくなったときは、フォームから抜けられるよう閉じる
+    /// 編集中に削除された・他人の投稿で保存・公開できなくなったときは、フォームから抜けられるよう閉じる
     static func closesForm(after outcome: PostCreateViewModel.Outcome) -> Bool {
         switch outcome {
-        case .published, .failed(.notFound):
+        case .published, .failed(.notFound), .failed(.notMine):
             true
         case .savedDraft, .failed(.alreadyPublished), .failed(.alreadyExists):
             false

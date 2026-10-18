@@ -130,62 +130,120 @@ struct PostCreatePhotoTests {
         #expect(viewModel.post.spots.map(\.photoData) == [nil, anotherPhoto, nil])
     }
 
-    // MARK: - 読み込み中
+    // MARK: - 読み込み
 
-    @Test
-    func cannotPublishWhileLoadingPhoto() {
-        let (viewModel, repository) = makeViewModel()
-        viewModel.post = filledPost()
-        viewModel.beginPhotoLoading()
-
-        #expect(viewModel.isLoadingPhoto)
-        viewModel.publish()
-
-        #expect(viewModel.outcome == nil)
-        #expect(!viewModel.showsRequiredErrors)
-        #expect(repository.publishedPosts.isEmpty)
+    /// 外から値を渡すまで終わらない読み込み。読み込み中の状態を確かめるために使う
+    private func makePendingLoad() -> (load: @Sendable () async -> Data?, finish: (Data?) -> Void) {
+        let (stream, continuation) = AsyncStream<Data?>.makeStream()
+        let load: @Sendable () async -> Data? = {
+            for await data in stream {
+                return data
+            }
+            return nil
+        }
+        return (load, { data in
+            continuation.yield(data)
+            continuation.finish()
+        })
     }
 
     @Test
-    func cannotSaveDraftWhileLoadingPhoto() {
-        let (viewModel, repository) = makeViewModel()
-        viewModel.post.title = "途中の三大"
-        #expect(viewModel.canSaveDraft)
-        viewModel.beginPhotoLoading()
+    func loadedPhotoIsSetToThatSpot() async {
+        let (viewModel, _) = makeViewModel()
+        let photo = photo
 
+        viewModel.loadPhoto(forSpot: 2) { photo }
+        #expect(viewModel.loadingPhotoSpots == [2])
+        await viewModel.waitForPhotoLoads()
+
+        #expect(viewModel.loadingPhotoSpots.isEmpty)
+        #expect(viewModel.post.spots.map(\.photoData) == [nil, photo, nil])
+    }
+
+    @Test
+    func failedLoadKeepsPreviousPhotoAndShowsError() async {
+        let (viewModel, _) = makeViewModel()
+        viewModel.setPhoto(photo, forSpot: 1)
+
+        viewModel.loadPhoto(forSpot: 1) { nil }
+        await viewModel.waitForPhotoLoads()
+
+        #expect(viewModel.post.spots[0].photoData == photo)
+        #expect(viewModel.failedPhotoSpots == [1])
+        #expect(!viewModel.isLoadingPhoto)
+
+        let anotherPhoto = anotherPhoto
+        viewModel.loadPhoto(forSpot: 1) { anotherPhoto }
+        #expect(viewModel.failedPhotoSpots.isEmpty)
+        await viewModel.waitForPhotoLoads()
+        #expect(viewModel.post.spots[0].photoData == anotherPhoto)
+    }
+
+    @Test
+    func cannotPublishOrSaveWhileLoadingAndPhotoIsKeptAfterward() async throws {
+        let (viewModel, repository) = makeViewModel()
+        viewModel.post = filledPost()
+        #expect(viewModel.canSaveDraft)
+        let pending = makePendingLoad()
+
+        viewModel.loadPhoto(forSpot: 1, using: pending.load)
+        #expect(viewModel.isLoadingPhoto)
         #expect(!viewModel.canSaveDraft)
         viewModel.saveDraft()
-
-        #expect(viewModel.outcome == nil)
-        #expect(repository.drafts.isEmpty)
-    }
-
-    @Test
-    func canSaveAgainAfterAllLoadsEnd() {
-        let (viewModel, _) = makeViewModel()
-        viewModel.post = filledPost()
-        viewModel.beginPhotoLoading()
-        viewModel.beginPhotoLoading()
-
-        viewModel.endPhotoLoading()
-        #expect(viewModel.isLoadingPhoto)
-        #expect(!viewModel.canSaveDraft)
-
-        viewModel.endPhotoLoading()
-        #expect(!viewModel.isLoadingPhoto)
-        #expect(viewModel.canSaveDraft)
         viewModel.publish()
+        #expect(viewModel.outcome == nil)
+        #expect(!viewModel.showsRequiredErrors)
+        #expect(repository.posts.isEmpty)
+
+        pending.finish(photo)
+        await viewModel.waitForPhotoLoads()
+        #expect(!viewModel.isLoadingPhoto)
+        let postID = viewModel.post.id
+        viewModel.publish()
+
         #expect(viewModel.outcome == .published)
+        let published = try #require(repository.post(id: postID))
+        #expect(published.spots[0].photoData == photo)
     }
 
     @Test
-    func extraEndPhotoLoadingDoesNotGoNegative() {
+    func choosingAgainWhileLoadingKeepsOnlyTheLatestPhoto() async {
+        let (viewModel, _) = makeViewModel()
+        let first = makePendingLoad()
+        let anotherPhoto = anotherPhoto
+
+        viewModel.loadPhoto(forSpot: 1, using: first.load)
+        viewModel.loadPhoto(forSpot: 1) { anotherPhoto }
+        await viewModel.waitForPhotoLoads()
+        first.finish(photo)
+        await Task.yield()
+
+        #expect(viewModel.post.spots[0].photoData == anotherPhoto)
+        #expect(!viewModel.isLoadingPhoto)
+    }
+
+    @Test
+    func removingPhotoCancelsLoading() async {
+        let (viewModel, _) = makeViewModel()
+        viewModel.setPhoto(photo, forSpot: 1)
+        let pending = makePendingLoad()
+
+        viewModel.loadPhoto(forSpot: 1, using: pending.load)
+        viewModel.removePhoto(forSpot: 1)
+        #expect(!viewModel.isLoadingPhoto)
+        pending.finish(anotherPhoto)
+        await Task.yield()
+
+        #expect(viewModel.post.spots[0].photoData == nil)
+    }
+
+    @Test
+    func loadForUnknownSpotIsIgnored() {
         let (viewModel, _) = makeViewModel()
 
-        viewModel.endPhotoLoading()
-        viewModel.beginPhotoLoading()
+        viewModel.loadPhoto(forSpot: 9) { nil }
 
-        #expect(viewModel.isLoadingPhoto)
+        #expect(!viewModel.isLoadingPhoto)
     }
 
     // MARK: - カードのサムネイル

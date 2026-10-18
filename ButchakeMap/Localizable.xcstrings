@@ -241,12 +241,12 @@
         }
       }
     },
-    "Choose Again on Map" : {
+    "Change Location" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose Again on Map"
+            "value" : "Change Location"
           }
         },
         "ja" : {
@@ -433,22 +433,6 @@
         }
       }
     },
-    "Device Setting" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Device Setting"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "端末の設定"
-          }
-        }
-      }
-    },
     "Draft not found" : {
       "localizations" : {
         "en" : {
@@ -545,6 +529,22 @@
         }
       }
     },
+    "Food" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Food"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グルメ"
+          }
+        }
+      }
+    },
     "Google Maps" : {
       "localizations" : {
         "en" : {
@@ -557,22 +557,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Google マップ"
-          }
-        }
-      }
-    },
-    "Gourmet" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gourmet"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "グルメ"
           }
         }
       }
@@ -1217,12 +1201,12 @@
         }
       }
     },
-    "Repeater" : {
+    "Repeat Visitor" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Repeater"
+            "value" : "Repeat Visitor"
           }
         },
         "ja" : {
@@ -1245,6 +1229,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "入力してください"
+          }
+        }
+      }
+    },
+    "Same as Device" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Same as Device"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "端末の設定"
           }
         }
       }

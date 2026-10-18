@@ -153,7 +153,7 @@ private struct PostFormContent: View {
                     .foregroundStyle(Color.brandPrimary)
                 SpotLocationPreview(title: spot.name, coordinate: coordinate)
             }
-            Button("Choose Again on Map", systemImage: "map") {
+            Button("Change Location", systemImage: "map") {
                 locationPickerOrder = LocationPickerOrder(id: order)
             }
             Button("Remove Location", systemImage: "mappin.slash", role: .destructive) {

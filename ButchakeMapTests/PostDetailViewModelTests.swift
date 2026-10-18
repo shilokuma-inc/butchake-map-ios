@@ -8,7 +8,7 @@ import Foundation
 import Testing
 
 struct PostDetailViewModelTests {
-    private func post(authorName: String = "テスト", spotOrders: [Int] = [1, 2, 3]) -> Post {
+    private func post(authorName: String = "テスト", spotOrders: [Int] = [1, 2, 3], isDraft: Bool = false) -> Post {
         Post(
             authorName: authorName,
             authorType: .local,
@@ -18,7 +18,8 @@ struct PostDetailViewModelTests {
             category: .gourmet,
             spots: spotOrders.map { Spot(order: $0, name: "スポット\($0)", address: "", recommendation: "") },
             likeCount: 10,
-            starCount: 2
+            starCount: 2,
+            isDraft: isDraft
         )
     }
 
@@ -78,5 +79,36 @@ struct PostDetailViewModelTests {
 
         #expect(PostDetailViewModel(repository: repository, postID: mine.id).isMine)
         #expect(!PostDetailViewModel(repository: repository, postID: others.id).isMine)
+    }
+
+    @Test
+    func draftIsTreatedAsNotFoundAndCannotBeLikedOrStarred() throws {
+        let draft = post(authorName: MockData.currentUserName, isDraft: true)
+        let repository = MockDataRepository(posts: [draft])
+        let viewModel = PostDetailViewModel(repository: repository, postID: draft.id)
+
+        #expect(viewModel.post == nil)
+        #expect(viewModel.spots.isEmpty)
+        #expect(!viewModel.isMine)
+
+        viewModel.toggleLike()
+        viewModel.toggleStar()
+
+        let stored = try #require(repository.post(id: draft.id))
+        #expect(!stored.isLiked && stored.likeCount == 10)
+        #expect(!stored.isStarred && stored.starCount == 2)
+    }
+
+    @Test
+    func postDisappearsWhenTurnedIntoDraft() throws {
+        let target = post(authorName: MockData.currentUserName)
+        let repository = MockDataRepository(posts: [target])
+        let viewModel = PostDetailViewModel(repository: repository, postID: target.id)
+        #expect(viewModel.post != nil)
+
+        repository.delete(postID: target.id)
+        try repository.saveDraft(target, isNew: true)
+
+        #expect(viewModel.post == nil)
     }
 }

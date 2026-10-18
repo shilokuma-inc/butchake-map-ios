@@ -125,6 +125,33 @@ struct StarButton: View {
     }
 }
 
+/// カードを NavigationLink で包むと、VoiceOver ではカード全体が 1 つのリンクになり中のボタンに個別に届かない。
+/// そのため、いいね・スターをリンクのカスタムアクション（ローターの「アクション」）としても出す
+struct PostCardAccessibilityActions: ViewModifier {
+    let post: Post
+    /// nil ならいいねのアクションを出さない（いいねボタンの無いカード用）
+    let onLike: (() -> Void)?
+    let onStar: () -> Void
+
+    func body(content: Content) -> some View {
+        if let onLike {
+            content
+                .accessibilityAction(named: post.isLiked ? Text("Remove Like") : Text("Like"), onLike)
+                .accessibilityAction(named: post.isStarred ? Text("Remove from Saved") : Text("Save"), onStar)
+        } else {
+            content
+                .accessibilityAction(named: post.isStarred ? Text("Remove from Saved") : Text("Save"), onStar)
+        }
+    }
+}
+
+extension View {
+    /// NavigationLink で包んだ投稿カードに、いいね・スターの VoiceOver のアクションを付ける（リンクの外側に付ける）
+    func postCardAccessibilityActions(post: Post, onLike: (() -> Void)? = nil, onStar: @escaping () -> Void) -> some View {
+        modifier(PostCardAccessibilityActions(post: post, onLike: onLike, onStar: onStar))
+    }
+}
+
 #Preview {
     ScrollView {
         VStack(spacing: 16) {

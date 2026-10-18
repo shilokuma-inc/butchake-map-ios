@@ -38,6 +38,9 @@ struct PostMapViewModel {
     static let fittingPaddingRatio = 1.4
     /// 範囲の最小の幅（度）。ピンが 1 本・近接しているときに寄りすぎないようにする
     static let minimumSpan = 0.02
+    /// 範囲の幅の上限（度）。MKCoordinateSpan は緯度 180 度・経度 360 度を超えられない
+    static let maximumLatitudeSpan = 180.0
+    static let maximumLongitudeSpan = 360.0
     /// ピンが 1 本も無いときに出す日本全体の範囲
     static let japanRegion = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.5, longitude: 137.5),
@@ -81,7 +84,7 @@ struct PostMapViewModel {
         repository.toggleStar(postID: postID)
     }
 
-    /// 座標をすべて含む範囲。空なら日本全体
+    /// 座標をすべて含む範囲。空なら日本全体。幅は最小値と上限の間に収める
     static func region(fitting coordinates: [CLLocationCoordinate2D]) -> MKCoordinateRegion {
         let latitudes = coordinates.map(\.latitude)
         let longitudes = coordinates.map(\.longitude)
@@ -95,8 +98,8 @@ struct PostMapViewModel {
                 longitude: (minLongitude + maxLongitude) / 2
             ),
             span: MKCoordinateSpan(
-                latitudeDelta: max((maxLatitude - minLatitude) * fittingPaddingRatio, minimumSpan),
-                longitudeDelta: max((maxLongitude - minLongitude) * fittingPaddingRatio, minimumSpan)
+                latitudeDelta: min(max((maxLatitude - minLatitude) * fittingPaddingRatio, minimumSpan), maximumLatitudeSpan),
+                longitudeDelta: min(max((maxLongitude - minLongitude) * fittingPaddingRatio, minimumSpan), maximumLongitudeSpan)
             )
         )
     }

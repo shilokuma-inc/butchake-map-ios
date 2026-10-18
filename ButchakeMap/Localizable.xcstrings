@@ -97,18 +97,18 @@
         }
       }
     },
-    "All fields except addresses are required to publish." : {
+    "All fields except addresses and locations are required to publish." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All fields except addresses are required to publish."
+            "value" : "All fields except addresses and locations are required to publish."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "公開するには住所以外のすべての項目を入力してください。"
+            "value" : "公開するには住所・位置以外のすべての項目を入力してください。"
           }
         }
       }
@@ -193,6 +193,22 @@
         }
       }
     },
+    "Cancel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
+    },
     "Category" : {
       "localizations" : {
         "en" : {
@@ -205,6 +221,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カテゴリ"
+          }
+        }
+      }
+    },
+    "Choose Again on Map" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Again on Map"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地図で選び直す"
+          }
+        }
+      }
+    },
+    "Choose Location on Map" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Location on Map"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地図で位置を選ぶ"
           }
         }
       }
@@ -577,6 +625,22 @@
         }
       }
     },
+    "Location selected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location selected"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "位置を選択済み"
+          }
+        }
+      }
+    },
     "Map" : {
       "localizations" : {
         "en" : {
@@ -589,6 +653,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "マップ"
+          }
+        }
+      }
+    },
+    "Move the map to put the pin on the spot." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move the map to put the pin on the spot."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地図を動かしてピンをスポットに合わせてください。"
           }
         }
       }
@@ -909,6 +989,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "いいねを取り消す"
+          }
+        }
+      }
+    },
+    "Remove Location" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Location"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "位置を解除"
           }
         }
       }
@@ -1373,6 +1469,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld 文字以内で入力してください"
+          }
+        }
+      }
+    },
+    "Use This Location" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use This Location"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この位置にする"
           }
         }
       }

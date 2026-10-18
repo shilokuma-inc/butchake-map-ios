@@ -17,6 +17,38 @@
         }
       }
     },
+    "About This App" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About This App"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアプリについて"
+          }
+        }
+      }
+    },
+    "Account not deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account not deleted"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントは削除されていません"
+          }
+        }
+      }
+    },
     "Address" : {
       "localizations" : {
         "en" : {
@@ -209,6 +241,22 @@
         }
       }
     },
+    "Collecting honest big threes from my travels." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collecting honest big threes from my travels."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旅先で見つけたぶっちゃけ三大を集めています。"
+          }
+        }
+      }
+    },
     "Couldn't save" : {
       "localizations" : {
         "en" : {
@@ -225,6 +273,54 @@
         }
       }
     },
+    "Delete Account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Account"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントを削除"
+          }
+        }
+      }
+    },
+    "Delete your account?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete your account?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントを削除しますか？"
+          }
+        }
+      }
+    },
+    "Device Setting" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Device Setting"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "端末の設定"
+          }
+        }
+      }
+    },
     "Draft saved" : {
       "localizations" : {
         "en" : {
@@ -237,6 +333,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下書きを保存しました"
+          }
+        }
+      }
+    },
+    "Drafts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drafts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書き"
+          }
+        }
+      }
+    },
+    "Drafts you save from the Post tab appear here." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drafts you save from the Post tab appear here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿タブで下書き保存した投稿がここに表示されます。"
           }
         }
       }
@@ -337,6 +465,38 @@
         }
       }
     },
+    "Language" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示言語"
+          }
+        }
+      }
+    },
+    "Last saved %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last saved %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最終保存: %@"
+          }
+        }
+      }
+    },
     "Latest Posts" : {
       "localizations" : {
         "en" : {
@@ -365,6 +525,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "いいね"
+          }
+        }
+      }
+    },
+    "Likes Received" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Likes Received"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もらったいいね"
+          }
+        }
+      }
+    },
+    "List" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "List"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一覧"
           }
         }
       }
@@ -417,6 +609,22 @@
         }
       }
     },
+    "My Posts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Posts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分の投稿"
+          }
+        }
+      }
+    },
     "New Post" : {
       "localizations" : {
         "en" : {
@@ -449,6 +657,22 @@
         }
       }
     },
+    "No drafts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No drafts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書きはありません"
+          }
+        }
+      }
+    },
     "No posts yet" : {
       "localizations" : {
         "en" : {
@@ -465,6 +689,22 @@
         }
       }
     },
+    "No saved posts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No saved posts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存した三大はまだありません"
+          }
+        }
+      }
+    },
     "Not selected" : {
       "localizations" : {
         "en" : {
@@ -477,6 +717,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未選択"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
@@ -573,6 +829,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "公開しました"
+          }
+        }
+      }
+    },
+    "Posts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿"
           }
         }
       }
@@ -721,6 +993,22 @@
         }
       }
     },
+    "Saved" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存した三大"
+          }
+        }
+      }
+    },
     "Scan to see this post" : {
       "localizations" : {
         "en" : {
@@ -785,6 +1073,22 @@
         }
       }
     },
+    "Settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        }
+      }
+    },
     "Share" : {
       "localizations" : {
         "en" : {
@@ -797,6 +1101,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有"
+          }
+        }
+      }
+    },
+    "Share your big three from the Post tab." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share your big three from the Post tab."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿タブからあなたの三大を投稿してみましょう。"
           }
         }
       }
@@ -833,6 +1153,38 @@
         }
       }
     },
+    "Tap the star on a post to save it here." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the star on a post to save it here."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿のスターを押すと、ここに保存されます。"
+          }
+        }
+      }
+    },
+    "The display language follows your device settings." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The display language follows your device settings."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示言語は端末の設定（日本語 / 英語）に従います。"
+          }
+        }
+      }
+    },
     "This Week's Picks" : {
       "localizations" : {
         "en" : {
@@ -845,6 +1197,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今週のぶっちゃけ"
+          }
+        }
+      }
+    },
+    "This is a mock app, so no data is actually deleted." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is a mock app, so no data is actually deleted."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モックのため、実際にはデータは削除されません。"
+          }
+        }
+      }
+    },
+    "This is a mock app, so nothing was deleted." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is a mock app, so nothing was deleted."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モックのため、何も削除されていません。"
           }
         }
       }
@@ -877,22 +1261,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "この投稿は削除された可能性があります。"
-          }
-        }
-      }
-    },
-    "This screen is under construction." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This screen is under construction."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この画面は準備中です。"
           }
         }
       }
@@ -977,6 +1345,22 @@
         }
       }
     },
+    "Untitled Draft" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untitled Draft"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無題の下書き"
+          }
+        }
+      }
+    },
     "Up to %lld characters" : {
       "localizations" : {
         "en" : {
@@ -989,6 +1373,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld 文字以内で入力してください"
+          }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バージョン"
           }
         }
       }
@@ -1021,6 +1421,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ホームなどに表示されるようになりました。"
+          }
+        }
+      }
+    },
+    "Your posts, saved posts, and drafts will be deleted." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your posts, saved posts, and drafts will be deleted."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿・保存した三大・下書きが削除されます。"
           }
         }
       }

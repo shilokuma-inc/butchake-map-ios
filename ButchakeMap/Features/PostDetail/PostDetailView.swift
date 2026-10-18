@@ -40,6 +40,11 @@ struct PostDetailView: View {
             .padding()
         }
         .background(Color(.systemGroupedBackground))
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                ShareCardButton(post: post)
+            }
+        }
     }
 
     private func header(post: Post) -> some View {

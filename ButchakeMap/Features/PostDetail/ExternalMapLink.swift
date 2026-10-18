@@ -6,6 +6,7 @@
 //  座標があれば座標で、無ければ「スポット名 + 住所」の検索で開く
 //
 
+import CoreLocation
 import Foundation
 
 /// スポットを開ける外部のマップアプリ
@@ -47,9 +48,7 @@ nonisolated enum ExternalMapLink {
     /// スポットを指定のアプリで開く URL。座標も名前も住所も無ければ nil（ボタンを出さない）
     static func url(for spot: Spot, in app: ExternalMapApp) -> URL? {
         let query = searchQuery(for: spot)
-        let coordinate = spot.latitude.flatMap { latitude in
-            spot.longitude.map { longitude in "\(latitude),\(longitude)" }
-        }
+        let coordinate = spot.coordinate.map { "\($0.latitude),\($0.longitude)" }
         let items: [(String, String)]
         switch (app, coordinate) {
         case let (.appleMaps, coordinate?):

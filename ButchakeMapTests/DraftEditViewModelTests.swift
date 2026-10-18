@@ -51,9 +51,10 @@ struct DraftEditViewModelTests {
     }
 
     @Test
-    func closesAfterPublishingOrWhenDeletedButStaysAfterSavingDraft() {
+    func closesAfterPublishingOrWhenCannotBeSavedButStaysAfterSavingDraft() {
         #expect(DraftEditViewModel.closesForm(after: .published))
         #expect(DraftEditViewModel.closesForm(after: .failed(.notFound)))
+        #expect(DraftEditViewModel.closesForm(after: .failed(.notMine)))
         #expect(!DraftEditViewModel.closesForm(after: .savedDraft))
         #expect(!DraftEditViewModel.closesForm(after: .failed(.alreadyPublished)))
         #expect(!DraftEditViewModel.closesForm(after: .failed(.alreadyExists)))

@@ -240,6 +240,45 @@ struct MockDataRepositoryTests {
     }
 
     @Test
+    func updatingOthersPostIsRejectedAndKeepsIt() {
+        let othersDraft = makePost(title: "他人の下書き", isDraft: true)
+        let othersPost = makePost(title: "他人の公開")
+        let repository = MockDataRepository(posts: [othersDraft, othersPost], currentUserName: "自分")
+        // 渡す投稿の投稿者を自分に書き換えても、保存済みの投稿者で判定する
+        var editedDraft = othersDraft
+        editedDraft.title = "書き換え"
+        editedDraft.authorName = "自分"
+        var editedPost = othersPost
+        editedPost.title = "書き換え"
+
+        #expect(throws: PostSaveError.notMine) {
+            try repository.saveDraft(editedDraft, isNew: false)
+        }
+        #expect(throws: PostSaveError.notMine) {
+            try repository.publish(editedDraft, isNew: false)
+        }
+        #expect(throws: PostSaveError.notMine) {
+            try repository.publish(editedPost, isNew: false)
+        }
+        #expect(repository.posts == [othersDraft, othersPost])
+    }
+
+    @Test
+    func deleteRemovesOnlyMyPosts() {
+        let mine = makePost(authorName: "自分")
+        let myDraft = makePost(authorName: "自分", isDraft: true)
+        let others = makePost(title: "他人の公開")
+        let repository = MockDataRepository(posts: [mine, myDraft, others], currentUserName: "自分")
+
+        #expect(!repository.delete(postID: others.id))
+        #expect(!repository.delete(postID: UUID()))
+        #expect(repository.delete(postID: mine.id))
+        #expect(repository.delete(postID: myDraft.id))
+        #expect(!repository.delete(postID: mine.id))
+        #expect(repository.posts == [others])
+    }
+
+    @Test
     func updatingKeepsStoredAuthorName() throws {
         let draft = makePost(authorName: "自分", isDraft: true)
         let repository = MockDataRepository(posts: [draft], currentUserName: "自分")

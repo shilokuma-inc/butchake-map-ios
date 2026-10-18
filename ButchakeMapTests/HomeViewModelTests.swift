@@ -101,6 +101,37 @@ struct HomeViewModelTests {
     }
 
     @Test
+    func deletedPostDisappearsFromEverySection() {
+        let deleted = post(title: "消える", daysAgo: 1, likes: 10)
+        let kept = post(title: "残る", daysAgo: 2)
+        let repository = MockDataRepository(posts: [deleted, kept], currentUserName: "テスト")
+        let viewModel = HomeViewModel(repository: repository)
+        #expect(viewModel.feedPosts.count == 2)
+
+        repository.delete(postID: deleted.id)
+
+        #expect(viewModel.weeklyPicks(now: now).map(\.title) == ["残る"])
+        #expect(viewModel.trendingPosts.map(\.title) == ["残る"])
+        #expect(viewModel.feedPosts.map(\.title) == ["残る"])
+    }
+
+    @Test
+    func postTurnedIntoDraftDisappearsFromEverySection() throws {
+        let target = post(title: "下書きに戻す", daysAgo: 1, likes: 10)
+        let repository = MockDataRepository(posts: [target], currentUserName: "テスト")
+        let viewModel = HomeViewModel(repository: repository)
+        #expect(viewModel.feedPosts.count == 1)
+
+        // 公開済みの投稿は下書きに戻せないので、同じ ID の下書きに置き換えて確かめる
+        repository.delete(postID: target.id)
+        try repository.saveDraft(target, isNew: true)
+
+        #expect(viewModel.weeklyPicks(now: now).isEmpty)
+        #expect(viewModel.trendingPosts.isEmpty)
+        #expect(viewModel.feedPosts.isEmpty)
+    }
+
+    @Test
     func initialMockDataFillsBothCarousels() {
         let viewModel = HomeViewModel(repository: MockDataRepository(posts: MockData.posts(now: now)))
         #expect(!viewModel.weeklyPicks(now: now).isEmpty)

@@ -38,6 +38,8 @@ private struct DraftEditContent: View {
                 systemImage: "doc.questionmark",
                 description: Text("This draft may have been deleted or published.")
             )
+            // 見つかったときのフォームと同じタイトルにする
+            .navigationTitle(Text("Edit Post"))
         }
     }
 }

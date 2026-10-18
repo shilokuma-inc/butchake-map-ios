@@ -109,6 +109,14 @@ struct MyPageViewModel {
         repository.toggleStar(postID: post.id)
     }
 
+    /// 下書きを削除する。公開済みの投稿や他人の投稿は消さない（下書きの一覧のスワイプからだけ呼ぶため）
+    func deleteDraft(_ post: Post) {
+        guard let stored = repository.post(id: post.id), stored.isDraft, repository.isMine(stored) else {
+            return
+        }
+        repository.delete(postID: post.id)
+    }
+
     /// 下書きの一覧に出すタイトル。空白だけなら nil（画面で「無題の下書き」と出す）
     static func draftTitle(of post: Post) -> String? {
         let title = post.title.trimmingCharacters(in: .whitespacesAndNewlines)

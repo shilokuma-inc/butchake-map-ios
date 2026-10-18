@@ -1,6 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Apple Maps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Maps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple マップ"
+          }
+        }
+      }
+    },
     "Big Three Letdowns" : {
       "localizations" : {
         "en" : {
@@ -29,6 +45,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ぶっちゃけmap"
+          }
+        }
+      }
+    },
+    "Google Maps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Maps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google マップ"
           }
         }
       }
@@ -193,6 +225,22 @@
         }
       }
     },
+    "Open in Maps" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Maps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "マップで開く"
+          }
+        }
+      }
+    },
     "Other" : {
       "localizations" : {
         "en" : {
@@ -301,6 +349,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "検索"
+          }
+        }
+      }
+    },
+    "Spot %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spot %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スポット %lld"
           }
         }
       }

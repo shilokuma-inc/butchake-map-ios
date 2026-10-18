@@ -1,6 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@, Spot %lld, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, Spot %2$lld, %3$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@、スポット %2$lld、%3$@"
+          }
+        }
+      }
+    },
     "Apple Maps" : {
       "localizations" : {
         "en" : {
@@ -445,6 +461,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "急上昇"
+          }
+        }
+      }
+    },
+    "View Post" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Post"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿を見る"
           }
         }
       }

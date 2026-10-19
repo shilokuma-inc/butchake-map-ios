@@ -14,6 +14,7 @@
 //   - 画像の欠け（読み込めていない、または naturalWidth が 0 の img）
 //   - 寸法の違い（ページの中身が mock-size からはみ出している・書き出した画像のピクセル数が違う）
 //   - ページの JavaScript のエラー
+//   - 読み込めなかった CSS・スクリプト・画像、Web フォントを読み込んでいるのに mock-fonts が無いページ
 // ページと同じディレクトリに palette.json があれば、読み込む前に window.MOCK_PALETTE として渡す
 // （ブランドシートでコントラスト比の表を描くため）。
 
@@ -74,7 +75,20 @@ struct MockPage {
         fontFamilies = fonts.split(separator: "|")
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
-        paletteJSON = try? String(contentsOf: paletteURL, encoding: .utf8)
+        paletteJSON = try Self.readPalette(at: paletteURL)
+    }
+
+    /// palette.json を読む。無ければ nil。JSON として読めなければエラーにする（壊れた JSON をページに渡すと、ページの検査ごと動かなくなるため）
+    private static func readPalette(at url: URL) throws -> String? {
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            return nil
+        }
+        let data = try Data(contentsOf: url)
+        guard (try? JSONSerialization.jsonObject(with: data)) is [String: Any],
+              let text = String(data: data, encoding: .utf8) else {
+            throw RenderError("\(url.path) を JSON のオブジェクトとして読めません")
+        }
+        return text
     }
 
     /// <meta name="…" content="…"> の content を取り出す（属性の順は name → content に限る）
@@ -116,6 +130,11 @@ for (const family of fontFamilies) {
     errors.push(`フォント「${family}」が読み込まれていません（名前の誤り・ネットワーク・ページで使っていない など）`);
   }
 }
+const webFontLinks = [...document.querySelectorAll('link[rel="stylesheet"]')]
+  .filter(link => link.href.includes("fonts.googleapis.com"));
+if (webFontLinks.length > 0 && fontFamilies.length === 0) {
+  errors.push('Web フォントを読み込んでいるのに <meta name="mock-fonts"> がありません（読み込みを確かめられません）');
+}
 for (const image of document.images) {
   if (!image.complete || image.naturalWidth === 0) {
     errors.push(`画像「${image.getAttribute('src')}」を読み込めませんでした`);
@@ -153,6 +172,8 @@ final class MockRenderer: NSObject, WKNavigationDelegate {
             return
         }
         let page = pages[index]
+        // 画面の外に動かしてから倍率を読む（動かした先のディスプレイの倍率で描かれるため）
+        window.setFrameOrigin(CGPoint(x: -20_000, y: 0))
         let backingScale = window.backingScaleFactor
         // CSS の 1px を page.scale ピクセルにするため、ポイントでは scale / backingScale 倍で描く
         let zoom = page.scale / backingScale
@@ -160,7 +181,12 @@ final class MockRenderer: NSObject, WKNavigationDelegate {
 
         let configuration = WKWebViewConfiguration()
         configuration.userContentController.addUserScript(WKUserScript(
-            source: Self.prelude(paletteJSON: page.paletteJSON),
+            source: Self.errorCollector,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: true
+        ))
+        configuration.userContentController.addUserScript(WKUserScript(
+            source: "window.MOCK_PALETTE = \(page.paletteJSON ?? "null");",
             injectionTime: .atDocumentStart,
             forMainFrameOnly: true
         ))
@@ -169,13 +195,13 @@ final class MockRenderer: NSObject, WKNavigationDelegate {
         webView.navigationDelegate = self
         window.setContentSize(frame.size)
         window.contentView = webView
-        window.setFrameOrigin(CGPoint(x: -frame.width - 100, y: 0))
         window.orderFrontRegardless()
         self.webView = webView
 
+        let pageIndex = index
         timeoutTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(60))
-            guard !Task.isCancelled else {
+            guard !Task.isCancelled, self?.index == pageIndex else {
                 return
             }
             self?.fail(page, "60 秒以内に読み込みが終わりませんでした")
@@ -183,25 +209,37 @@ final class MockRenderer: NSObject, WKNavigationDelegate {
         webView.loadFileURL(page.htmlURL, allowingReadAccessTo: page.readAccessURL)
     }
 
-    /// ページの読み込み前に流す JavaScript。エラーを集め、palette.json の中身を渡す
-    private static func prelude(paletteJSON: String?) -> String {
-        """
+    /// ページの読み込み前に流す JavaScript。JavaScript のエラーと、読み込めなかった CSS・スクリプト・画像を集める。
+    /// リソースの error は window まで伝わらないので、capture で拾う
+    private static let errorCollector = """
         window.__mockErrors = [];
         window.addEventListener('error', event => {
-          window.__mockErrors.push(`JavaScript のエラー: ${event.message}（${event.filename}:${event.lineno}）`);
+          const target = event.target;
+          if (target && target !== window && (target.src || target.href)) {
+            window.__mockErrors.push(`読み込めませんでした: ${target.src || target.href}`);
+          } else {
+            window.__mockErrors.push(`JavaScript のエラー: ${event.message}（${event.filename}:${event.lineno}）`);
+          }
+        }, true);
+        window.addEventListener('unhandledrejection', event => {
+          window.__mockErrors.push(`Promise のエラー: ${event.reason}`);
         });
-        window.MOCK_PALETTE = \(paletteJSON ?? "null");
         """
-    }
 
     nonisolated func webView(_ webView: WKWebView, didFinish navigation: WKNavigation?) {
         Task { @MainActor in
+            guard webView === self.webView else {
+                return
+            }
             await self.inspectAndSnapshot()
         }
     }
 
     nonisolated func webView(_ webView: WKWebView, didFail navigation: WKNavigation?, withError error: any Error) {
         Task { @MainActor in
+            guard webView === self.webView else {
+                return
+            }
             self.fail(self.pages[self.index], "読み込みに失敗しました: \(error.localizedDescription)")
         }
     }
@@ -212,6 +250,9 @@ final class MockRenderer: NSObject, WKNavigationDelegate {
         withError error: any Error
     ) {
         Task { @MainActor in
+            guard webView === self.webView else {
+                return
+            }
             self.fail(self.pages[self.index], "読み込みに失敗しました: \(error.localizedDescription)")
         }
     }
@@ -221,12 +262,17 @@ final class MockRenderer: NSObject, WKNavigationDelegate {
             return
         }
         let page = pages[index]
+        // 待っている間にタイムアウトで次のページへ進んでいたら、結果を捨てる（同じページを二重に数えないため）
+        let isCurrent = { [weak self] in self?.webView === webView }
         do {
             let result = try await webView.callAsyncJavaScript(
                 inspectionScript,
                 arguments: ["fontFamilies": page.fontFamilies, "width": page.size.width, "height": page.size.height],
                 contentWorld: .page
             )
+            guard isCurrent() else {
+                return
+            }
             let errors = result as? [String] ?? ["ページの検査の結果を読めませんでした"]
             guard errors.isEmpty else {
                 fail(page, errors.joined(separator: "\n    "))
@@ -235,11 +281,16 @@ final class MockRenderer: NSObject, WKNavigationDelegate {
             let configuration = WKSnapshotConfiguration()
             configuration.afterScreenUpdates = true
             let image = try await webView.takeSnapshot(configuration: configuration)
+            guard isCurrent() else {
+                return
+            }
             try save(image, for: page)
             print("書き出しました: \(page.outputURL.path) (\(page.pixelWidth)x\(page.pixelHeight))")
             next()
         } catch {
-            fail(page, "\(error)")
+            if isCurrent() {
+                fail(page, "\(error)")
+            }
         }
     }
 

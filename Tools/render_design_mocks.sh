@@ -36,6 +36,12 @@ fi
 # 書き出す HTML を「出力ディレクトリ ページ…」の組にまとめ、WebKit の起動（20 秒ほど）を案ごとに 1 回にする
 status=0
 for id in "${ids[@]}"; do
+    # 案 ID は出力先の rm -rf に使うので、英小文字・数字・ハイフン・下線だけにする
+    if ! [[ "$id" =~ ^[a-z0-9_-]+$ ]]; then
+        echo "案 ID「${id}」は英小文字・数字・ハイフン・下線だけで書いてください" >&2
+        status=1
+        continue
+    fi
     if [ "$id" = "compare" ]; then
         source_dir="docs/design/compare"
     else

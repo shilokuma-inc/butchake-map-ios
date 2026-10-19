@@ -72,18 +72,19 @@
   /**
    * 1 画面ぶん（402x874）を組み立てる。
    * nav: navBar の引数、body: スクロールする中身の HTML、tab: 選択中のタブ（null ならタブバーを出さない）、
-   * overlay: 画面の上に重ねる HTML（シートなど）、className: 画面に付けるクラス
+   * overlay: 画面の上に重ねる HTML（シートなど）、className: 画面に付けるクラス。
+   * 骨組みは Mock.statusBar などを通して呼ぶので、案のページで Mock.tabBar などを差し替えられる
    */
   function screen({ nav = null, body = '', tab = null, overlay = '', className = '' } = {}) {
     return `<div class="screen ${className}">
       <div class="screen-scroll">
-        ${statusBar()}
-        ${nav ? navBar(nav) : ''}
+        ${Mock.statusBar()}
+        ${nav ? Mock.navBar(nav) : ''}
         <main class="screen-body">${body}</main>
       </div>
       ${overlay}
-      ${tab ? tabBar(tab) : ''}
-      ${homeIndicator()}
+      ${tab ? Mock.tabBar(tab) : ''}
+      ${Mock.homeIndicator()}
     </div>`;
   }
 
@@ -118,12 +119,12 @@
     }
     const rows = palette.pairs.map(pair => {
       const ratio = contrastRatio(pair.fg, pair.bg);
-      const required = pair.large ? 3 : 4.5;
+      const required = pair.large === true ? 3 : 4.5;
       return `<tr>
         <td><span class="contrast-sample" style="color:${esc(pair.fg)};background:${esc(pair.bg)}">あA</span></td>
         <td>${esc(pair.name)}</td>
         <td><code>${esc(pair.fg.toUpperCase())}</code> / <code>${esc(pair.bg.toUpperCase())}</code></td>
-        <td>${pair.large ? '大' : '通常'}</td>
+        <td>${pair.large === true ? '大' : '通常'}</td>
         <td class="contrast-ratio">${ratio.toFixed(2)}:1 ${ratio >= required ? 'AA' : '× AA 未満'}</td>
       </tr>`;
     }).join('');
@@ -213,11 +214,11 @@
 
   /**
    * イラストの地図（実際の地図の画像は使わない）。色は CSS 変数 --map-* で変える。
-   * pins: [{ order, x, y, selected }]（x, y は %）
+   * pins: [{ order, x, y, selected }]（x, y は %）。番号は <span> で包むので、ピンを回した案は中の span を戻す
    */
   function mapIllustration(pins = []) {
     const pinHTML = pins.map(pin => `<span class="map-pin${pin.selected ? ' is-selected' : ''}"
-      style="left:${pin.x}%;top:${pin.y}%">${pin.order}</span>`).join('');
+      style="left:${pin.x}%;top:${pin.y}%"><span>${pin.order}</span></span>`).join('');
     return `<div class="map-illustration">
       <svg viewBox="0 0 402 874" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <rect width="402" height="874" fill="var(--map-land)"/>

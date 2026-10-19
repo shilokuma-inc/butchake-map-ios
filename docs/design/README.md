@@ -12,7 +12,7 @@
 | 案 ID | 名前 | 方向性 | 状態 | PR |
 | --- | --- | --- | --- | --- |
 | `current` | 今のデザイン（比較の基準） | — | 済 | — |
-| `a1` | 王道ポップ | A | 未着手 | — |
+| `a1` | 王道ポップ | A | PR 作成済み | #50 |
 | `a2` | マンガのツッコミ | A | 未着手 | — |
 | `a3` | 駄菓子屋のおまけシール | A | 未着手 | — |
 | `a4` | ネオブルータリズム | A | 未着手 | — |
@@ -42,7 +42,11 @@ python3 Tools/check_design_contrast.py docs/design/mocks/a1   # 配色のコン�
   - フォントの読み込みの失敗（`mock-fonts` に書いた書体が読み込まれていない・読み込みがエラー）
   - 画像の欠け（`<img>` を読み込めない）
   - 寸法の違い（ページの中身が `mock-size` からはみ出している・書き出した画像のピクセル数が違う）
-  - ページの JavaScript のエラー
+  - ページの JavaScript のエラー・Promise のエラー（`unhandledrejection`）
+  - 読み込めない CSS・スクリプト・画像
+  - Web フォント（`fonts.googleapis.com`）を読み込んでいるのに `<meta name="mock-fonts">` が無いページ（Web フォントを使うページでは `mock-fonts` が必須）
+  - JSON のオブジェクトとして読めない `palette.json`
+  - 英小文字・数字・ハイフン・下線以外を含む案 ID
 - `check_design_contrast.py` は案の `palette.json` の組ごとに WCAG のコントラスト比を出し、AA 未満（通常の文字で 4.5:1、大きな文字で 3:1）があれば 0 以外で終わります。
   出した表は PR 本文に載せます。ブランドシートには、同じ式で計算した表を `Mock.paletteTable()` で描きます
 - `current` は今のアプリを写した比較の基準なので、AA 未満の組（オレンジの小さな文字など）もそのまま載せています。`check_design_contrast.py` が通らなくてよいのは `current` だけです

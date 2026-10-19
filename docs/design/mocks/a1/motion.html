@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="1400x1320">
+<meta name="mock-scale" content="2">
+<title>A-1 王道ポップ — 動きのコマ割り</title>
+<meta name="mock-fonts" content="Mochiy Pop One|M PLUS Rounded 1c">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=M+PLUS+Rounded+1c:wght@500;700;800&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .sheet { width: 1400px; height: 1320px; padding: 48px 56px; background: var(--cream); }
+  .sheet-head { display: flex; align-items: center; gap: 28px; }
+  .sheet-head p { font-size: 17px; font-weight: 700; line-height: 1.6; }
+  .motion { display: grid; grid-template-columns: 300px repeat(4, 1fr); gap: 18px; margin-top: 36px; }
+  .motion-note h2 { font-family: var(--font-heading); font-weight: 400; font-size: 24px; background: linear-gradient(transparent 60%, var(--yellow) 60%); display: inline; }
+  .motion-note dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; margin: 14px 0 0; font-size: 14.5px; line-height: 1.5; }
+  .motion-note dt { font-weight: 800; white-space: nowrap; }
+  .motion-note dd { margin: 0; font-weight: 500; }
+  .frame { display: flex; flex-direction: column; gap: 8px; }
+  .frame-box { position: relative; height: 300px; overflow: hidden; border: var(--line); border-radius: 22px; background: var(--color-bg);
+    box-shadow: var(--pop-shadow); display: flex; align-items: center; justify-content: center; }
+  .frame-cap { display: flex; gap: 8px; align-items: baseline; font-size: 14px; font-weight: 800; }
+  .frame-cap .time { padding: 1px 8px; border-radius: 999px; background: var(--ink); color: var(--yellow); font-family: var(--font-number); font-size: 13px; }
+  /* いいね */
+  .like-big { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border: var(--line); border-radius: 999px; background: #FFFFFF;
+    box-shadow: var(--pop-shadow); font-size: 22px; font-weight: 800; }
+  .like-big .icon { color: var(--ink); }
+  .like-big.on .icon { color: var(--pink); }
+  .burst { position: absolute; width: 200px; height: 200px; }
+  .plus-one { position: absolute; top: 50px; right: 30px; }
+  .tap { position: absolute; width: 46px; height: 46px; border: 3px dashed var(--ink); border-radius: 50%; }
+  /* お祝い */
+  .publish-btn { padding: 14px 26px; font-size: 18px; }
+  .done-sticker { padding: 14px 20px; border: var(--line); border-radius: 22px; background: var(--yellow); box-shadow: 5px 5px 0 var(--ink);
+    font-family: var(--font-heading); font-size: 20px; text-align: center; line-height: 1.3; }
+  .done-sticker small { display: block; font-family: var(--font-body); font-size: 13px; font-weight: 800; }
+  .confetti { position: absolute; inset: 0; }
+  .mini-card { width: 200px; padding: 12px; border: var(--line); border-radius: 18px; background: #FFFFFF; box-shadow: var(--pop-shadow);
+    font-size: 14px; font-weight: 800; line-height: 1.4; }
+  /* ピン */
+  .pin-stage { position: absolute; inset: 0; background: var(--map-land); }
+  .pin-stage .road { position: absolute; left: 0; right: 0; top: 190px; height: 14px; background: #FFFFFF; }
+  .pin-stage .map-pin { left: 50%; }
+  .mini-sheet { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px 14px; border-top: var(--line); border-radius: 20px 20px 0 0;
+    background: var(--cream); font-size: 14px; font-weight: 800; }
+  .mini-sheet .grabber { display: block; width: 36px; height: 5px; margin: 0 auto 8px; border-radius: 3px; background: var(--ink); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 動きのコマ割り。1 つの動きを 4 コマに分け、時間・イージング・ハプティクス・Reduce Motion のときの代わりを添える
+  const { icon } = Mock;
+  const frame = (time, caption, inner) => `<div class="frame">
+    <div class="frame-box">${inner}</div>
+    <p class="frame-cap"><span class="time">${time}</span>${caption}</p></div>`;
+  const note = (title, rows) => `<div class="motion-note"><h2>${title}</h2><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
+  const like = (on, scale, count) => `<span class="like-big${on ? ' on' : ''}" style="transform:scale(${scale})">${icon(on ? 'heartFill' : 'heart', { size: 28 })}${count}</span>`;
+  const burst = `<svg class="burst" viewBox="0 0 200 200" aria-hidden="true"><g stroke="#1C1A17" stroke-width="5" stroke-linecap="round">
+    <path d="M100 18 V40 M100 160 V182 M18 100 H40 M160 100 H182 M42 42 L58 58 M142 142 L158 158 M158 42 L142 58 M42 158 L58 142"/></g></svg>`;
+  const confetti = `<svg class="confetti" viewBox="0 0 260 300" aria-hidden="true">
+    <g stroke="#1C1A17" stroke-width="2.5">
+      <rect x="30" y="40" width="16" height="10" fill="#FF7A1A" transform="rotate(25 38 45)"/>
+      <rect x="210" y="56" width="16" height="10" fill="#FFD23F" transform="rotate(-30 218 61)"/>
+      <circle cx="60" cy="230" r="7" fill="#FFD23F"/><circle cx="200" cy="240" r="7" fill="#E8336D"/>
+      <rect x="120" y="22" width="14" height="9" fill="#E8336D" transform="rotate(60 127 26)"/>
+      <path d="M220 160 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6 z" fill="#FFFFFF"/>
+      <path d="M36 140 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6 z" fill="#FF7A1A"/>
+      <rect x="160" y="262" width="16" height="10" fill="#FF7A1A" transform="rotate(-15 168 267)"/>
+    </g></svg>`;
+  const pinStage = (top, scaleY, selected, sheet, marks) => `<div class="pin-stage"><span class="road"></span>
+    <span class="map-pin-shadow" style="left:50%;top:188px;transform:scale(${selected ? 1.2 : 1})"></span>
+    ${marks ? '<svg style="position:absolute;left:50%;top:70px;margin-left:-30px" width="60" height="30" viewBox="0 0 60 30"><path d="M8 26 L2 12 M30 20 V2 M52 26 L58 12" stroke="#1C1A17" stroke-width="4" stroke-linecap="round"/></svg>' : ''}
+    <span class="map-pin${selected ? ' is-selected' : ''}" style="top:${top}px;transform:rotate(-45deg) scale(1, ${scaleY})"><span>2</span></span>
+    ${sheet ? '<div class="mini-sheet"><span class="grabber"></span>もりもり寿し 近江町店</div>' : ''}</div>`;
+
+  Mock.mount(`<div class="sheet">
+    <div class="sheet-head">${Mock.logo(44)}<p>A-1「王道ポップ」の動き。ぽよんと弾む・ステッカーをペタッと貼る・ピンがぴょんと跳ねる。<br>
+      どれも「視差効果を減らす」（Reduce Motion）がオンのときは、拡大・移動・紙吹雪をやめて色とフェードだけにする。点滅はしない。</p></div>
+
+    <div class="motion">
+      ${note('いいね', [['時間', '0.45 秒'], ['イージング', 'spring（response 0.35・damping 0.55）。1.35 倍まで弾んで戻る'], ['ハプティクス', '2 コマ目で impact（light）'], ['Reduce Motion', '拡大と放射の線をやめ、ハートの色を 0.15 秒でクロスフェード。件数はそのまま切り替える']])}
+      ${frame('0.00', '押す（0.9 倍に縮む）', `${like(false, 0.9, 128)}<span class="tap" style="left:72px;top:126px"></span>`)}
+      ${frame('0.12', 'ハートが塗られ 1.35 倍に', `${burst}${like(true, 1.35, 129)}<span class="sticker plus-one" style="background:var(--orange)">+1</span>`)}
+      ${frame('0.28', '少し縮んで戻る（0.95 倍）', `${like(true, 0.95, 129)}<span class="sticker plus-one" style="top:30px;opacity:.6">+1</span>`)}
+      ${frame('0.45', '落ち着く', like(true, 1, 129))}
+    </div>
+
+    <div class="motion">
+      ${note('投稿の公開のお祝い', [['時間', '1.2 秒'], ['イージング', 'ステッカーは spring（response 0.4・damping 0.6）で 1.6 倍から貼り付く。紙吹雪は easeOut で 0.8 秒'], ['ハプティクス', '2 コマ目で notification（success）'], ['Reduce Motion', '紙吹雪と拡大をやめ、ステッカーを 0.2 秒でフェードイン。ホームのカードも位置を動かさずフェード']])}
+      ${frame('0.00', '「公開する」を押す', '<span class="pop-button publish-btn">公開する</span><span class="tap" style="left:150px;top:150px"></span>')}
+      ${frame('0.20', 'ステッカーがペタッと貼り付く', '<div class="done-sticker" style="transform:rotate(-6deg) scale(1.08)">公開しました！<small>ホームに出たよ</small></div>')}
+      ${frame('0.50', '紙吹雪がはじける', `${confetti}<div class="done-sticker" style="transform:rotate(-6deg)">公開しました！<small>ホームに出たよ</small></div>`)}
+      ${frame('1.20', 'ホームの先頭にカードが出る', '<div class="mini-card" style="position:relative;padding-top:22px"><span class="sticker" style="position:absolute;top:-16px;right:-10px;background:var(--orange)">NEW</span>旅好きが推す横浜の三大夕景スポット</div>')}
+    </div>
+
+    <div class="motion">
+      ${note('マップのピンが跳ねる', [['時間', '0.5 秒（シートは 0.35 秒）'], ['イージング', 'ピンは つぶれる → 18pt 跳ねる → 着地（spring・damping 0.5）。シートは easeOut で下から'], ['ハプティクス', '4 コマ目の着地で selection'], ['Reduce Motion', '跳ねる・つぶれるをやめ、選んだピンの色と大きさを 0.2 秒で切り替える。シートはフェードで出す']])}
+      ${frame('0.00', 'ピンをタップ', `${pinStage(186, 1, false, false, false)}<span class="tap" style="left:104px;top:126px"></span>`)}
+      ${frame('0.10', 'ぎゅっとつぶれる', pinStage(186, 0.78, true, false, false))}
+      ${frame('0.25', '18pt 跳ねる', pinStage(162, 1.05, true, false, true))}
+      ${frame('0.50', '着地してシートが上がる', pinStage(186, 1, true, true, false))}
+    </div>
+  </div>`);
+</script>
+</body>
+</html>

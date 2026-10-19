@@ -9,6 +9,7 @@
     <circle cx="140" cy="130" r="6" fill="#3A2340"/><circle cx="180" cy="130" r="6" fill="#3A2340"/>
     <ellipse cx="160" cy="162" rx="12" ry="9" fill="none" stroke="#3A2340" stroke-width="5"/>
   </g>
-  <text x="250" y="80" font-family="sans-serif" font-size="40" font-weight="700" fill="#FF5FA2">?</text>
+  <path d="M252 52 a12 12 0 1 1 18 10 q-6 4 -6 12" fill="none" stroke="#FF5FA2" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="264" cy="86" r="4.5" fill="#FF5FA2"/>
   <path d="M70 54 L73.84 66.16 L86 70 L73.84 73.84 L70 86 L66.16 73.84 L54 70 L66.16 66.16 Z" fill="#5BD0F0" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/><path d="M262 168 L264.88 177.12 L274 180 L264.88 182.88 L262 192 L259.12 182.88 L250 180 L259.12 177.12 Z" fill="#FFE14D" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/>
 </svg>

@@ -48,7 +48,7 @@
   const plane = (x, y, rot, size = 26) => `<span class="plane" style="left:${x}px;top:${y}px;transform:rotate(${rot}deg)">${icon('airplane', { size })}</span>`;
   const bag = labels => `<div class="bag">${labels}</div>`;
   const oval = (top, main, color, style) => parts.oval(top, main, color, style);
-  const card = style => `<div class="tag card-mini" style="${style}">旅好きが推す横浜の三大夕景スポット</div>`;
+  const card = style => `<div class="tag card-mini" style="${style}">旅好きが推す横浜の<br>三大夕景スポット</div>`;
 
   Mock.mount(`<div class="sheet">
     <div class="sheet-head">${Mock.logo(34)}<p>B-4「旅かばんのラベル」の動き。ハートの飛行機が飛ぶ・かばんにラベルを貼る・荷札がひもで揺れて止まる。<br>
@@ -72,9 +72,9 @@
 
     <div class="motion">
       ${note('カードの出現（荷札が揺れる）', [['時間', '0.6 秒（1 まいずつ 0.08 秒ずらす）'], ['イージング', '荷札の左の穴を軸に、-10° から spring（damping 0.5）で 2 回だけ揺れて 0° に止まる'], ['ハプティクス', 'なし（スクロールのたびに震えないよう）'], ['Reduce Motion', '揺れをやめ、0.2 秒でフェードイン']])}
-      ${frame('0.00', '傾いて出る', card('transform:rotate(-10deg);transform-origin:9px 50%;opacity:.5'))}
-      ${frame('0.20', '反対に揺れる', card('transform:rotate(5deg);transform-origin:9px 50%'))}
-      ${frame('0.40', 'もう一度', card('transform:rotate(-2deg);transform-origin:9px 50%'))}
+      ${frame('0.00', '傾いて出る', card('transform:rotate(-10deg);transform-origin:14px 50%;opacity:.5'))}
+      ${frame('0.20', '反対に揺れる', card('transform:rotate(5deg);transform-origin:14px 50%'))}
+      ${frame('0.40', 'もう一度', card('transform:rotate(-2deg);transform-origin:14px 50%'))}
       ${frame('0.60', '止まる', card(''))}
     </div>
   </div>`);

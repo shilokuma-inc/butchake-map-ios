@@ -1,0 +1,26 @@
+{
+  "colors": [
+    {"name": "ピンク", "hex": "#FF5FA2"},
+    {"name": "水色", "hex": "#5BD0F0"},
+    {"name": "黄色", "hex": "#FFE14D"},
+    {"name": "濃いピンク（文字用）", "hex": "#C2185B"},
+    {"name": "ぶどう（スター）", "hex": "#7B3FA0"},
+    {"name": "文字", "hex": "#3A2340"},
+    {"name": "補足の文字", "hex": "#6E4F73"},
+    {"name": "背景", "hex": "#FFF7FB"}
+  ],
+  "pairs": [
+    {"name": "本文 / 白", "fg": "#3A2340", "bg": "#FFFFFF", "large": false},
+    {"name": "本文 / 背景", "fg": "#3A2340", "bg": "#FFF7FB", "large": false},
+    {"name": "補足の文字 / 白", "fg": "#6E4F73", "bg": "#FFFFFF", "large": false},
+    {"name": "補足の文字 / 背景", "fg": "#6E4F73", "bg": "#FFF7FB", "large": false},
+    {"name": "文字 / ピンク（順位のシール・1 文字のロゴ）", "fg": "#3A2340", "bg": "#FF5FA2", "large": false},
+    {"name": "文字 / 水色（カテゴリのバッジ）", "fg": "#3A2340", "bg": "#5BD0F0", "large": false},
+    {"name": "文字 / 黄色（属性のバッジ・シール）", "fg": "#3A2340", "bg": "#FFE14D", "large": false},
+    {"name": "文字 / キラキラの一番濃い色（ぶどうの淡色 #D9C8FF）", "fg": "#3A2340", "bg": "#D9C8FF", "large": false},
+    {"name": "白の文字 / 濃いピンク（ボタン・コメントの札）", "fg": "#FFFFFF", "bg": "#C2185B", "large": false},
+    {"name": "濃いピンクの文字（いいね済みの件数） / 白", "fg": "#C2185B", "bg": "#FFFFFF", "large": false},
+    {"name": "ぶどうの文字（スター済みの件数） / 白", "fg": "#7B3FA0", "bg": "#FFFFFF", "large": false},
+    {"name": "濃いピンクの文字（コマ割りの注記の見出し） / 背景", "fg": "#C2185B", "bg": "#FFF7FB", "large": false}
+  ]
+}

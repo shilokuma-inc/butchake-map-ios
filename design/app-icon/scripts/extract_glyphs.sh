@@ -28,7 +28,9 @@ for spec in "${specs[@]}"; do
     font="$CACHE_DIR/$(basename "$path")"
     if [ ! -s "$font" ]; then
         echo "取得: ${path}"
-        curl -fsSL -o "$font" "$FONTS_URL/$path"
+        # 途中で切れたファイルを取得済みと扱わないよう、取得できてからキャッシュに移す
+        curl -fsSL -o "$font.part" "$FONTS_URL/$path"
+        mv "$font.part" "$font"
     fi
     arguments+=("$key=$font=$characters")
 done

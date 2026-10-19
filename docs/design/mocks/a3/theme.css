@@ -1,0 +1,148 @@
+/*
+ * A-3「駄菓子屋のおまけシール」のトークンと飾り。雛形（tokens.css・frame.css）の後に読み込む。
+ * ビビッドなピンク・水色・黄色。シール台紙（剥離紙の方眼）に、白いフチ取りのシールとキラキラ（ホログラム）のシール。
+ * 見出しはころっとした丸文字（Hachi Maru Pop）、本文は Zen Maru Gothic。
+ */
+:root {
+  --pink: #FF5FA2;
+  --pink-deep: #C2185B;     /* 白地の文字に使うピンク */
+  --cyan: #5BD0F0;
+  --cyan-deep: #0B6E8E;     /* 白地の文字に使う水色 */
+  --yellow: #FFE14D;
+  --grape: #7B3FA0;
+  --ink: #3A2340;
+  --holo: linear-gradient(115deg, #FFD1EC 0%, #C9F1FF 22%, #FFF6B8 42%, #D9C8FF 62%, #C9FFE6 80%, #FFD1EC 100%);
+
+  --color-bg: #FFF7FB;
+  --color-surface: #FFFFFF;
+  --color-text: var(--ink);
+  --color-text-secondary: #6E4F73;
+  --color-primary: var(--pink-deep);
+  --color-accent: var(--cyan-deep);
+  --color-on-primary: #FFFFFF;
+  --color-like: var(--pink-deep);
+  --color-star: var(--grape);
+  --color-separator: #F3D3E4;
+
+  --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", sans-serif;
+  --font-heading: "Hachi Maru Pop", "Zen Maru Gothic", sans-serif;
+  --font-number: "Hachi Maru Pop", sans-serif;
+  --weight-heading: 400;
+
+  --radius-card: 22px;
+  --radius-thumb: 50%;
+  --border-card: none;
+  --shadow-card: 0 0 0 5px #FFFFFF, 0 3px 10px 5px rgba(122, 40, 90, .14);
+  --icon-stroke: 2.2;
+
+  --tabbar-bg: #FFFFFF;
+  --tabbar-border: none;
+  --tabbar-color: var(--ink);
+  --tabbar-active: var(--ink);
+  --tabbar-shadow: 0 4px 16px rgba(122, 40, 90, .2);
+
+  --map-land: #FFF1F7;
+  --map-water: #BDEBFA;
+  --map-park: #FFF3B0;
+  --map-road: #FFFFFF;
+  --map-road-minor: #FFFAFD;
+}
+
+body { font-weight: 500; }
+
+/* 剥離紙の方眼（シール台紙の裏の目盛り） */
+.screen { background: var(--color-bg) linear-gradient(rgba(255, 95, 162, .09) 1px, transparent 1px) 0 0 / 22px 22px,
+  linear-gradient(90deg, rgba(255, 95, 162, .09) 1px, transparent 1px) 0 0 / 22px 22px; }
+
+/* MARK: 画面の骨組み */
+
+.tab-item.is-active { background: var(--holo); box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--pink); }
+.tab-title { font-size: 10.5px; font-weight: 700; }
+.nav-button { background: #FFFFFF; box-shadow: 0 0 0 3px #FFFFFF, 0 2px 8px 3px rgba(122, 40, 90, .15); }
+
+/* MARK: 見出し */
+
+.section-header { display: flex; align-items: center; gap: 8px; font-size: 22px; }
+.section-header .deco { font-size: 18px; }
+
+/* MARK: シール */
+
+/* 白いフチ取りのシール。色は style で --c に渡す */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--c, var(--yellow));
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 2px 5px 3px rgba(122, 40, 90, .18);
+}
+/* キラキラ（ホログラム）のシール */
+.sticker.holo { background: var(--holo); }
+.sparkle { position: absolute; width: 14px; height: 14px; }
+.map-illustration svg.sparkle { inset: auto; width: 14px; height: 14px; }
+
+.card { position: relative; }
+.badge { padding: 4px 11px; font-weight: 700; color: var(--ink); box-shadow: 0 0 0 2.5px #FFFFFF, 0 1px 4px 2px rgba(122, 40, 90, .16); }
+.badge-category { background: var(--cyan); }
+.badge-author { background: var(--yellow); }
+.count-button { color: var(--ink); font-weight: 700; }
+.like-button.is-on .icon { color: var(--pink-deep); }
+.star-button.is-on .icon { color: var(--grape); }
+.rank {
+  width: 26px;
+  height: 26px;
+  background: var(--pink);
+  color: var(--ink);
+  font-size: 15px;
+  box-shadow: 0 0 0 2.5px #FFFFFF, 0 1px 4px 2px rgba(122, 40, 90, .2);
+}
+.thumbnail { background: var(--holo); color: var(--ink); box-shadow: 0 0 0 3px #FFFFFF, 0 1px 6px 3px rgba(122, 40, 90, .16); }
+.post-title, .carousel-title { font-family: var(--font-body); font-weight: 700; }
+.spot-row { font-weight: 700; }
+
+/* ロゴ（ぶっちゃけmap のロゴタイプ。1 文字ずつのシール） */
+.logo { display: inline-flex; align-items: center; gap: .06em; line-height: 1; white-space: nowrap; font-family: var(--font-heading); }
+.logo-ch { display: inline-flex; align-items: center; justify-content: center; width: 1.2em; height: 1.2em; border-radius: 50%;
+  background: var(--c); color: var(--ink); box-shadow: 0 0 0 .1em #FFFFFF, 0 .05em .2em .1em rgba(122, 40, 90, .2); }
+.logo-map { margin-left: .18em; padding: .12em .36em .18em; border-radius: .5em; background: var(--holo); color: var(--ink); font-family: var(--font-body);
+  font-weight: 900; font-size: .62em; box-shadow: 0 0 0 .14em #FFFFFF, 0 .05em .3em .14em rgba(122, 40, 90, .2); }
+
+/* ぶっちゃけコメント（メモ帳のシール） */
+.memo { position: relative; padding: 12px 14px 12px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 0 0 3px #FFFFFF, 0 2px 8px 3px rgba(122, 40, 90, .14); }
+.memo-label { display: inline-block; margin-bottom: 4px; padding: 2px 10px; border-radius: 999px; background: var(--pink-deep); color: #FFFFFF; font-size: 13px; font-weight: 700; }
+.memo-text { font-size: 16px; line-height: 1.6; }
+
+/* ボタン */
+.candy-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--pink-deep);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 3px 8px 3px rgba(122, 40, 90, .22);
+}
+.candy-button.secondary { background: #FFFFFF; color: var(--ink); }
+.candy-button.holo { background: var(--holo); color: var(--ink); }
+
+/* 地図のピン（丸いシール） */
+.map-pin {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: none;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 16px;
+  box-shadow: 0 0 0 4px #FFFFFF, 0 2px 6px 4px rgba(122, 40, 90, .25);
+}
+.map-pin.is-selected { width: 50px; height: 50px; margin: -25px 0 0 -25px; background: var(--holo); font-size: 22px; transform: rotate(-8deg); }
+.card-sticker { position: absolute; top: -10px; right: 14px; z-index: 2; transform: rotate(8deg); }

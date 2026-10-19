@@ -15,7 +15,7 @@
     {"name": "補足の文字 / 白", "fg": "#4A4A4A", "bg": "#FFFFFF", "large": false},
     {"name": "補足の文字 / 背景", "fg": "#4A4A4A", "bg": "#EDEAE3", "large": false},
     {"name": "白の文字 / 青（ロゴの map・ボタン・写真の枠のアイコン）", "fg": "#FFFFFF", "bg": "#4361EE", "large": false},
-    {"name": "墨の文字 / 赤（選んだピン・コメントの札・人気の帯）", "fg": "#111111", "bg": "#FF5A36", "large": false},
+    {"name": "墨の文字 / 赤（選んだピン・コメントの札・人気の帯・HOT の札）", "fg": "#111111", "bg": "#FF5A36", "large": false},
     {"name": "墨の文字 / 黄（見出しの札・タブ・1 位・帯）", "fg": "#111111", "bg": "#FFD60A", "large": false},
     {"name": "墨の文字 / 緑（カテゴリのバッジ・2 位）", "fg": "#111111", "bg": "#3BCB7A", "large": false},
     {"name": "墨の文字 / 薄紫（属性のバッジ・3 位）", "fg": "#111111", "bg": "#B8A9FF", "large": false}

@@ -72,7 +72,7 @@ final class PostPublishUITests: XCTestCase {
         field.typeText(text)
     }
 
-    /// 都道府県の一覧を開いて選ぶ（選ぶとフォームに戻る）
+    /// 都道府県の一覧を開いて選び、フォームに戻る
     @MainActor
     private func choosePrefecture(_ prefecture: String, in app: XCUIApplication) throws {
         let picker = app.element(identifier: "postForm.prefecture")
@@ -84,7 +84,14 @@ final class PostPublishUITests: XCTestCase {
             "都道府県の一覧に \(prefecture) が無い"
         )
         option.tap()
-        XCTAssertTrue(app.navigationBars[formTitle].waitForExistence(timeout: UITestTimeout.element), "フォームに戻らない")
+        let form = app.navigationBars[formTitle]
+        // CI のシミュレーター（iOS 26.5）では、選んで選択済みになっても一覧から自動で戻らないことがある。
+        // 選べていることを確かめてから、戻るボタンで戻る
+        if !form.waitForExistence(timeout: UITestTimeout.element) {
+            XCTAssertTrue(option.isSelected, "都道府県の一覧で \(prefecture) を選べない")
+            app.navigationBars.buttons["BackButton"].tap()
+        }
+        XCTAssertTrue(form.waitForExistence(timeout: UITestTimeout.element), "フォームに戻らない")
     }
 
     /// メニューの Picker を開いて選ぶ

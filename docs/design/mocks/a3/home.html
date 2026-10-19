@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>A-3 駄菓子屋のおまけシール — ホーム</title>
+<meta name="mock-fonts" content="Hachi Maru Pop|Zen Maru Gothic">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@500;700;900&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .nav-large .nav-large-title { position: relative; padding: 6px 18px 6px; }
+  .omake { position: relative; display: flex; align-items: center; gap: 12px; margin: 6px 16px 0; padding: 12px 14px; border-radius: 18px;
+    background: var(--holo); box-shadow: 0 0 0 4px #FFFFFF, 0 2px 8px 4px rgba(122, 40, 90, .15); }
+  .omake p { flex: 1; font-size: 15px; font-weight: 700; line-height: 1.5; }
+  .omake p strong { display: block; font-family: var(--font-heading); font-weight: 400; font-size: 18px; }
+  .omake .pack { flex: none; width: 54px; height: 64px; border-radius: 8px; background: var(--pink); box-shadow: 0 0 0 3px #FFFFFF;
+    display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 22px; transform: rotate(6deg); }
+  .home { display: flex; flex-direction: column; gap: 20px; padding-top: 18px; }
+  .home section { display: flex; flex-direction: column; gap: 12px; }
+  .carousel { padding: 14px 16px 10px; margin-top: -8px; gap: 16px; }
+  .feed { display: flex; flex-direction: column; gap: 20px; padding: 10px 16px 0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // ホーム: シールのロゴ・今日のおまけ（キラキラの帯）・シールのカードのカルーセル・新着の投稿
+  const { data, parts } = Mock;
+  const posts = data.posts;
+  const byLikes = [...posts].sort((a, b) => b.likeCount - a.likeCount);
+  Mock.mount(Mock.screen({
+    nav: { large: true, titleHTML: `${Mock.logo(30)}${Mock.sparkle('left:310px;top:4px;width:18px;height:18px')}${Mock.sparkle('left:334px;top:30px', '#FF5FA2')}` },
+    tab: 'home',
+    body: `<div class="omake"><p><strong>今日のおまけ</strong>本音の三大、きょうは 5 まい！ 開けてみよう</p><span class="pack">?</span></div>
+      <div class="home">
+        <section>${parts.sectionHeader(data.strings.weeklyPicks, '新入荷', '#FFE14D')}
+          <div class="carousel">${posts.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
+        <section>${parts.sectionHeader(data.strings.trending, 'キラ', '#5BD0F0')}
+          <div class="carousel">${byLikes.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
+        <section>${parts.sectionHeader(data.strings.latestPosts)}
+          <div class="feed">${posts.slice(0, 2).map(parts.postCard).join('')}</div></section>
+      </div>`,
+  }));
+</script>
+</body>
+</html>

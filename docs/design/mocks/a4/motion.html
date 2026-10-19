@@ -60,15 +60,15 @@
     <div class="motion">
       ${note('投稿の公開（札をガツン）', [['時間', '0.9 秒'], ['イージング', '「公開」の札が上から easeIn 0.2 秒で落ち、着地で 4pt だけ跳ね返る。続けてホームの新着の先頭にカードが落ち、NEW の札が 1.4 倍から easeOut 0.25 秒で貼られる'], ['ハプティクス', '着地で impact（heavy）、NEW の札が貼られたら notification（success）'], ['Reduce Motion', '落下・跳ね返り・拡大をやめ、札とカードを 0.2 秒でフェードイン']])}
       ${frame('0.00', '「公開する」を押す', '<span class="brutal-button yellow" style="font-size:18px;padding:14px 24px">公開する</span><span class="tap" style="left:150px;top:150px"></span>')}
-      ${frame('0.20', '「公開」の札が落ちてくる', '<span class="brutal-button" style="font-size:26px;padding:16px 28px;transform:translateY(-40px) rotate(-3deg)">公開！</span>')}
-      ${frame('0.30', '着地して跳ね返る', '<span class="brutal-button" style="font-size:26px;padding:16px 28px;box-shadow:8px 8px 0 #111">公開！</span>')}
+      ${frame('0.12', '「公開」の札が落ちてくる', '<span class="brutal-button" style="font-size:26px;padding:16px 28px;transform:translateY(-40px) rotate(-3deg)">公開！</span>')}
+      ${frame('0.20', '着地して跳ね返る', '<span class="brutal-button" style="font-size:26px;padding:16px 28px;box-shadow:8px 8px 0 #111">公開！</span>')}
       ${frame('0.90', '新着の先頭に NEW', `${card(5, 0, '<span class="tag" style="position:absolute;right:-10px;top:-14px;padding:2px 8px;border:3px solid #111;background:#3BCB7A;font-size:13px">NEW</span>')}`)}
     </div>
 
     <div class="motion">
       ${note('カードの出現（ブロックが落ちる）', [['時間', '0.4 秒（1 まいずつ 0.06 秒ずらす）'], ['イージング', '24pt 上から easeIn 0.18 秒で落ち、着地で影が 0 → 5pt に伸びる（easeOut 0.12 秒）'], ['ハプティクス', 'なし（スクロールのたびに震えないよう）'], ['Reduce Motion', '落下をやめ、影ごと 0.2 秒でフェードイン']])}
-      ${frame('0.00', '上で待つ', card(0, -60))}
-      ${frame('0.12', '落ちてくる', card(0, -20))}
+      ${frame('0.00', '24pt 上で待つ', card(0, -24))}
+      ${frame('0.12', '落ちてくる', card(0, -10))}
       ${frame('0.18', '着地（影はまだ無い）', card(0, 0))}
       ${frame('0.30', '影が伸びて止まる', card(5, 0))}
     </div>

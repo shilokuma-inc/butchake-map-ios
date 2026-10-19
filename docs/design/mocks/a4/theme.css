@@ -18,7 +18,7 @@
   --color-primary: var(--ink);
   --color-accent: var(--red);
   --color-on-primary: #FFFFFF;
-  --color-like: var(--ink);
+  --color-like: var(--ink);   /* いいね済みの件数の文字は墨（ハートのアイコンだけを赤にする。赤の文字は白地で AA に届かないため） */
   --color-star: var(--ink);
   --color-separator: var(--ink);
 
@@ -62,7 +62,7 @@ body { font-weight: 500; }
 .tab-title { font-size: 10.5px; font-weight: 800; }
 .nav-button { border: var(--border); border-radius: 0; background: #FFFFFF; box-shadow: 3px 3px 0 var(--ink); }
 
-/* MARK: 見出し（黒地に白の帯） */
+/* MARK: 見出し（墨の文字と、色付きの札） */
 
 .section-header { display: flex; align-items: center; gap: 10px; font-size: 22px; }
 .section-header .tag { display: inline-block; padding: 2px 8px; border: var(--border); background: var(--c, var(--yellow)); font-family: var(--font-body); font-weight: 900; font-size: 13px; }
@@ -101,7 +101,7 @@ body { font-weight: 500; }
 .logo-map { margin-left: -3px; padding: .2em .3em; border: var(--border); background: var(--blue); color: #FFFFFF; font-family: var(--font-body); font-weight: 900; font-size: .62em;
   display: inline-flex; align-items: center; box-shadow: 4px 4px 0 var(--ink); }
 
-/* ぶっちゃけコメント（黄色のベタの箱） */
+/* ぶっちゃけコメント（赤い札の付いた白の箱） */
 .box { border: var(--border); background: #FFFFFF; box-shadow: 4px 4px 0 var(--ink); }
 .box-label { display: block; padding: 3px 10px; border-bottom: var(--border); background: var(--red); font-weight: 900; font-size: 13px; }
 .box-text { padding: 10px 12px; font-size: 16px; line-height: 1.6; }

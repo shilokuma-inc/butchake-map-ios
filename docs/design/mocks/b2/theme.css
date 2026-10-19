@@ -65,7 +65,7 @@
   overflow: hidden;
 }
 .sign-name { padding: 4px 12px 0; text-align: center; font-weight: 700; font-size: 19px; letter-spacing: .12em; }
-.sign-en { padding-bottom: 4px; text-align: center; font-family: var(--font-ticket); font-size: 12px; letter-spacing: .2em; color: var(--color-text-secondary); }
+.sign-en { padding-bottom: 4px; text-align: center; font-family: var(--font-ticket); font-size: 13px; letter-spacing: .2em; color: var(--color-text-secondary); }
 .sign-bar { display: flex; justify-content: space-between; padding: 2px 10px; background: var(--rail); color: #FFFFFF; font-size: 13px; font-weight: 700; }
 .section-header { display: block; padding: 0 16px; }
 

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>current — ホーム</title>
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<style>
+  .home { display: flex; flex-direction: column; gap: 24px; padding-top: 8px; }
+  .home section { display: flex; flex-direction: column; gap: 12px; }
+  .feed { display: flex; flex-direction: column; gap: 12px; padding: 0 16px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script>
+  // 今のアプリのホーム（HomeView.swift）: 今週のぶっちゃけ・急上昇のカルーセルと、新着の投稿のフィード
+  const { data, parts } = Mock;
+  const posts = data.posts;
+  const byLikes = [...posts].sort((a, b) => b.likeCount - a.likeCount);
+  Mock.mount(Mock.screen({
+    nav: { title: data.appName, large: true },
+    tab: 'home',
+    body: `<div class="home">
+      <section>${parts.sectionHeader(data.strings.weeklyPicks)}
+        <div class="carousel">${posts.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
+      <section>${parts.sectionHeader(data.strings.trending)}
+        <div class="carousel">${byLikes.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
+      <section>${parts.sectionHeader(data.strings.latestPosts)}
+        <div class="feed">${posts.slice(0, 2).map(parts.postCard).join('')}</div></section>
+    </div>`,
+  }));
+</script>
+</body>
+</html>

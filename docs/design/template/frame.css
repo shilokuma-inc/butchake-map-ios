@@ -1,0 +1,247 @@
+/*
+ * 画面の骨組み（402x874 の iPhone 17 Pro 相当）と、今のアプリの部品の見た目。tokens.css の後に読み込む。
+ * html / body に overflow: hidden を付けない（ページの中身が mock-size からはみ出したことを書き出しで検出するため）。
+ * 画面の外にはみ出すもの（カルーセルなど）は、.screen の中で切る。
+ */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ol, ul { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .9em; }
+.icon { display: inline-block; flex: none; vertical-align: middle; stroke-width: var(--icon-stroke); }
+
+/* MARK: 画面 */
+
+.screen {
+  position: relative;
+  width: 402px;
+  height: 874px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+.screen-scroll { position: absolute; inset: 0; overflow: hidden; }
+.screen-body { padding-bottom: 120px; }
+
+.status-bar {
+  position: relative;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 34px 0 52px;
+  color: var(--status-color);
+  font-family: -apple-system, "SF Pro Text", sans-serif;
+}
+.status-time { font-size: 17px; font-weight: 600; letter-spacing: -.2px; }
+.status-icons { display: flex; align-items: center; gap: 6px; }
+.dynamic-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  width: 124px;
+  height: 37px;
+  margin-left: -62px;
+  border-radius: 20px;
+  background: #000;
+}
+
+.nav-bar { background: var(--nav-bg); color: var(--nav-color); }
+.nav-row { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 16px; gap: 8px; }
+.nav-trailing { display: flex; gap: 10px; }
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .7);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .08);
+  color: var(--nav-color);
+}
+.nav-large .nav-row { min-height: 8px; }
+.nav-large-title {
+  padding: 2px 16px 10px;
+  font-family: var(--font-heading);
+  font-size: var(--size-large-title);
+  font-weight: var(--weight-heading);
+  line-height: 1.2;
+}
+.nav-inline-title {
+  flex: 1;
+  overflow: hidden;
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tab-bar {
+  position: absolute;
+  left: 21px;
+  right: 21px;
+  bottom: 22px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 6px;
+  border: var(--tabbar-border);
+  border-radius: var(--tabbar-radius);
+  background: var(--tabbar-bg);
+  box-shadow: var(--tabbar-shadow);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  color: var(--tabbar-color);
+  z-index: 10;
+}
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: 68px;
+  padding: 6px 0;
+  border-radius: 26px;
+}
+.tab-item.is-active { color: var(--tabbar-active); background: rgba(0, 0, 0, .05); }
+.tab-title { font-size: 10px; font-weight: 600; }
+
+.home-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 144px;
+  height: 5px;
+  margin-left: -72px;
+  border-radius: 3px;
+  background: var(--home-indicator);
+  z-index: 20;
+}
+
+/* MARK: 部品 */
+
+.section-header {
+  padding: 0 16px;
+  font-family: var(--font-heading);
+  font-size: var(--size-title);
+  font-weight: var(--weight-heading);
+}
+.card {
+  padding: 16px;
+  border: var(--border-card);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+.badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-badge);
+  font-size: var(--size-caption);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-category { color: var(--color-badge-category-fg); background: var(--color-badge-category-bg); }
+.badge-author { color: var(--color-badge-author-fg); background: var(--color-badge-author-bg); }
+.count-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  font-size: var(--size-subhead);
+  font-variant-numeric: tabular-nums;
+}
+.like-button.is-on { color: var(--color-like); }
+.star-button.is-on { color: var(--color-star); }
+.rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-number);
+  font-size: 13px;
+  font-weight: 700;
+}
+.thumbnail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border-radius: var(--radius-thumb);
+  background: var(--color-badge-category-bg);
+  color: var(--color-accent);
+}
+.post-title, .carousel-title {
+  font-family: var(--font-heading);
+  font-size: var(--size-body);
+  font-weight: var(--weight-heading);
+  line-height: 1.3;
+}
+.post-area { margin-top: 4px; color: var(--color-text-secondary); font-size: var(--size-subhead); }
+.post-card { display: flex; flex-direction: column; gap: 12px; }
+.post-card-head { display: flex; gap: 12px; align-items: flex-start; }
+.spot-list { display: flex; flex-direction: column; gap: 6px; }
+.spot-row { display: flex; align-items: center; gap: 8px; font-size: var(--size-subhead); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.post-card-foot { display: flex; align-items: center; gap: 16px; }
+.post-author { flex: 1; color: var(--color-text-secondary); font-size: var(--size-caption); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.carousel { display: flex; gap: 12px; padding: 0 16px; overflow: hidden; }
+.carousel-card { flex: none; width: 252px; display: flex; flex-direction: column; gap: 8px; }
+.carousel-card-head { display: flex; justify-content: space-between; align-items: flex-start; }
+.carousel-title { font-size: var(--size-subhead); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; }
+.carousel-card .post-area { margin-top: 0; font-size: var(--size-caption); }
+
+/* MARK: 地図のイラスト */
+
+.map-illustration { position: absolute; inset: 0; }
+.map-illustration svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-pin {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 3px solid #FFFFFF;
+  border-radius: 50%;
+  background: var(--map-pin-bg);
+  color: var(--map-pin-fg);
+  font-family: var(--font-number);
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+.map-pin.is-selected { width: 44px; height: 44px; margin: -22px 0 0 -22px; background: var(--map-pin-selected-bg); font-size: 20px; }
+
+/* MARK: ブランドシート・コマ割り（mock-size を自由に決めるページ） */
+
+.sheet { padding: 48px; background: var(--color-bg); }
+.sheet-title { font-family: var(--font-heading); font-size: 40px; font-weight: var(--weight-heading); }
+.sheet-section { margin-top: 40px; }
+.sheet-section > h2 { margin-bottom: 16px; font-family: var(--font-heading); font-size: 24px; font-weight: var(--weight-heading); }
+.swatches { display: flex; flex-wrap: wrap; gap: 16px; }
+.swatch { display: flex; flex-direction: column; gap: 4px; width: 120px; font-size: 15px; }
+.swatch-chip { height: 72px; border-radius: 12px; border: 1px solid rgba(0, 0, 0, .1); }
+.contrast-table { width: 100%; border-collapse: collapse; font-size: 15px; background: var(--color-surface); }
+.contrast-table th { white-space: nowrap; }
+.contrast-table td:nth-child(1), .contrast-table td:nth-child(4) { white-space: nowrap; }
+.contrast-table th, .contrast-table td { padding: 8px 12px; border-bottom: 1px solid var(--color-separator); text-align: left; }
+.contrast-sample { display: inline-block; white-space: nowrap; padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(0, 0, 0, .1); }
+.contrast-ratio { font-variant-numeric: tabular-nums; white-space: nowrap; }

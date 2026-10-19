@@ -20,6 +20,7 @@
     {"name": "文字 / キラキラの一番濃い色（ぶどうの淡色 #D9C8FF）", "fg": "#3A2340", "bg": "#D9C8FF", "large": false},
     {"name": "白の文字 / 濃いピンク（ボタン・コメントの札）", "fg": "#FFFFFF", "bg": "#C2185B", "large": false},
     {"name": "濃いピンクの文字（いいね済みの件数） / 白", "fg": "#C2185B", "bg": "#FFFFFF", "large": false},
-    {"name": "ぶどうの文字（スター済みの件数） / 白", "fg": "#7B3FA0", "bg": "#FFFFFF", "large": false}
+    {"name": "ぶどうの文字（スター済みの件数） / 白", "fg": "#7B3FA0", "bg": "#FFFFFF", "large": false},
+    {"name": "濃いピンクの文字（コマ割りの注記の見出し） / 背景", "fg": "#C2185B", "bg": "#FFF7FB", "large": false}
   ]
 }

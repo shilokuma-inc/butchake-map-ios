@@ -1,0 +1,153 @@
+/*
+ * B-5「昭和の銭湯と看板」のトークンと飾り。雛形（tokens.css・frame.css）の後に読み込む。
+ * 水色と朱。富士山のペンキ絵、ゆ・男湯女湯ののれん、木札、ホーロー看板、白いタイルの目地。
+ * 見出しは Yuji Syuku（筆文字）、看板は Rampart One（立体の文字）、本文は Zen Kaku Gothic New。
+ */
+:root {
+  --aqua: #7CC6D6;
+  --aqua-deep: #1E6E80;     /* 白地の文字・水色の地の白文字に使う濃い水色 */
+  --vermilion: #A8341F;
+  --navy: #1B3A5C;
+  --wood: #E8D2A8;
+  --tile: #F2F7F7;
+  --ink: #22303A;
+
+  --color-bg: var(--tile);
+  --color-surface: #FFFFFF;
+  --color-text: var(--ink);
+  --color-text-secondary: #4E5D66;
+  --color-primary: var(--aqua-deep);
+  --color-accent: var(--vermilion);
+  --color-on-primary: #FFFFFF;
+  --color-like: var(--vermilion);
+  --color-star: var(--navy);
+  --color-separator: #D3E2E4;
+
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+  --font-heading: "Yuji Syuku", "Hiragino Mincho ProN", serif;
+  --font-sign: "Rampart One", sans-serif;
+  --font-number: "Rampart One", sans-serif;
+  --weight-heading: 400;
+
+  --radius-card: 8px;
+  --radius-badge: 4px;
+  --radius-thumb: 8px;
+  --border-card: none;
+  --shadow-card: 0 2px 0 #D3E2E4, 0 6px 14px rgba(34, 48, 58, .08);
+  --icon-stroke: 2;
+
+  --tabbar-bg: #FFFFFF;
+  --tabbar-border: none;
+  --tabbar-color: var(--ink);
+  --tabbar-active: #FFFFFF;
+  --tabbar-radius: 12px;
+  --tabbar-shadow: 0 6px 18px rgba(34, 48, 58, .16);
+
+  --map-land: #EAF3F2;
+  --map-water: #9ED3DF;
+  --map-park: #D4E6C3;
+  --map-road: #FFFFFF;
+  --map-road-minor: #FFFFFF;
+}
+
+/* 白いタイルの目地 */
+.screen { background: var(--tile) linear-gradient(#DCE9EA 1px, transparent 1px) 0 0 / 26px 26px,
+  linear-gradient(90deg, #DCE9EA 1px, transparent 1px) 0 0 / 26px 26px; }
+
+/* MARK: 画面の骨組み */
+
+.tab-item.is-active { background: var(--aqua-deep); }
+.tab-title { font-size: 10.5px; font-weight: 700; }
+.nav-button { background: #FFFFFF; box-shadow: 0 2px 6px rgba(34, 48, 58, .14); }
+
+/* MARK: のれん（見出しの帯） */
+
+.noren { display: flex; gap: 3px; }
+.noren span { flex: 1; display: flex; align-items: flex-start; justify-content: center; height: 62px; padding-top: 6px; border-radius: 0 0 6px 6px;
+  background: var(--c, var(--aqua-deep)); color: #FFFFFF; font-family: var(--font-heading); font-size: 26px; }
+
+/* 見出し（木札） */
+.section-header { display: flex; align-items: center; gap: 10px; padding: 0 16px; font-size: 21px; }
+.fuda { display: inline-block; padding: 6px 14px 4px; border-radius: 4px; background: var(--wood); color: var(--ink); font-family: var(--font-heading);
+  box-shadow: inset 0 0 0 2px #C9AE7E, 0 2px 0 #B79A66; }
+.fuda.vertical { writing-mode: vertical-rl; padding: 12px 6px; letter-spacing: .08em; }
+
+/* ホーロー看板（濃い色の地・白い縁・角のねじ） */
+.enamel { position: relative; padding: 12px 16px; border-radius: 6px; background: var(--c, var(--navy)); color: #FFFFFF;
+  box-shadow: inset 0 0 0 3px var(--c, var(--navy)), inset 0 0 0 5px #FFFFFF; }
+.enamel::before, .enamel::after { content: ""; position: absolute; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: #C9D3D8; }
+.enamel::before { left: 8px; }
+.enamel::after { right: 8px; }
+
+/* MARK: 部品 */
+
+.card { position: relative; }
+.badge { padding: 3px 9px; font-weight: 700; }
+.badge-category { color: #FFFFFF; background: var(--vermilion); }
+.badge-author { color: #FFFFFF; background: var(--aqua-deep); }
+.count-button { color: var(--ink); font-weight: 700; }
+.like-button.is-on { color: var(--vermilion); }
+.star-button.is-on { color: var(--navy); }
+.rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: var(--wood);
+  color: var(--ink);
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 400;
+  box-shadow: inset 0 0 0 1.5px #C9AE7E;
+}
+.thumbnail { background: var(--aqua); color: var(--ink); }
+.post-title, .carousel-title { font-family: var(--font-body); font-weight: 700; }
+
+/* ロゴ（ぶっちゃけmap のロゴタイプ。銭湯の看板） */
+.logo { display: inline-flex; align-items: center; gap: .2em; line-height: 1; white-space: nowrap; }
+.logo-yu { display: inline-flex; align-items: center; justify-content: center; width: 1.3em; height: 1.3em; border-radius: .2em; background: var(--vermilion); color: #FFFFFF;
+  font-family: var(--font-heading); font-size: .9em; }
+.logo-main { font-family: var(--font-sign); color: var(--aqua-deep); letter-spacing: .02em; }
+.logo-map { font-family: var(--font-sign); font-size: .62em; color: var(--vermilion); }
+
+/* ぶっちゃけコメント（脱衣所の貼り紙） */
+.notice { position: relative; padding: 12px 14px; background: #FFFFFF; border: 1.5px solid var(--color-separator); border-radius: 4px; }
+.notice::before { content: ""; position: absolute; left: 50%; top: -6px; width: 34px; height: 12px; margin-left: -17px; background: rgba(124, 198, 214, .55); transform: rotate(-3deg); }
+.notice-label { font-family: var(--font-heading); font-size: 15px; color: var(--vermilion); }
+.notice-text { margin-top: 4px; font-size: 16px; line-height: 1.6; }
+
+/* ボタン */
+.yu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: var(--aqua-deep);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 3px 0 #134C59;
+}
+.yu-button.secondary { background: #FFFFFF; color: var(--ink); box-shadow: inset 0 0 0 2px var(--aqua-deep), 0 3px 0 var(--aqua-deep); }
+.yu-button.red { background: var(--vermilion); box-shadow: 0 3px 0 #7A2416; }
+
+/* 地図のピン（「ゆ」の小さなのれん） */
+.map-pin {
+  width: 32px;
+  height: 34px;
+  margin: -17px 0 0 -16px;
+  border: none;
+  border-radius: 4px 4px 8px 8px;
+  background: var(--aqua-deep);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: 17px;
+  box-shadow: 0 2px 5px rgba(34, 48, 58, .3);
+}
+.map-pin.is-selected { width: 46px; height: 50px; margin: -25px 0 0 -23px; background: var(--vermilion); font-size: 24px; }
+
+.carousel-card { width: 252px; display: flex; flex-direction: column; gap: 10px; }
+.carousel-card-head { display: flex; gap: 10px; align-items: flex-start; }
+.carousel-card-head .post-area { margin-top: 4px; font-size: 14px; }
+.fuda.small { font-size: 14px; padding: 8px 4px; }
+.carousel-card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }

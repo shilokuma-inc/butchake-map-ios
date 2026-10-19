@@ -42,7 +42,7 @@
   const spot = post.spots[1];
   const pins = post.spots.map(s => ({ order: s.order, x: s.mapPosition.x, y: s.mapPosition.y * 0.5 + 6, selected: s === spot }));
   const sel = pins.find(p => p.selected);
-  const label = `<span class="telop pin-telop" style="left:${sel.x}%;top:${sel.y}%">もりもり寿し 近江町店</span>`;
+  const label = `<span class="telop pin-telop" style="left:${sel.x}%;top:${sel.y}%">${esc(spot.name)}</span>`;
   Mock.mount(Mock.screen({
     className: 'map-screen',
     nav: { title: 'マップ' },

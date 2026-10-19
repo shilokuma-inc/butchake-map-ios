@@ -1,0 +1,22 @@
+{
+  "colors": [
+    {"name": "BrandPrimary", "hex": "#2B6CB0"},
+    {"name": "BrandAccent", "hex": "#DD6B20"},
+    {"name": "背景", "hex": "#F2F2F7"},
+    {"name": "カード", "hex": "#FFFFFF"},
+    {"name": "文字", "hex": "#000000"},
+    {"name": "補足の文字", "hex": "#6C6C70"},
+    {"name": "いいね", "hex": "#FF2D55"},
+    {"name": "スター", "hex": "#FFCC00"}
+  ],
+  "pairs": [
+    {"name": "本文 / カード", "fg": "#000000", "bg": "#FFFFFF", "large": false},
+    {"name": "補足の文字 / カード", "fg": "#6C6C70", "bg": "#FFFFFF", "large": false},
+    {"name": "補足の文字 / 背景", "fg": "#6C6C70", "bg": "#F2F2F7", "large": false},
+    {"name": "順位の数字 / BrandPrimary", "fg": "#FFFFFF", "bg": "#2B6CB0", "large": false},
+    {"name": "属性のバッジ / 薄い青", "fg": "#2B6CB0", "bg": "#DFE9F3", "large": false},
+    {"name": "カテゴリのバッジ / 薄いオレンジ", "fg": "#DD6B20", "bg": "#FAE9DE", "large": false},
+    {"name": "ぶっちゃけコメントの見出し / カード", "fg": "#DD6B20", "bg": "#FFFFFF", "large": false},
+    {"name": "いいね済みの件数 / カード", "fg": "#FF2D55", "bg": "#FFFFFF", "large": false}
+  ]
+}

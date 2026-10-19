@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="1200x1300">
+<meta name="mock-scale" content="2">
+<title>current — ブランドシート</title>
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<style>
+  .sheet { width: 1200px; height: 1300px; }
+  .sheet-lead { margin-top: 8px; color: var(--color-text-secondary); font-size: 17px; }
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .type-sample p { margin-bottom: 10px; }
+  .type-sample .large { font-family: var(--font-heading); font-size: 34px; font-weight: 700; }
+  .type-sample .title { font-family: var(--font-heading); font-size: 22px; font-weight: 700; }
+  .type-sample .note { color: var(--color-text-secondary); font-size: 15px; }
+  .parts { display: flex; flex-direction: column; gap: 16px; width: 520px; }
+  .icon-row { display: flex; gap: 24px; align-items: flex-end; }
+  .app-icon { width: 180px; height: 180px; border-radius: 40px; display: flex; align-items: center; justify-content: center;
+    background: #EEEEEE; color: #C8C8C8; font-size: 34px; font-weight: 500; }
+  .app-icon.small { width: 60px; height: 60px; border-radius: 13px; font-size: 11px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script>
+  // 今のアプリのブランドシート。比較の基準（Before）なので、今のアプリの値をそのまま写す（AA 未満の組もそのまま出す）
+  const { data, parts } = Mock;
+  Mock.mount(`<div class="sheet">
+    <h1 class="sheet-title">current — 今のデザイン</h1>
+    <p class="sheet-lead">青 #2B6CB0 × オレンジ #DD6B20・システムフォント（SF Pro / ヒラギノ角ゴシック）・角丸 16 のカード</p>
+    <div class="columns">
+      <div>
+        <section class="sheet-section"><h2>アプリアイコン（今は仮の画像）</h2>
+          <div class="icon-row"><span class="app-icon">No Image</span><span class="app-icon small">No Image</span></div></section>
+        <section class="sheet-section"><h2>カラーパレット</h2>${Mock.paletteSwatches()}</section>
+        <section class="sheet-section type-sample"><h2>書体</h2>
+          <p class="large">ぶっちゃけmap Butchake Map</p>
+          <p class="title">金沢市民が本気で教える三大回転寿司</p>
+          <p>本文 17pt: 地元民と旅人の本音で選ぶ「マイ三大」。The quick brown fox.</p>
+          <p class="note">補足 15pt: 石川県 金沢市・2026/10/18</p></section>
+      </div>
+      <div>
+        <section class="sheet-section"><h2>コントラスト比（WCAG AA）</h2>${Mock.paletteTable()}</section>
+        <section class="sheet-section"><h2>部品</h2><div class="parts">
+          <div class="badges">${Object.keys(data.categories).map(c => parts.categoryBadge({ category: c })).join('')}</div>
+          <div class="badges">${Object.keys(data.authorTypes).map(a => parts.authorBadge({ authorType: a })).join('')}</div>
+          ${parts.postCard(data.posts[1])}
+        </div></section>
+      </div>
+    </div>
+  </div>`);
+</script>
+</body>
+</html>

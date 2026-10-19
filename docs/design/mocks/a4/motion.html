@@ -25,7 +25,7 @@
   .frame-cap .time { padding: 1px 8px; border: 2px solid var(--ink); background: var(--yellow); font-family: var(--font-number); font-size: 13px; }
   .tap { position: absolute; z-index: 3; width: 46px; height: 46px; border: 3px dashed var(--ink); border-radius: 50%; }
   .like-big { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border: var(--border); background: #FFFFFF; font-family: var(--font-number); font-size: 24px; }
-  .like-big.on { background: var(--red); }
+  .like-big.on .icon { color: var(--red); }
   .mini-card { position: relative; width: 200px; padding: 12px; border: var(--border); background: #FFFFFF; font-size: 14px; font-weight: 900; line-height: 1.4; }
 </style>
 </head>
@@ -50,10 +50,10 @@
       どれも「視差効果を減らす」（Reduce Motion）がオンのときは、沈み込み・落下・揺れをやめて色の切り替えとフェードだけにする。点滅はしない。</p></div>
 
     <div class="motion">
-      ${note('いいね（押し込み）', [['時間', '0.3 秒'], ['イージング', '押した瞬間に影（6pt）が消えてボタンが右下へ 6pt 沈む（linear 0.06 秒）。離すと赤くなり、easeOut 0.2 秒で影ごと戻る'], ['ハプティクス', '沈んだときに impact（rigid）'], ['Reduce Motion', '沈み込みをやめ、赤への色の切り替えだけ（0.15 秒）']])}
+      ${note('いいね（押し込み）', [['時間', '0.3 秒'], ['イージング', '押した瞬間に影（6pt）が消えてボタンが右下へ 6pt 沈む（linear 0.06 秒）。離すとハートが赤くなり、easeOut 0.2 秒で影ごと戻る'], ['ハプティクス', '沈んだときに impact（rigid）'], ['Reduce Motion', '沈み込みをやめ、ハートの赤への切り替えだけ（0.15 秒）']])}
       ${frame('0.00', 'ふつう', like(false, 128, false))}
       ${frame('0.06', '押して沈む（影が消える）', `${like(false, 128, true)}<span class="tap" style="left:82px;top:132px"></span>`)}
-      ${frame('0.12', '赤くなる', like(true, 129, true))}
+      ${frame('0.12', 'ハートが赤くなる', like(true, 129, true))}
       ${frame('0.30', '影ごと戻る', like(true, 129, false))}
     </div>
 

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="1400x1320">
+<meta name="mock-scale" content="2">
+<title>B-2 駅のスタンプラリー — 動きのコマ割り</title>
+<meta name="mock-fonts" content="BIZ UDPGothic|DotGothic16|Kaisei Decol">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&family=Kaisei+Decol:wght@700&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .sheet { width: 1400px; height: 1320px; padding: 48px 56px; background: var(--paper); }
+  .sheet-head { display: flex; align-items: center; gap: 28px; }
+  .sheet-head p { font-size: 17px; font-weight: 700; line-height: 1.6; }
+  .motion { display: grid; grid-template-columns: 300px repeat(4, 1fr); gap: 16px; margin-top: 36px; }
+  .motion-note h2 { display: inline-block; padding: 2px 14px; border-radius: 4px; background: var(--rail); color: #FFFFFF; font-size: 20px; letter-spacing: .06em; }
+  .motion-note dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; margin: 14px 0 0; font-size: 14.5px; line-height: 1.5; }
+  .motion-note dt { font-weight: 700; color: var(--ink); white-space: nowrap; }
+  .motion-note dd { margin: 0; }
+  .frame { display: flex; flex-direction: column; gap: 8px; }
+  .frame-box { position: relative; height: 300px; overflow: hidden; border: 2px solid var(--text); border-radius: 8px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; }
+  .frame-cap { display: flex; gap: 8px; align-items: baseline; font-size: 14px; font-weight: 700; }
+  .frame-cap .time { padding: 1px 8px; border-radius: 3px; background: var(--ink); color: #FFFFFF; font-family: var(--font-ticket); font-size: 13px; }
+  .tap { position: absolute; width: 46px; height: 46px; border: 2px dashed var(--ink); border-radius: 50%; }
+  .like-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 2px solid var(--text); border-radius: 8px; }
+  .like-row .icon { color: var(--ink); }
+  .flap { display: inline-flex; gap: 3px; }
+  .flap span { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 38px; border-radius: 4px; background: var(--text); color: #FFFFFF;
+    font-family: var(--font-ticket); font-size: 24px; overflow: hidden; }
+  .flap span::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #000; }
+  .flap span.turn { transform: perspective(80px) rotateX(38deg); background: #3A4256; }
+  .album { width: 220px; padding: 12px; border-radius: 8px; background: var(--kraft); border: 1px solid #CDBF9C; }
+  .album p { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .album .row { display: flex; gap: 8px; }
+  .album .stamp-mark, .album .stamp-slot { width: 60px; height: 60px; }
+  .album .stamp-mark strong { font-size: 14px; }
+  .stamper { position: absolute; width: 56px; height: 76px; border-radius: 10px 10px 4px 4px; background: linear-gradient(90deg, #3A3F4F, #6A7186 50%, #3A3F4F); }
+  .stamper::after { content: ""; position: absolute; left: 4px; right: 4px; bottom: -8px; height: 10px; border-radius: 2px; background: var(--ink); }
+  .bar { position: absolute; left: 14px; right: 14px; top: 16px; height: 6px; border-radius: 3px; background: var(--rail); }
+  .bar i { position: absolute; top: -6px; width: 18px; height: 18px; margin-left: -9px; border: 4px solid var(--rail); border-radius: 50%; background: #FFFFFF; }
+  .bar b { position: absolute; top: -9px; width: 24px; height: 24px; margin-left: -12px; border-radius: 50%; background: var(--ink); }
+  .mini-card { width: 210px; padding: 12px; border: 1px solid #D9CFB6; border-radius: 6px; background: #FFFFFF; font-size: 14px; font-weight: 700; line-height: 1.4; }
+  .mini-detail { position: absolute; top: 40px; bottom: 0; width: 100%; padding: 14px; background: var(--paper); border-left: 2px solid var(--text); display: flex; flex-direction: column; gap: 10px; }
+  .mini-detail .sign-name { font-size: 22px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 動きのコマ割り。1 つの動きを 4 コマに分け、時間・イージング・ハプティクス・Reduce Motion のときの代わりを添える
+  const { icon, parts } = Mock;
+  const frame = (time, caption, inner) => `<div class="frame"><div class="frame-box">${inner}</div>
+    <p class="frame-cap"><span class="time">${time}</span>${caption}</p></div>`;
+  const note = (title, rows) => `<div class="motion-note"><h2>${title}</h2><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
+  const flap = (digits, turning = -1) => `<span class="flap">${digits.split('').map((d, i) => `<span class="${i === turning ? 'turn' : ''}">${d}</span>`).join('')}</span>`;
+  const like = (on, digits, turning = -1) => `<span class="like-row">${icon(on ? 'heartFill' : 'heart', { size: 28 })}${flap(digits, turning)}</span>`;
+  const album = (third, extra = '') => `<div class="album"><p>スタンプ帳 ${third ? '3' : '2'} / 3</p><div class="row">
+    ${parts.stamp('10.12', '横浜', '')}${parts.stamp('10.16', '札幌', '')}${third || '<span class="stamp-slot">未</span>'}</div>${extra}</div>`;
+  const bar = pos => `<div class="bar"><i style="left:0"></i><i style="left:50%"></i><i style="left:100%"></i><b style="left:${pos}%"></b></div>`;
+  const card = '<div class="mini-card">金沢市民が本気で教える三大回転寿司<br><span style="font-weight:400;color:#4F566A">石川県 金沢市</span></div>';
+  const detail = left => `<div class="mini-detail" style="left:${left}%"><div class="sign"><p class="sign-name">金沢市</p><p class="sign-bar"><span>◀ グルメ</span><span>地元民 ▶</span></p></div>
+    <p style="font-weight:700;font-size:15px;line-height:1.4">金沢市民が本気で教える三大回転寿司</p></div>`;
+
+  Mock.mount(`<div class="sheet">
+    <div class="sheet-head">${Mock.logo(34)}<p>B-2「駅のスタンプラリー」の動き。発車標の数字がパタパタ回る・台紙にスタンプを押す・路線を次の駅へ進む。<br>
+      どれも「視差効果を減らす」（Reduce Motion）がオンのときは、回転・押し込み・横の移動をやめてフェードだけにする。点滅はしない。</p></div>
+
+    <div class="motion">
+      ${note('いいね（発車標がパタパタ）', [['時間', '0.4 秒'], ['イージング', 'ハートは easeOut 0.15 秒で塗る。件数は変わる桁だけ、発車標の札が上から下へ easeIn 0.12 秒ずつ 2 段で回る'], ['ハプティクス', '札が止まったときに selection'], ['Reduce Motion', '札を回さず、ハートの塗りと件数を 0.15 秒でクロスフェード']])}
+      ${frame('0.00', '押す', `${like(false, '128')}<span class="tap" style="left:60px;top:126px"></span>`)}
+      ${frame('0.15', 'ハートが塗られ、札が回り始める', like(true, '128', 2))}
+      ${frame('0.27', '札の後ろ半分', like(true, '129', 2))}
+      ${frame('0.40', '止まる', like(true, '129'))}
+    </div>
+
+    <div class="motion">
+      ${note('投稿の公開（スタンプを押す）', [['時間', '1.0 秒'], ['イージング', 'スタンプ台が easeIn 0.2 秒で下りて押し、0.08 秒止まって easeOut で上がる。インクの丸は 1.1 倍からにじんで 1.0 倍に'], ['ハプティクス', '押した瞬間（0.20 秒）に impact（heavy）、3 こそろったら notification（success）'], ['Reduce Motion', 'スタンプ台を出さず、インクの丸と「公開しました」を 0.2 秒でフェードイン']])}
+      ${frame('0.00', '「公開する」を押す', '<span class="rail-button" style="font-size:18px;padding:14px 26px">公開する</span><span class="tap" style="left:150px;top:150px"></span>')}
+      ${frame('0.15', 'スタンプ台が下りてくる', `${album('')}<span class="stamper" style="left:166px;top:46px"></span>`)}
+      ${frame('0.20', 'ポン（インクがにじむ）', album(parts.stamp('10.18', '公開', '金沢', 'transform:rotate(-8deg) scale(1.1)')))}
+      ${frame('1.00', '3 こそろった', album(parts.stamp('10.18', '公開', '金沢'), '<p style="margin:10px 0 0;color:#24387F;font-family:var(--font-stamp)">公開しました</p>'))}
+    </div>
+
+    <div class="motion">
+      ${note('画面遷移（次の駅へ）', [['時間', '0.45 秒'], ['イージング', '押してから 0.1 秒後に動き始め、上の路線の帯の紺の丸と、右から入る投稿詳細が、easeInOut 0.35 秒で同じ割合だけ進む（0.45 秒で着く）'], ['ハプティクス', '駅に着いたとき（0.45 秒）に selection'], ['Reduce Motion', '帯の移動と横の移動をやめ、0.2 秒のクロスフェード']])}
+      ${frame('0.00', 'カードを押す', `${bar(0)}${card}<span class="tap" style="left:120px;top:150px"></span>`)}
+      ${frame('0.15', '紺の丸が動き出す', `${bar(3)}${card}${detail(94)}`)}
+      ${frame('0.30', '6 割ほど進む', `${bar(31)}${card}${detail(38)}`)}
+      ${frame('0.45', '次の駅に着く', `${bar(50)}${detail(0)}`)}
+    </div>
+  </div>`);
+</script>
+</body>
+</html>

@@ -78,7 +78,7 @@
       どれも「視差効果を減らす」（Reduce Motion）がオンのときは、はんこ・揺れ・移動をやめてフェードだけにする。点滅はしない。</p></div>
 
     <div class="motion">
-      ${note('いいね（はんこを押す）', [['時間', '0.5 秒'], ['イージング', 'はんこが easeIn 0.1 秒で下り、押した瞬間に 0.96 倍へ縮んで戻る（spring・damping 0.7）。朱の印は 0.3 秒残してフェード'], ['ハプティクス', '3 コマ目の押した瞬間に impact（medium）'], ['Reduce Motion', 'はんこと印を出さず、ハートの塗りと件数を 0.15 秒でクロスフェード']])}
+      ${note('いいね（はんこを押す）', [['時間', '0.5 秒'], ['イージング', 'はんこが easeIn 0.22 秒で下りて押し、押した瞬間にボタンが 0.96 倍へ縮んで戻る（spring・damping 0.7）。朱の印は 0.3 秒残してフェード'], ['ハプティクス', '3 コマ目の押した瞬間に impact（medium）'], ['Reduce Motion', 'はんこと印を出さず、ハートの塗りと件数を 0.15 秒でクロスフェード']])}
       ${frame('0.00', '押す', `${like(false, 128)}<span class="tap" style="left:58px;top:126px"></span>`)}
       ${frame('0.10', 'はんこが下りてくる', `<span class="hanko-block" style="left:96px;top:36px"></span>${like(false, 128)}`)}
       ${frame('0.22', 'ポンと押される', `<span class="seal" style="left:120px;top:60px">いいね</span>${like(true, 129)}`)}

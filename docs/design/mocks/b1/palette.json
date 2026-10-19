@@ -21,6 +21,7 @@
     {"name": "紙の文字 / 紺（属性のバッジ・選んだタブ・ボタン）", "fg": "#FFFAEE", "bg": "#1F3A68", "large": false},
     {"name": "紙の文字 / 朱（順位の角印・其の一の帯）", "fg": "#FFFAEE", "bg": "#B23A26", "large": false},
     {"name": "表紙の見出し（クリーム / 紺）", "fg": "#F6ECD6", "bg": "#1F3A68", "large": false},
-    {"name": "表紙の添え書き / 紺", "fg": "#F2D9A0", "bg": "#1F3A68", "large": false}
+    {"name": "表紙の添え書き / 紺", "fg": "#F2D9A0", "bg": "#1F3A68", "large": false},
+    {"name": "方位の「北」（紺 / 地図の地）", "fg": "#1F3A68", "bg": "#F3E6C8", "large": false}
   ]
 }

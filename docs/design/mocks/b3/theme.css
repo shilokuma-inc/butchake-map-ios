@@ -159,6 +159,5 @@
 .carousel-card { width: 262px; display: flex; flex-direction: column; gap: 8px; }
 .menu-kicker { font-size: 13px; color: var(--color-text-secondary); letter-spacing: .06em; }
 .menu-list { display: flex; flex-direction: column; gap: 6px; }
-.carousel-card .menu-row { font-size: 14px; }
+.carousel-card .menu-row { font-size: 15px; }
 .carousel-card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
-.post-card .menu-row .rank { margin-right: 4px; }

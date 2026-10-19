@@ -5,7 +5,6 @@
 :root {
   --ink: #111111;
   --red: #C8102E;
-  --tone: #EDEDED;          /* 薄いスクリーントーンを地にしたときの色（文字の地として使う） */
 
   --color-bg: #FFFFFF;
   --color-surface: #FFFFFF;

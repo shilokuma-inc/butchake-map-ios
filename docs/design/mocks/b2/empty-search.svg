@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「見つかりませんでした」: 駅名標の駅名が「？」で、前後の駅も空白 -->
+  <rect x="40" y="40" width="240" height="120" rx="10" fill="#FFFFFF" stroke="#1B1F2A" stroke-width="4"/>
+  <rect x="42" y="124" width="236" height="34" fill="#2F7A45"/>
+  <path d="M60 141 l12 -8 v16 z M260 141 l-12 -8 v16 z" fill="#FFFFFF"/>
+  <path d="M84 141 H130 M190 141 H236" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="6 6" stroke-linecap="round"/>
+  <path d="M146 72 a14 14 0 1 1 20 12 q-6 4 -6 12" fill="none" stroke="#24387F" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="160" cy="110" r="5" fill="#24387F"/>
+  <path d="M96 160 V214 M224 160 V214" stroke="#1B1F2A" stroke-width="6"/>
+  <path d="M70 214 H250" stroke="#9C9173" stroke-width="4" stroke-linecap="round"/>
+</svg>

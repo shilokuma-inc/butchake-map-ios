@@ -1,0 +1,62 @@
+/*
+ * デザインのトークン（CSS 変数）。既定値は今のアプリの見た目（青 #2B6CB0 × オレンジ #DD6B20・システムフォント・角丸 16 のカード）。
+ * 案ごとに、ページの <style> か案の theme.css で :root の値を上書きする。
+ */
+:root {
+  /* 色 */
+  --color-bg: #F2F2F7;              /* 画面の背景（systemGroupedBackground） */
+  --color-surface: #FFFFFF;         /* カードの背景（secondarySystemGroupedBackground） */
+  --color-text: #000000;
+  --color-text-secondary: #6C6C70;  /* secondaryLabel を白地に重ねた色 */
+  --color-primary: #2B6CB0;         /* BrandPrimary */
+  --color-accent: #DD6B20;          /* BrandAccent */
+  --color-on-primary: #FFFFFF;
+  --color-like: #FF2D55;
+  --color-star: #FFCC00;
+  --color-separator: #D1D1D6;
+  --color-badge-category-bg: rgba(221, 107, 32, .15);
+  --color-badge-category-fg: #DD6B20;
+  --color-badge-author-bg: rgba(43, 108, 176, .15);
+  --color-badge-author-fg: #2B6CB0;
+
+  /* 書体 */
+  --font-body: -apple-system, "SF Pro Text", "Hiragino Sans", sans-serif;
+  --font-heading: -apple-system, "SF Pro Display", "Hiragino Sans", sans-serif;
+  --font-number: var(--font-heading);
+  --weight-heading: 700;
+  --size-body: 17px;          /* 本文（body）。モックでも本文は 15px 以上にする */
+  --size-subhead: 15px;
+  --size-caption: 13px;
+  --size-title: 20px;
+  --size-large-title: 34px;
+
+  /* 形 */
+  --radius-card: 16px;
+  --radius-badge: 999px;
+  --radius-thumb: 12px;
+  --border-card: none;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, .08);
+  --icon-stroke: 2;
+
+  /* 画面の骨組み */
+  --status-color: #000000;
+  --nav-bg: transparent;
+  --nav-color: var(--color-text);
+  --tabbar-bg: rgba(255, 255, 255, .82);
+  --tabbar-border: 1px solid rgba(0, 0, 0, .06);
+  --tabbar-color: #6C6C70;
+  --tabbar-active: var(--color-primary);
+  --tabbar-radius: 32px;
+  --tabbar-shadow: 0 6px 24px rgba(0, 0, 0, .12);
+  --home-indicator: #000000;
+
+  /* 地図のイラスト */
+  --map-land: #F1EEE6;
+  --map-water: #A9D3F2;
+  --map-park: #CFE8C2;
+  --map-road: #FFFFFF;
+  --map-road-minor: #FBFAF7;
+  --map-pin-bg: var(--color-primary);
+  --map-pin-fg: #FFFFFF;
+  --map-pin-selected-bg: var(--color-accent);
+}

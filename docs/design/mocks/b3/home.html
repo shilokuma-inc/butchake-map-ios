@@ -33,7 +33,7 @@
   const posts = data.posts;
   const byLikes = [...posts].sort((a, b) => b.likeCount - a.likeCount);
   Mock.mount(Mock.screen({
-    nav: { large: true, titleHTML: Mock.logo(30) },
+    nav: { large: true, titleHTML: Mock.logo(30, false) },
     tab: 'home',
     body: `<div class="lace today"><p>本日のおすすめ<small>地元民と旅人の、本音の三大をどうぞ。</small></p></div>
       <div class="home">

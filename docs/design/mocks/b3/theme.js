@@ -35,7 +35,7 @@
         <div><h3 class="post-title">${esc(post.title)}</h3><p class="post-area">${esc(post.prefecture)} ${esc(post.city)}</p></div>
       </div>
       <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
-      <ol class="menu-list">${post.spots.map(s => parts.menuRow(s.name, `${s.order}位`, parts.rank(s.order))).join('')}</ol>
+      <ol class="menu-list">${post.spots.map(s => parts.menuRow(s.name, `No.${s.order}`)).join('')}</ol>
       <div class="post-card-foot"><span class="post-author">${esc(post.authorName)}</span>${parts.likeButton(post)}${parts.starButton(post)}</div>
     </article>`;
   };

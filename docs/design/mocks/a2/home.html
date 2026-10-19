@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>A-2 マンガのツッコミ — ホーム</title>
+<meta name="mock-fonts" content="Reggae One|Yusei Magic|M PLUS 1p">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reggae+One&family=Yusei+Magic&family=M+PLUS+1p:wght@500;700;800&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* 1 ページ目の扉: 集中線の中に叫びのフキダシのロゴ */
+  .title-panel { position: relative; height: 128px; margin: 0 12px; overflow: hidden; border: var(--panel); display: flex; align-items: center; justify-content: center; }
+  .title-panel .shout { padding: 22px 30px; }
+  .title-panel .note { position: absolute; right: 8px; bottom: 6px; font-family: var(--font-hand); font-size: 13px; background: #FFFFFF; padding: 0 4px; }
+  .home { display: flex; flex-direction: column; gap: 18px; padding-top: 18px; }
+  .home section { display: flex; flex-direction: column; gap: 10px; }
+  .section-header { padding: 0 16px; }
+  .carousel { padding: 16px 12px 4px; margin-top: -10px; gap: 10px; }
+  .carousel .card:nth-child(odd) { transform: rotate(-1deg); }
+  .carousel .card:nth-child(even) { transform: rotate(1deg); }
+  .feed { display: flex; flex-direction: column; gap: 14px; padding: 6px 12px 0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // ホーム: 集中線のコマに叫びのフキダシのロゴ・コマ枠のカルーセル（今週のぶっちゃけ／急上昇）・新着の投稿のフィード
+  const { data, parts } = Mock;
+  const posts = data.posts;
+  const byLikes = [...posts].sort((a, b) => b.likeCount - a.likeCount);
+  Mock.mount(Mock.screen({
+    nav: null,
+    tab: 'home',
+    body: `<div class="title-panel"><span class="speed-lines"></span>
+        <span class="shout-wrap"><span class="shout">${Mock.logo(30)}</span></span>
+        <span class="note">地元民と旅人の本音、全部見せます</span></div>
+      <div class="home">
+        <section>${parts.sectionHeader(data.strings.weeklyPicks, 'ドドン')}
+          <div class="carousel">${posts.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
+        <section>${parts.sectionHeader(data.strings.trending, 'ザワッ')}
+          <div class="carousel">${byLikes.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
+        <section>${parts.sectionHeader(data.strings.latestPosts)}
+          <div class="feed">${posts.slice(0, 2).map(parts.postCard).join('')}</div></section>
+      </div>`,
+  }));
+</script>
+</body>
+</html>

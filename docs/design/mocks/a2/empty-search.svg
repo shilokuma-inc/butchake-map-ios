@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「見つかりませんでした」: 汗をかく虫めがねと「!?」 -->
+  <g stroke="#111111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M190 158 L246 214" stroke-width="20"/>
+    <circle cx="142" cy="112" r="64" fill="#FFFFFF"/>
+    <path d="M122 104 l12 8 M164 100 l-12 8" fill="none"/>
+    <path d="M124 140 q18 -10 36 0" fill="none"/>
+  </g>
+  <path d="M212 70 q10 14 0 22 q-10 -8 0 -22 z" fill="#FFFFFF" stroke="#111111" stroke-width="3"/>
+  <path d="M74 84 q8 12 0 18 q-8 -6 0 -18 z" fill="#FFFFFF" stroke="#111111" stroke-width="3"/>
+  <rect x="250" y="26" width="14" height="46" rx="5" fill="#C8102E" transform="skewX(-10)"/>
+  <circle cx="249" cy="84" r="7" fill="#C8102E"/>
+  <path d="M272 40 c0 -16 30 -16 30 2 c0 12 -14 12 -14 26" fill="none" stroke="#111111" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="288" cy="84" r="6" fill="#111111"/>
+</svg>

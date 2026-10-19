@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="1400x2760">
+<meta name="mock-scale" content="2">
+<title>A-2 マンガのツッコミ — ブランドシート</title>
+<meta name="mock-fonts" content="Reggae One|Yusei Magic|M PLUS 1p">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reggae+One&family=Yusei+Magic&family=M+PLUS+1p:wght@500;700;800&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .sheet { width: 1400px; height: 2760px; padding: 56px; background: #FFFFFF; }
+  .sheet-head { display: flex; align-items: center; gap: 32px; }
+  .sheet-head p { font-size: 18px; font-weight: 700; line-height: 1.6; }
+  .grid { display: grid; grid-template-columns: 600px 1fr; gap: 48px; margin-top: 8px; }
+  .sheet-section > h2 { display: inline-block; font-weight: 400; padding: 2px 12px; background: var(--ink); color: #FFFFFF; transform: skewX(-8deg); }
+  .panel { padding: 24px; border: var(--panel); background: #FFFFFF; }
+  .icon-big { display: block; width: 512px; height: 512px; border-radius: 115px; border: 1px solid rgba(0, 0, 0, .15); }
+  .icon-note { margin-top: 10px; font-size: 15px; font-weight: 700; color: var(--color-text-secondary); }
+  .home-row { display: flex; gap: 22px; align-items: flex-start; margin-top: 18px; padding: 22px 24px; border-radius: 24px;
+    background: linear-gradient(160deg, #5BA8E8, #9C7BEA); }
+  .home-app { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 64px; color: #FFFFFF; font-size: 12px; font-weight: 700; }
+  .home-app img, .home-app span.dummy { width: 60px; height: 60px; border-radius: 13.4px; }
+  .home-app span.dummy { background: rgba(255, 255, 255, .55); }
+  .logo-panel { display: flex; flex-direction: column; gap: 26px; align-items: flex-start; }
+  .nav-sample { position: relative; width: 402px; height: 120px; border: var(--panel); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .nav-sample .shout { padding: 18px 26px; }
+  .empty-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .empty { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .empty img { width: 240px; height: 180px; }
+  .empty strong { font-family: var(--font-heading); font-weight: 400; font-size: 18px; }
+  .empty p { font-size: 15px; color: var(--color-text-secondary); font-weight: 700; }
+  .type-row { display: flex; flex-direction: column; gap: 6px; padding: 14px 0; border-bottom: 2px solid var(--ink); }
+  .type-row:last-child { border-bottom: none; }
+  .type-name { font-size: 14px; font-weight: 800; color: var(--color-text-secondary); }
+  .t-heading { font-family: var(--font-heading); font-size: 34px; line-height: 1.3; }
+  .t-hand { font-family: var(--font-hand); font-size: 22px; }
+  .t-body800 { font-size: 22px; font-weight: 800; }
+  .t-body { font-size: 17px; font-weight: 500; line-height: 1.6; }
+  .parts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  .parts-col { display: flex; flex-direction: column; gap: 22px; }
+  .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .tabbar-sample { position: relative; width: 402px; height: 90px; }
+  .tabbar-sample .tab-bar { bottom: 8px; }
+  .pins-sample { position: relative; height: 90px; width: 100%; border: var(--panel); background: var(--map-land); }
+  .contrast-table { border: var(--panel); }
+  .contrast-table th, .contrast-table td { border-bottom: 1px solid #BDBDBD; }
+  .swatch-chip { border: 2.5px solid var(--ink); border-radius: 0; }
+  /* シェアカード（360x450pt。SNS に共有する画像） */
+  .share { width: 360px; height: 450px; display: flex; flex-direction: column; border: var(--panel); background: #FFFFFF; overflow: hidden; }
+  .share-head { position: relative; display: flex; align-items: center; justify-content: center; height: 70px; overflow: hidden; border-bottom: var(--panel); }
+  .share-head .logo { position: relative; background: #FFFFFF; padding: 4px 10px; border: 2.5px solid var(--ink); }
+  .share-body { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 16px 18px; }
+  .share-title { font-family: var(--font-heading); font-size: 20px; line-height: 1.35; }
+  .share-spots { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: var(--panel); }
+  .share-spots li { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; white-space: nowrap; }
+  .share-foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; }
+  .share-foot strong { display: block; color: var(--red); font-size: 14px; font-weight: 800; }
+  .share-foot span { font-size: 13px; font-weight: 700; color: var(--color-text-secondary); }
+  .parts-col .balloon { border-radius: 26px; text-align: left; }
+  .qr { width: 84px; height: 84px; padding: 6px; border: var(--panel); background: #FFFFFF; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // ブランドシート: アイコン・ロゴ・空の状態のイラスト・配色とコントラスト比・書体・部品・シェアカード
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  // QR コードの代わりの模様（モックなので読み取れない）
+  const qrCells = [];
+  for (let y = 0; y < 21; y += 1) {
+    for (let x = 0; x < 21; x += 1) {
+      const finder = (x < 7 && y < 7) || (x > 13 && y < 7) || (x < 7 && y > 13);
+      const ring = finder && (x % 14 === 0 || y % 14 === 0 || x % 14 === 6 || y % 14 === 6 || (x % 14 > 1 && x % 14 < 5 && y % 14 > 1 && y % 14 < 5));
+      const noise = !finder && ((x * 7 + y * 13 + x * y) % 5 < 2);
+      if (ring || noise) {
+        qrCells.push(`<rect x="${x}" y="${y}" width="1" height="1"/>`);
+      }
+    }
+  }
+  const qr = `<svg class="qr" viewBox="0 0 21 21" aria-hidden="true"><g fill="#111111">${qrCells.join('')}</g></svg>`;
+  const shareCard = `<div class="share">
+    <div class="share-head"><span class="speed-lines"></span>${Mock.logo(24)}</div>
+    <div class="share-body">
+      <p class="share-title">${esc(post.title)}</p>
+      <div class="badges"><span class="badge badge-category">${icon('mappin', { size: 13 })}${esc(post.prefecture)} ${esc(post.city)}</span>${parts.categoryBadge(post)}</div>
+      <ol class="share-spots">${post.spots.map(s => `<li>${parts.rank(s.order)}${esc(s.name)}</li>`).join('')}</ol>
+      <div class="share-foot"><div><strong>${esc(data.strings.scanToSee)}</strong><span>butchake-map.example</span></div>${qr}</div>
+    </div>
+  </div>`;
+  const pinsSample = Mock.mapIllustration([]).replace('<div class="map-illustration">', '<div class="map-illustration" style="display:none">');
+  Mock.mount(`<div class="sheet">
+    <div class="sheet-head">${Mock.logo(64)}
+      <p>A-2「マンガのツッコミ」<br>白地に黒のスクリーントーン・集中線・コマ枠。描き文字の見出しと手書きのフキダシに、差し色の赤 1 色で「ぶっちゃけ」のツッコミを入れる。</p></div>
+    <div class="grid">
+      <div>
+        <section class="sheet-section"><h2>アプリアイコン</h2>
+          <img class="icon-big" src="icon.svg" alt="">
+          <p class="icon-note">1024x1024 で描いた SVG（角丸は iOS がかけるため、ここでは見え方の確認として丸めて表示）</p>
+          <div class="home-row">
+            <span class="home-app"><span class="dummy"></span>写真</span>
+            <span class="home-app"><img src="icon.svg" alt="">ぶっちゃけ</span>
+            <span class="home-app"><span class="dummy"></span>天気</span>
+            <span class="home-app"><span class="dummy"></span>メモ</span>
+            <span class="home-app"><span class="dummy"></span>時計</span>
+          </div>
+          <p class="icon-note">ホーム画面の大きさ（60pt 相当）</p></section>
+        <section class="sheet-section"><h2>ロゴ</h2>
+          <div class="panel logo-panel">${Mock.logo(72)}
+            <div class="nav-sample"><span class="speed-lines"></span><span class="shout-wrap"><span class="shout">${Mock.logo(28)}</span></span></div>
+            <div class="nav-sample" style="height:60px">${Mock.navBar({ title: '', titleHTML: Mock.logo(20) })}</div>
+            <p class="icon-note">ナビゲーションに置いたとき（上: ホームの扉のコマ、下: 小さなタイトルの位置）</p></div></section>
+        <section class="sheet-section"><h2>空の状態のイラスト</h2>
+          <div class="panel empty-row">
+            <div class="empty"><img src="empty-posts.svg" alt=""><strong>${esc(data.strings.noPosts)}</strong><p>${esc(data.strings.noPostsDescription)}</p></div>
+            <div class="empty"><img src="empty-search.svg" alt=""><strong>${esc(data.strings.noResults)}</strong><p>${esc(data.strings.noResultsDescription)}</p></div>
+          </div></section>
+      </div>
+      <div>
+        <section class="sheet-section"><h2>カラーパレット</h2>${Mock.paletteSwatches()}</section>
+        <section class="sheet-section"><h2>コントラスト比（WCAG AA）</h2>${Mock.paletteTable()}</section>
+        <section class="sheet-section"><h2>書体</h2><div class="panel">
+          <div class="type-row"><span class="type-name">見出し・効果音・数字: Reggae One（OFL）</span>
+            <span class="t-heading">ぶっちゃけ三大 ドーン!! 123</span></div>
+          <div class="type-row"><span class="type-name">フキダシ（ぶっちゃけコメント）: Yusei Magic（OFL）</span>
+            <span class="t-hand">白えびは絶対に頼んで！ Honest comment</span></div>
+          <div class="type-row"><span class="type-name">タイトル・ロゴの map: M PLUS 1p ExtraBold（OFL）</span>
+            <span class="t-body800">金沢市民が本気で教える三大回転寿司 Butchake Map</span></div>
+          <div class="type-row"><span class="type-name">本文: M PLUS 1p Medium 17pt（OFL）</span>
+            <span class="t-body">ランチのコスパと鮮度は県内トップクラス。The quick brown fox jumps over the lazy dog.</span></div>
+        </div></section>
+      </div>
+    </div>
+    <section class="sheet-section"><h2>部品</h2>
+      <div class="parts-grid">
+        <div class="parts-col">
+          ${parts.postCard(data.posts[1])}
+          <div class="row">${Object.keys(data.categories).map(c => parts.categoryBadge({ category: c })).join('')}</div>
+          <div class="row">${Object.keys(data.authorTypes).map(a => parts.authorBadge({ authorType: a })).join('')}
+            <span class="sfx">ドドン</span><span class="sfx">ザワ…</span><span class="sfx">ドーン!!</span></div>
+          <div class="row"><span class="manga-button red"><span>${esc(data.strings.publish)}</span></span>
+            <span class="manga-button"><span>${esc(data.strings.viewPost)}</span></span>
+            <span class="manga-button secondary"><span style="display:inline-flex;gap:6px;align-items:center">${icon('map', { size: 18 })}${esc(data.strings.openInMaps)}</span></span>
+            ${parts.likeButton(post)}${parts.starButton(data.posts[1])}</div>
+          <div class="tabbar-sample">${Mock.tabBar('map')}</div>
+          <div class="pins-sample">${pinsSample}
+            <span class="map-pin" style="left:20%;top:70%"><span>1</span></span>
+            <span class="map-pin" style="left:40%;top:70%"><span>2</span></span>
+            <span class="map-pin is-selected" style="left:66%;top:76%"><span>3</span></span></div>
+        </div>
+        <div class="parts-col">${shareCard}${parts.balloon(post.spots[1].recommendation)}<div class="shout-wrap" style="align-self:flex-start"><span class="shout" style="font-family:var(--font-heading);font-size:22px">ぶっちゃけ!!</span></div></div>
+      </div></section>
+  </div>`);
+</script>
+</body>
+</html>

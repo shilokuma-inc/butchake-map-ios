@@ -47,7 +47,7 @@
   const like = (on, count) => `<span class="like-big${on ? ' on' : ''}">${icon(on ? 'heartFill' : 'heart', { size: 28 })}${count}</span>`;
   const bubbles = list => list.map(([x, y, r, o]) => `<span class="bubble" style="left:${x}px;top:${y}px;width:${r}px;height:${r}px;opacity:${o}"></span>`).join('');
   const noren = (h, rot = 0, half = 0) => `<div class="noren-big" style="height:${h}px">${['ぶ', 'っ', 'ち', 'ゃ', 'け'].map((c, i) =>
-    `<span style="--c:${i % 2 ? '#A8341F' : '#1E6E80'};transform:translateX(${i < 2.5 ? -half : half}px) skewX(${i < 2.5 ? -rot : rot}deg)">${c}</span>`).join('')}</div>`;
+    `<span style="--c:${i % 2 ? '#A8341F' : '#1E6E80'};transform:translateX(${i < 2 ? -half : i > 2 ? half : 0}px) skewX(${i < 2 ? -rot : i > 2 ? rot : 0}deg);opacity:${i === 2 && half ? 0 : 1}">${c}</span>`).join('')}</div>`;
   const card = '<div class="mini-card">金沢市民が本気で教える<br>三大回転寿司</div>';
 
   Mock.mount(`<div class="sheet">
@@ -64,9 +64,9 @@
 
     <div class="motion">
       ${note('投稿の公開（下足札を掛ける）', [['時間', '0.9 秒'], ['イージング', '「壱番」の木札が上から easeIn 0.2 秒で下りてカチッと掛かり、2 回だけ小さく揺れる（spring・damping 0.5）。続けて「公開しました」の貼り紙がフェードで出る'], ['ハプティクス', '掛かった瞬間に impact（rigid）、貼り紙で notification（success）'], ['Reduce Motion', '下りる・揺れるをやめ、木札と貼り紙を 0.2 秒でフェードイン']])}
-      ${frame('0.00', '「公開する」を押す', '<span class="yu-button red" style="font-size:18px;padding:14px 26px">公開する</span><span class="tap" style="left:150px;top:150px"></span>')}
-      ${frame('0.20', '木札が下りてくる', '<span class="fuda vertical" style="font-size:26px;padding:16px 10px;transform:translateY(-30px)">壱番</span>')}
-      ${frame('0.30', 'カチッと掛かって揺れる', '<span class="fuda vertical" style="font-size:26px;padding:16px 10px;transform:rotate(-6deg);transform-origin:top center">壱番</span>')}
+      ${frame('0.00', '「公開する」を押す', '<span class="yu-button red" style="font-size:18px;padding:14px 26px">公開する</span><span class="tap" style="left:140px;top:136px;border-color:#22303A"></span>')}
+      ${frame('0.10', '木札が下りてくる', '<span class="fuda vertical" style="font-size:26px;padding:16px 10px;transform:translateY(-30px)">壱番</span>')}
+      ${frame('0.20', 'カチッと掛かって揺れる', '<span class="fuda vertical" style="font-size:26px;padding:16px 10px;transform:rotate(-6deg);transform-origin:top center">壱番</span>')}
       ${frame('0.90', '「公開しました」の貼り紙', '<div style="display:flex;flex-direction:column;align-items:center;gap:14px"><span class="fuda vertical" style="font-size:26px;padding:16px 10px">壱番</span><div class="notice" style="width:200px"><p class="notice-label">公開しました</p><p class="notice-text" style="font-size:15px">ホームに出ました</p></div></div>')}
     </div>
 

@@ -118,12 +118,12 @@
     }
     const rows = palette.pairs.map(pair => {
       const ratio = contrastRatio(pair.fg, pair.bg);
-      const required = pair.large ? 3 : 4.5;
+      const required = pair.large === true ? 3 : 4.5;
       return `<tr>
         <td><span class="contrast-sample" style="color:${esc(pair.fg)};background:${esc(pair.bg)}">あA</span></td>
         <td>${esc(pair.name)}</td>
         <td><code>${esc(pair.fg.toUpperCase())}</code> / <code>${esc(pair.bg.toUpperCase())}</code></td>
-        <td>${pair.large ? '大' : '通常'}</td>
+        <td>${pair.large === true ? '大' : '通常'}</td>
         <td class="contrast-ratio">${ratio.toFixed(2)}:1 ${ratio >= required ? 'AA' : '× AA 未満'}</td>
       </tr>`;
     }).join('');

@@ -60,6 +60,8 @@ def check_directory(directory):
         palette = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise ValueError(f"{path} を読めません: {error}") from error
+    if not isinstance(palette, dict):
+        raise ValueError(f"{path} の最上位は JSON のオブジェクトにしてください")
     pairs = palette.get("pairs")
     if not isinstance(pairs, list) or not pairs:
         raise ValueError(f"{path} に pairs（文字色と背景色の組）がありません")
@@ -71,7 +73,10 @@ def check_directory(directory):
             name, fg, bg = pair["name"], pair["fg"], pair["bg"]
         except (KeyError, TypeError) as error:
             raise ValueError(f"{path} の pairs の {index} 番目に name / fg / bg がありません") from error
-        large = bool(pair.get("large", False))
+        large = pair.get("large", False)
+        if not isinstance(large, bool):
+            # "false" のような文字列を True と読んで基準を 3:1 に緩めないよう、真偽値だけを受け付ける
+            raise ValueError(f"{path} の pairs の {index} 番目の large は true / false で書いてください")
         ratio = contrast_ratio(fg, bg)
         required = AA_LARGE if large else AA_NORMAL
         # 表示は小数 2 桁に丸めるので、判定も丸める前の値で行う（4.499 を 4.50 と出して合格にしない）

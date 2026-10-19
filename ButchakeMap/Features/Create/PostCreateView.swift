@@ -91,15 +91,17 @@ private struct PostFormContent: View {
         Section("Basic Info") {
             textField("Title", text: $viewModel.post.title, field: .title)
             VStack(alignment: .leading, spacing: 4) {
-                Picker("Prefecture", selection: $viewModel.post.prefecture) {
-                    Text("Not selected")
-                        .tag("")
-                    ForEach(Prefecture.allCases) { prefecture in
-                        Text(verbatim: prefecture.rawValue)
-                            .tag(prefecture.rawValue)
+                NavigationLink {
+                    PrefectureSelectionList(selection: $viewModel.post.prefecture)
+                } label: {
+                    LabeledContent("Prefecture") {
+                        if viewModel.post.prefecture.isEmpty {
+                            Text("Not selected")
+                        } else {
+                            Text(verbatim: viewModel.post.prefecture)
+                        }
                     }
                 }
-                .pickerStyle(.navigationLink)
                 .accessibilityIdentifier(Self.accessibilityIdentifier(for: .prefecture))
                 errorText(for: .prefecture)
             }
@@ -250,6 +252,45 @@ private struct PostFormContent: View {
                 onOutcomeDismissed(outcome)
             }
         }
+    }
+}
+
+/// 都道府県の一覧。選んだらフォームに戻る。
+/// `.pickerStyle(.navigationLink)` の Picker は、iOS 26.5 では選んでも一覧から戻らなかったため、戻る処理を自前で持つ
+private struct PrefectureSelectionList: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var selection: String
+
+    var body: some View {
+        List {
+            option(Text("Not selected"), value: "")
+            ForEach(Prefecture.allCases) { prefecture in
+                option(Text(verbatim: prefecture.rawValue), value: prefecture.rawValue)
+            }
+        }
+        .navigationTitle(Text("Prefecture"))
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func option(_ label: Text, value: String) -> some View {
+        let isSelected = selection == value
+        return Button {
+            selection = value
+            dismiss()
+        } label: {
+            HStack {
+                label
+                    .foregroundStyle(.primary)
+                Spacer()
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .foregroundStyle(.tint)
+                        .accessibilityHidden(true)
+                }
+            }
+            .contentShape(Rectangle())
+        }
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

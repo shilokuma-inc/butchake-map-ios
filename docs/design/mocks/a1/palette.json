@@ -1,0 +1,22 @@
+{
+  "colors": [
+    {"name": "インク（線・文字）", "hex": "#1C1A17"},
+    {"name": "オレンジ", "hex": "#FF7A1A"},
+    {"name": "イエロー", "hex": "#FFD23F"},
+    {"name": "クリーム（背景）", "hex": "#FFF3C9"},
+    {"name": "白（カード）", "hex": "#FFFFFF"},
+    {"name": "補足の文字", "hex": "#5E4B33"},
+    {"name": "ピンク（いいね）", "hex": "#E8336D"},
+    {"name": "濃いオレンジ（文字用）", "hex": "#B34700"}
+  ],
+  "pairs": [
+    {"name": "本文 / カード", "fg": "#1C1A17", "bg": "#FFFFFF", "large": false},
+    {"name": "本文 / 背景", "fg": "#1C1A17", "bg": "#FFF3C9", "large": false},
+    {"name": "補足の文字 / カード", "fg": "#5E4B33", "bg": "#FFFFFF", "large": false},
+    {"name": "補足の文字 / 背景", "fg": "#5E4B33", "bg": "#FFF3C9", "large": false},
+    {"name": "カテゴリのバッジ・ボタン（黒文字 / オレンジ）", "fg": "#1C1A17", "bg": "#FF7A1A", "large": false},
+    {"name": "属性のバッジ・見出しの札（黒文字 / イエロー）", "fg": "#1C1A17", "bg": "#FFD23F", "large": false},
+    {"name": "順位の数字・コメントの札（イエロー / インク）", "fg": "#FFD23F", "bg": "#1C1A17", "large": false},
+    {"name": "文字で使うオレンジ / カード", "fg": "#B34700", "bg": "#FFFFFF", "large": false}
+  ]
+}

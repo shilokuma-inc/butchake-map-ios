@@ -1,0 +1,144 @@
+/*
+ * A-4「ネオブルータリズム」のトークンと飾り。雛形（tokens.css・frame.css）の後に読み込む。
+ * 原色のベタ塗り（青・赤・黄・緑・薄紫）に、黒い太枠と真下右へずらした影。角は丸めない。
+ * 見出しは角ばった極太の Dela Gothic One、本文は Murecho。順位の数字は大きく。
+ */
+:root {
+  --ink: #111111;
+  --blue: #4361EE;      /* 上の文字は白 */
+  --red: #FF5A36;
+  --yellow: #FFD60A;
+  --green: #3BCB7A;
+  --lilac: #B8A9FF;
+
+  --color-bg: #EDEAE3;
+  --color-surface: #FFFFFF;
+  --color-text: var(--ink);
+  --color-text-secondary: #4A4A4A;
+  --color-primary: var(--ink);
+  --color-accent: var(--red);
+  --color-on-primary: #FFFFFF;
+  --color-like: var(--ink);
+  --color-star: var(--ink);
+  --color-separator: var(--ink);
+
+  --font-body: "Murecho", "Hiragino Sans", sans-serif;
+  --font-heading: "Dela Gothic One", "Murecho", sans-serif;
+  --font-number: "Dela Gothic One", sans-serif;
+  --weight-heading: 400;
+
+  --border: 3px solid var(--ink);
+  --shadow: 5px 5px 0 var(--ink);
+  --radius-card: 0;
+  --radius-badge: 0;
+  --radius-thumb: 0;
+  --border-card: var(--border);
+  --shadow-card: var(--shadow);
+  --icon-stroke: 2.6;
+
+  --tabbar-bg: #FFFFFF;
+  --tabbar-border: 3px solid var(--ink);
+  --tabbar-color: var(--ink);
+  --tabbar-active: var(--ink);
+  --tabbar-radius: 0;
+  --tabbar-shadow: 5px 5px 0 var(--ink);
+
+  --map-land: #EDEAE3;
+  --map-water: #8FB3FF;
+  --map-park: #9EE6B8;
+  --map-road: #FFFFFF;
+  --map-road-minor: #FFFFFF;
+}
+
+body { font-weight: 500; }
+/* 細い格子の地 */
+.screen { background: var(--color-bg) linear-gradient(rgba(17, 17, 17, .06) 1px, transparent 1px) 0 0 / 24px 24px,
+  linear-gradient(90deg, rgba(17, 17, 17, .06) 1px, transparent 1px) 0 0 / 24px 24px; }
+
+/* MARK: 画面の骨組み */
+
+.tab-item { border-radius: 0; }
+.tab-item.is-active { background: var(--yellow); box-shadow: inset 0 0 0 3px var(--ink); }
+.tab-title { font-size: 10.5px; font-weight: 800; }
+.nav-button { border: var(--border); border-radius: 0; background: #FFFFFF; box-shadow: 3px 3px 0 var(--ink); }
+
+/* MARK: 見出し（黒地に白の帯） */
+
+.section-header { display: flex; align-items: center; gap: 10px; font-size: 22px; }
+.section-header .tag { display: inline-block; padding: 2px 8px; border: var(--border); background: var(--c, var(--yellow)); font-family: var(--font-body); font-weight: 900; font-size: 13px; }
+
+/* MARK: 部品 */
+
+.card { position: relative; }
+.badge { padding: 3px 9px; border: 2.5px solid var(--ink); font-weight: 800; color: var(--ink); }
+.badge-category { background: var(--green); }
+.badge-author { background: var(--lilac); }
+.count-button { color: var(--ink); font-weight: 800; }
+.like-button.is-on .icon { color: var(--red); }
+.star-button.is-on .icon { color: var(--ink); }
+.rank {
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
+  border: 2.5px solid var(--ink);
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 400;
+}
+.thumbnail { border: var(--border); background: var(--blue); color: #FFFFFF; }
+.post-title, .carousel-title { font-family: var(--font-body); font-weight: 900; }
+.spot-row { font-weight: 700; }
+.post-author { font-weight: 700; }
+
+/* 大きな順位の数字（ベタ塗りの四角に極太の数字） */
+.big-rank { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 64px; height: 64px; border: var(--border);
+  background: var(--c, var(--yellow)); font-family: var(--font-number); font-size: 40px; line-height: 1; box-shadow: 4px 4px 0 var(--ink); }
+
+/* ロゴ（ぶっちゃけmap のロゴタイプ。ブロックを積む） */
+.logo { display: inline-flex; align-items: stretch; line-height: 1; white-space: nowrap; font-family: var(--font-heading); }
+.logo-main { padding: .14em .28em .18em; border: var(--border); background: #FFFFFF; box-shadow: 4px 4px 0 var(--ink); }
+.logo-map { margin-left: -3px; padding: .2em .3em; border: var(--border); background: var(--blue); color: #FFFFFF; font-family: var(--font-body); font-weight: 900; font-size: .62em;
+  display: inline-flex; align-items: center; box-shadow: 4px 4px 0 var(--ink); }
+
+/* ぶっちゃけコメント（黄色のベタの箱） */
+.box { border: var(--border); background: #FFFFFF; box-shadow: 4px 4px 0 var(--ink); }
+.box-label { display: block; padding: 3px 10px; border-bottom: var(--border); background: var(--red); font-weight: 900; font-size: 13px; }
+.box-text { padding: 10px 12px; font-size: 16px; line-height: 1.6; }
+
+/* ボタン */
+.brutal-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: var(--border);
+  background: var(--blue);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.brutal-button.secondary { background: #FFFFFF; color: var(--ink); }
+.brutal-button.yellow { background: var(--yellow); color: var(--ink); }
+
+/* 地図のピン（四角いブロック） */
+.map-pin {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 17px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.map-pin.is-selected { width: 50px; height: 50px; margin: -25px 0 0 -25px; background: var(--red); font-size: 26px; box-shadow: 5px 5px 0 var(--ink); }
+
+.carousel-card { width: 250px; padding: 0; display: flex; flex-direction: column; gap: 8px; padding-bottom: 12px; }
+.carousel-card > *:not(.carousel-band) { margin: 0 14px; }
+.carousel-band { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: var(--border); background: var(--c); font-weight: 900; font-size: 14px; }
+.carousel-band .likes { font-family: var(--font-number); font-weight: 400; font-size: 16px; }
+.carousel-card .post-area { margin-top: -4px; font-size: 14px; }
+.carousel-card-foot { display: flex; justify-content: space-between; align-items: center; }

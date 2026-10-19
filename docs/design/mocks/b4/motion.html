@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="1400x1320">
+<meta name="mock-scale" content="2">
+<title>B-4 旅かばんのラベル — 動きのコマ割り</title>
+<meta name="mock-fonts" content="Train One|M PLUS 2|Bungee">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Train+One&family=M+PLUS+2:wght@500;700;800&family=Bungee&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .sheet { width: 1400px; height: 1320px; padding: 48px 56px; background: var(--paper); }
+  .sheet-head { display: flex; align-items: center; gap: 28px; }
+  .sheet-head p { font-size: 17px; font-weight: 700; line-height: 1.6; }
+  .motion { display: grid; grid-template-columns: 300px repeat(4, 1fr); gap: 18px; margin-top: 36px; }
+  .motion-note h2 { display: inline-block; padding: 4px 18px; border-radius: 50%; background: var(--navy); color: var(--paper); font-family: var(--font-body); font-weight: 800; font-size: 17px; white-space: nowrap; }
+  .motion-note dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; margin: 14px 0 0; font-size: 14.5px; line-height: 1.5; }
+  .motion-note dt { font-weight: 800; color: var(--red); white-space: nowrap; }
+  .motion-note dd { margin: 0; }
+  .frame { display: flex; flex-direction: column; gap: 8px; }
+  .frame-box { position: relative; height: 300px; overflow: hidden; border-radius: 10px; background: #FFFDF8; box-shadow: var(--shadow-card); display: flex; align-items: center; justify-content: center; }
+  .frame-cap { display: flex; gap: 8px; align-items: baseline; font-size: 14px; font-weight: 700; }
+  .frame-cap .time { padding: 1px 10px; border-radius: 999px; background: var(--navy); color: var(--paper); font-family: var(--font-number); font-size: 12px; }
+  .tap { position: absolute; z-index: 3; width: 46px; height: 46px; border: 2.5px dashed var(--red); border-radius: 50%; }
+  .like-big { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; background: #FFFDF8; box-shadow: inset 0 0 0 2px var(--navy); font-size: 22px; font-weight: 800; }
+  .like-big.on { color: var(--red); }
+  .bag { position: relative; width: 210px; height: 140px; border-radius: 16px; background: var(--navy); box-shadow: inset 0 0 0 4px var(--navy), inset 0 0 0 6px #3C5378; }
+  .bag .oval { position: absolute; }
+  .plane { position: absolute; color: var(--navy); }
+  .card-mini { width: 200px; padding: 12px; border-radius: 10px; background: #FFFDF8; box-shadow: var(--shadow-card); font-size: 14px; font-weight: 800; line-height: 1.4; color: var(--navy); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 動きのコマ割り。1 つの動きを 4 コマに分け、時間・イージング・ハプティクス・Reduce Motion のときの代わりを添える
+  const { icon, parts } = Mock;
+  const frame = (time, caption, inner) => `<div class="frame"><div class="frame-box">${inner}</div>
+    <p class="frame-cap"><span class="time">${time}</span>${caption}</p></div>`;
+  const note = (title, rows) => `<div class="motion-note"><h2>${title}</h2><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
+  const like = (on, count, scale = 1) => `<span class="like-big${on ? ' on' : ''}" style="transform:scale(${scale})">${icon(on ? 'heartFill' : 'heart', { size: 28 })}${count}</span>`;
+  const plane = (x, y, rot, size = 26) => `<span class="plane" style="left:${x}px;top:${y}px;transform:rotate(${rot}deg)">${icon('airplane', { size })}</span>`;
+  const bag = labels => `<div class="bag">${labels}</div>`;
+  const oval = (top, main, color, style) => parts.oval(top, main, color, style);
+  const card = style => `<div class="card-mini" style="${style}">旅好きが推す横浜の三大夕景スポット</div>`;
+
+  Mock.mount(`<div class="sheet">
+    <div class="sheet-head">${Mock.logo(34)}<p>B-4「旅かばんのラベル」の動き。ハートの飛行機が飛ぶ・かばんにラベルを貼る・荷札がひもで揺れて止まる。<br>
+      どれも「視差効果を減らす」（Reduce Motion）がオンのときは、飛ぶ・貼る・揺れるをやめてフェードだけにする。点滅はしない。</p></div>
+
+    <div class="motion">
+      ${note('いいね（ハートの飛行機）', [['時間', '0.6 秒'], ['イージング', 'ハートは easeOut 0.15 秒で塗る。小さな飛行機が点線を引きながら右上へ easeInOut 0.45 秒で飛んで消える'], ['ハプティクス', '塗ったときに impact（light）'], ['Reduce Motion', '飛行機を出さず、ハートの塗りと件数の色を 0.15 秒でクロスフェード']])}
+      ${frame('0.00', '押す', `${like(false, 128, 0.95)}<span class="tap" style="left:60px;top:126px"></span>`)}
+      ${frame('0.15', 'ハートが塗られ、飛行機が出る', `${like(true, 129, 1.08)}${plane(160, 100, -30, 22)}`)}
+      ${frame('0.35', '点線を引いて飛ぶ', `${like(true, 129)}<svg style="position:absolute;inset:0" viewBox="0 0 230 300"><path d="M150 130 Q 180 90 200 60" fill="none" stroke="#23395B" stroke-width="2.5" stroke-dasharray="5 5"/></svg>${plane(190, 40, -40, 22)}`)}
+      ${frame('0.60', '消えて落ち着く', like(true, 129))}
+    </div>
+
+    <div class="motion">
+      ${note('投稿の公開（ラベルを貼る）', [['時間', '1.0 秒'], ['イージング', '行き先のラベルが 1.3 倍・-20° から spring（response 0.4・damping 0.6）でかばんに貼られる。貼った後、かばんが 1 回だけ 3pt 弾む'], ['ハプティクス', '貼ったときに notification（success）'], ['Reduce Motion', '回転・拡大・弾みをやめ、ラベルを 0.2 秒でフェードイン']])}
+      ${frame('0.00', '「公開する」を押す', '<span class="trip-button red" style="font-size:18px;padding:14px 26px">公開する</span><span class="tap" style="left:150px;top:150px"></span>')}
+      ${frame('0.20', 'ラベルが近づく', `${bag(oval('HOTEL', '金沢', '#1F6F6B', 'left:14px;top:14px;transform:rotate(-8deg)'))}${oval('YOKOHAMA', '横浜', '#B8432F', 'position:absolute;left:96px;top:40px;transform:scale(1.3) rotate(-20deg);z-index:2')}`)}
+      ${frame('0.45', 'ペタッと貼れる', bag(`${oval('HOTEL', '金沢', '#1F6F6B', 'left:14px;top:14px;transform:rotate(-8deg)')}${oval('YOKOHAMA', '横浜', '#B8432F', 'left:96px;top:60px;transform:rotate(6deg)')}`))}
+      ${frame('1.00', '公開しました', `<div style="display:flex;flex-direction:column;gap:14px;align-items:center">${bag(`${oval('HOTEL', '金沢', '#1F6F6B', 'left:14px;top:14px;transform:rotate(-8deg)')}${oval('YOKOHAMA', '横浜', '#B8432F', 'left:96px;top:60px;transform:rotate(6deg)')}`)}<p style="font-weight:800;color:#23395B">新しい行き先を公開しました</p></div>`)}
+    </div>
+
+    <div class="motion">
+      ${note('カードの出現（荷札が揺れる）', [['時間', '0.6 秒（1 まいずつ 0.08 秒ずらす）'], ['イージング', '左上の穴を軸に、-10° から spring（damping 0.5）で 2 回だけ揺れて 0° に止まる'], ['ハプティクス', 'なし（スクロールのたびに震えないよう）'], ['Reduce Motion', '揺れをやめ、0.2 秒でフェードイン']])}
+      ${frame('0.00', '傾いて出る', card('transform:rotate(-10deg);transform-origin:0 0;opacity:.5'))}
+      ${frame('0.20', '反対に揺れる', card('transform:rotate(5deg);transform-origin:0 0'))}
+      ${frame('0.40', 'もう一度', card('transform:rotate(-2deg);transform-origin:0 0'))}
+      ${frame('0.60', '止まる', card(''))}
+    </div>
+  </div>`);
+</script>
+</body>
+</html>

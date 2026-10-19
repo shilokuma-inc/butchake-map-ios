@@ -41,19 +41,21 @@
 <script src="../../template/mock.js"></script>
 <script src="theme.js"></script>
 <script>
-  // マップ: 3 つのスポットを路線でつなぎ、ピンは駅の丸。選んだ駅は紺のスタンプの丸と、小さな駅名標
+  // マップ: 3 つのスポットを順位の順（1 → 2 → 3）に路線でつなぎ、ピンは駅の丸。選んだ駅は紺のスタンプの丸と、小さな駅名標
   const { data, parts, icon, esc } = Mock;
   const post = data.posts[0];
   const spot = post.spots[1];
   const pins = post.spots.map(s => ({ order: s.order, x: s.mapPosition.x, y: s.mapPosition.y * 0.5 + 6, selected: s === spot }));
+  // 3 の駅は 1 と 2 の間にあり、路線（1 → 2 → 3）が重なって見えるので、このモックでは 2 の先（右上）に置く
+  Object.assign(pins.find(p => p.order === 3), { x: 84, y: 20 });
   // 地図の高さ（874 - 106）に対する % を、SVG の座標（402 x 768）に直して路線を引く
   const pt = p => `${(p.x / 100) * 402} ${(p.y / 100) * 768}`;
   const order = [...pins].sort((a, b) => a.order - b.order);
   const route = `<svg class="route" viewBox="0 0 402 768" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M ${pt(order[0])} L ${pt(order[2])} L ${pt(order[1])}" fill="none" stroke="#2F7A45" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    <path d="M ${pt(order[0])} L ${pt(order[1])} L ${pt(order[2])}" fill="none" stroke="#2F7A45" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const sel = pins.find(p => p.selected);
   const sign = `<div class="pin-sign sign" style="left:${sel.x}%;top:${sel.y}%"><p class="sign-name">もりもり寿し</p>
-    <p class="sign-bar"><span>◀ 3</span><span>&nbsp;</span></p></div>`;
+    <p class="sign-bar"><span>◀ 1</span><span>3 ▶</span></p></div>`;
   Mock.mount(Mock.screen({
     className: 'map-screen',
     nav: { title: 'マップ' },

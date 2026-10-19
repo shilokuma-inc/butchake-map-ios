@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>B-5 昭和の銭湯と看板 — マップ</title>
+<meta name="mock-fonts" content="Yuji Syuku|Zen Kaku Gothic New">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Zen+Kaku+Gothic+New:wght@500;700&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .map-screen .screen-scroll { z-index: 1; pointer-events: none; }
+  .map-screen .status-bar, .map-screen .nav-bar { background: #FFFFFF; }
+  .map-screen .nav-bar { border-bottom: 4px solid var(--aqua); }
+  .map-screen .nav-inline-title { font-family: var(--font-heading); font-weight: 400; font-size: 20px; }
+  .map-illustration { top: 106px; }
+  .map-illustration .map-pin { z-index: 3; }
+  .steam { position: absolute; z-index: 4; }
+  .map-illustration svg.steam { inset: auto; width: 40px; height: 30px; }
+  .sheet-panel { position: absolute; left: 0; right: 0; bottom: 0; height: 420px; padding: 10px 16px 34px; z-index: 5;
+    border-radius: 18px 18px 0 0; background: #FFFFFF; box-shadow: 0 -6px 18px rgba(34, 48, 58, .18); display: flex; flex-direction: column; gap: 10px; }
+  .grabber { align-self: center; width: 40px; height: 5px; border-radius: 3px; background: var(--aqua); }
+  .sheet-title { font-weight: 700; font-size: 19px; line-height: 1.4; }
+  .sheet-area { display: flex; align-items: center; gap: 4px; margin-top: 2px; font-size: 15px; color: var(--color-text-secondary); }
+  .spot-line { display: flex; align-items: center; gap: 10px; }
+  .spot-name { font-size: 17px; font-weight: 700; }
+  .spot-address { margin-top: 2px; font-size: 14px; color: var(--color-text-secondary); }
+  .notice-text { font-size: 15px; }
+  .sheet-actions { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+  .sheet-actions .yu-button { margin-left: auto; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // マップ: 淡い水色の地図に「ゆ」ののれんの形のピン。選んだピンは朱になり、上に湯気
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const spot = post.spots[1];
+  const pins = post.spots.map(s => ({ order: s.order, x: s.mapPosition.x, y: s.mapPosition.y * 0.5 + 6, selected: s === spot }));
+  const sel = pins.find(p => p.selected);
+  const steam = `<svg class="steam" style="left:calc(${sel.x}% - 20px);top:calc(${sel.y}% - 62px)" viewBox="0 0 40 30" aria-hidden="true">
+    <path d="M8 28 q-5 -7 0 -13 q5 -6 0 -13 M20 28 q-5 -7 0 -13 q5 -6 0 -13 M32 28 q-5 -7 0 -13 q5 -6 0 -13" fill="none" stroke="#A8341F" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+  Mock.mount(Mock.screen({
+    className: 'map-screen',
+    nav: { title: 'マップ' },
+    overlay: `${Mock.mapIllustration(pins).replace('<span class="map-pin', `${steam}<span class="map-pin`)}
+      <section class="sheet-panel">
+        <span class="grabber"></span>
+        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+        <div><h2 class="sheet-title">${esc(post.title)}</h2>
+          <p class="sheet-area">${icon('mappin', { size: 14 })}${esc(post.prefecture)} ${esc(post.city)}</p></div>
+        <div class="spot-line">${parts.rank(spot.order)}
+          <div><p class="spot-name">${esc(spot.name)}</p><p class="spot-address">${esc(spot.address)}</p></div></div>
+        ${parts.notice(spot.recommendation)}
+        <div class="sheet-actions">${parts.likeButton(post)}${parts.starButton(post)}
+          <span class="yu-button">${esc(data.strings.viewPost)}${icon('chevronRight', { size: 16 })}</span></div>
+      </section>`,
+  }));
+</script>
+</body>
+</html>

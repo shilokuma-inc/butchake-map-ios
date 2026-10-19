@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>B-5 昭和の銭湯と看板 — 投稿詳細</title>
+<meta name="mock-fonts" content="Yuji Syuku|Zen Kaku Gothic New">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Zen+Kaku+Gothic+New:wght@500;700&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .detail { display: flex; flex-direction: column; gap: 20px; padding: 6px 16px 0; }
+  .head { padding: 16px 16px 14px; }
+  .head .kicker { font-family: var(--font-heading); font-size: 15px; color: #FFFFFF; }
+  .detail-title { margin-top: 4px; font-weight: 700; font-size: 22px; line-height: 1.4; }
+  .detail-area { display: flex; align-items: center; gap: 4px; margin-top: 8px; font-size: 15px; }
+  .head .badges { margin-top: 10px; }
+  .head .badge-category { background: #FFFFFF; color: var(--vermilion); }
+  .head .badge-author { background: #FFFFFF; color: var(--aqua-deep); }
+  .meta { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 8px; background: #FFFFFF; box-shadow: var(--shadow-card); }
+  .detail-author { flex: 1; font-size: 15px; font-weight: 700; }
+  .detail-author span { display: block; font-size: 13px; font-weight: 500; color: var(--color-text-secondary); }
+  .spot { display: flex; flex-direction: column; gap: 12px; padding: 14px; }
+  .spot-head { display: flex; align-items: center; gap: 12px; }
+  .spot-head .fuda { flex: none; font-size: 18px; padding: 10px 6px; }
+  .spot-name { font-weight: 700; font-size: 19px; line-height: 1.35; }
+  .spot-address { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 14px; color: var(--color-text-secondary); }
+  .photo { position: relative; border-radius: 8px; overflow: hidden; }
+  .photo svg { display: block; }
+  .photo .icon-wrap { position: absolute; left: 50%; top: 50%; display: inline-flex; padding: 10px; border-radius: 50%; background: #FFFFFF; color: var(--aqua-deep); transform: translate(-50%, -50%); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 投稿詳細: ホーロー看板の見出し（紺の地に白い縁と角のねじ）・作者の札。スポットは下足札の番号と、ペンキ絵の枠、脱衣所の貼り紙のコメント
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const category = data.categories[post.category];
+  const nums = ['', '壱', '弐', '参'];
+  const spot = s => `<article class="card spot">
+    <div class="spot-head"><span class="fuda vertical" aria-label="${s.order}位">${nums[s.order]}番</span>
+      <div><p class="spot-name">${esc(s.name)}</p><p class="spot-address">${icon('mappin', { size: 14 })}${esc(s.address)}</p></div></div>
+    <div class="photo">${Mock.fuji(338, 110)}<span class="icon-wrap">${icon(category.icon, { size: 30 })}</span></div>
+    ${parts.notice(s.recommendation)}
+    <span class="yu-button secondary" style="align-self:flex-start">${icon('map', { size: 18 })}${esc(data.strings.openInMaps)}</span>
+  </article>`;
+  Mock.mount(Mock.screen({
+    nav: { title: '', back: true, trailing: ['share'] },
+    body: `<div class="detail">
+      <header class="enamel head" style="--c:#1B3A5C">
+        <p class="kicker">ぶっちゃけ湯 本日の三大</p>
+        <h1 class="detail-title">${esc(post.title)}</h1>
+        <p class="detail-area">${icon('mappin', { size: 15 })}${esc(post.prefecture)} ${esc(post.city)}</p>
+        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+      </header>
+      <div class="meta"><p class="detail-author">${esc(post.authorName)}<span>${esc(post.date)}</span></p>${parts.likeButton(post)}${parts.starButton(post)}</div>
+      ${post.spots.slice(0, 2).map(spot).join('')}
+    </div>`,
+  }));
+</script>
+</body>
+</html>

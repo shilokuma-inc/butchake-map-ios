@@ -14,6 +14,6 @@
     {"name": "白の文字 / 墨（属性のバッジ・順位・選んだタブ・ボタン）", "fg": "#FFFFFF", "bg": "#111111", "large": false},
     {"name": "白の文字 / 赤（ロゴの map・選んだピン・赤いボタン）", "fg": "#FFFFFF", "bg": "#C8102E", "large": false},
     {"name": "地図のピンの数字 / 白", "fg": "#111111", "bg": "#FFFFFF", "large": false},
-    {"name": "本文 / 薄いトーン（地図の上の文字）", "fg": "#111111", "bg": "#E9E9E9", "large": false}
+    {"name": "赤の効果音 / 薄いトーン（地図の「ここだ!!」）", "fg": "#C8102E", "bg": "#E9E9E9", "large": false}
   ]
 }

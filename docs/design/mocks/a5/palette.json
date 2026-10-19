@@ -17,7 +17,8 @@
     {"name": "白の文字 / 赤（テロップ・順位・ボタン・ON AIR・ロゴの map・選んだタブ）", "fg": "#FFFFFF", "bg": "#D7141E", "large": false},
     {"name": "墨の文字 / 黄（テロップ・属性のバッジ・選んだピン）", "fg": "#141414", "bg": "#FFE600", "large": false},
     {"name": "白の文字 / 青（カテゴリのバッジ・画面の枠）", "fg": "#FFFFFF", "bg": "#1C3FAA", "large": false},
-    {"name": "赤の文字（ハンコ・いいね済みの件数） / 白", "fg": "#D7141E", "bg": "#FFFFFF", "large": false},
+    {"name": "赤の文字（ハンコ・いいね済みの件数・シェアカードの「読み取って投稿を見る」） / 白", "fg": "#D7141E", "bg": "#FFFFFF", "large": false},
+    {"name": "赤の文字（コマ割りの注記の見出し） / 背景", "fg": "#D7141E", "bg": "#F4F6FA", "large": false},
     {"name": "縁取りの大きな文字（白・墨の縁） / 青のいちばん明るい色", "fg": "#FFFFFF", "bg": "#3A63D6", "large": true},
     {"name": "白のアイコン・文字 / 青のいちばん明るい色（画面の枠）", "fg": "#FFFFFF", "bg": "#3A63D6", "large": false}
   ]

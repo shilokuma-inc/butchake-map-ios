@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>B-4 旅かばんのラベル — 投稿詳細</title>
+<meta name="mock-fonts" content="Train One|M PLUS 2|Bungee">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Train+One&family=M+PLUS+2:wght@500;700;800&family=Bungee&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .detail { display: flex; flex-direction: column; gap: 20px; padding: 6px 16px 0; }
+  .head .airmail-inner { position: relative; padding: 16px 16px 14px; }
+  .kicker { font-family: var(--font-latin); font-size: 13px; color: var(--red); letter-spacing: .04em; }
+  .detail-title { margin-top: 4px; padding-right: 70px; font-family: var(--font-body); font-weight: 800; font-size: 22px; line-height: 1.4; color: var(--navy); }
+  .detail-area { display: flex; align-items: center; gap: 4px; margin-top: 8px; font-size: 15px; color: var(--color-text-secondary); }
+  .head .badges { margin-top: 10px; }
+  .detail-meta { display: flex; align-items: center; gap: 14px; margin-top: 12px; padding-top: 10px; border-top: 1.5px dashed var(--color-separator); }
+  .detail-author { flex: 1; font-size: 15px; font-weight: 700; }
+  .detail-author span { display: block; font-size: 13px; font-weight: 500; color: var(--color-text-secondary); }
+  .head .oval { position: absolute; right: 10px; top: 12px; transform: rotate(10deg); padding: 6px 14px; }
+  .stop { display: flex; flex-direction: column; gap: 12px; padding: 14px; }
+  .stop-head { display: flex; align-items: center; gap: 12px; }
+  .stop-head .oval { flex: none; padding: 8px 14px; }
+  .stop-head .oval .main { font-family: var(--font-number); font-size: 22px; }
+  .stop-name { font-weight: 800; font-size: 19px; line-height: 1.35; }
+  .stop-address { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 14px; color: var(--color-text-secondary); }
+  .photo { display: flex; align-items: center; justify-content: center; height: 112px; border-radius: 8px; background: var(--c); color: var(--paper); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 投稿詳細: エアメールの縁取りの見出し（行き先の楕円のラベル）・作者といいね／スター。スポットは「No.1」の楕円のラベルと、荷札の裏のコメント
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const category = data.categories[post.category];
+  const colors = ['', '#1F6F6B', '#23395B', '#B8432F'];
+  const stop = s => `<article class="card stop">
+    <div class="stop-head">${parts.oval('No.', String(s.order), colors[s.order])}
+      <div><p class="stop-name">${esc(s.name)}</p><p class="stop-address">${icon('mappin', { size: 14 })}${esc(s.address)}</p></div></div>
+    <div class="photo" style="--c:${colors[s.order]}">${icon(category.icon, { size: 40 })}</div>
+    ${parts.note(s.recommendation)}
+    <span class="trip-button secondary" style="align-self:flex-start">${icon('map', { size: 18 })}${esc(data.strings.openInMaps)}</span>
+  </article>`;
+  Mock.mount(Mock.screen({
+    nav: { title: '', back: true, trailing: ['share'] },
+    body: `<div class="detail">
+      <header class="airmail head"><div class="airmail-inner">
+        ${parts.oval('HOTEL', '金沢', '#1F6F6B')}
+        <p class="kicker">BY AIR MAIL · マイ三大</p>
+        <h1 class="detail-title">${esc(post.title)}</h1>
+        <p class="detail-area">${icon('mappin', { size: 15 })}${esc(post.prefecture)} ${esc(post.city)}</p>
+        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+        <div class="detail-meta"><p class="detail-author">${esc(post.authorName)}<span>${esc(post.date)}</span></p>${parts.likeButton(post)}${parts.starButton(post)}</div>
+      </div></header>
+      ${post.spots.slice(0, 2).map(stop).join('')}
+    </div>`,
+  }));
+</script>
+</body>
+</html>

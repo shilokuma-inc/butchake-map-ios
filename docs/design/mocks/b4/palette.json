@@ -1,0 +1,29 @@
+{
+  "colors": [
+    {"name": "紺", "hex": "#23395B"},
+    {"name": "青緑", "hex": "#1F6F6B"},
+    {"name": "赤", "hex": "#B8432F"},
+    {"name": "からし色", "hex": "#E0A526"},
+    {"name": "紙（背景）", "hex": "#F7F0E1"},
+    {"name": "白（カード）", "hex": "#FFFDF8"},
+    {"name": "荷札（クラフト紙）", "hex": "#E3CFAA"},
+    {"name": "墨（文字）", "hex": "#2A2420"},
+    {"name": "補足の文字", "hex": "#5C5346"}
+  ],
+  "pairs": [
+    {"name": "本文 / 白", "fg": "#2A2420", "bg": "#FFFDF8", "large": false},
+    {"name": "本文 / 紙", "fg": "#2A2420", "bg": "#F7F0E1", "large": false},
+    {"name": "本文 / 荷札", "fg": "#2A2420", "bg": "#E3CFAA", "large": false},
+    {"name": "補足の文字 / 白", "fg": "#5C5346", "bg": "#FFFDF8", "large": false},
+    {"name": "補足の文字 / 紙", "fg": "#5C5346", "bg": "#F7F0E1", "large": false},
+    {"name": "紺の文字（見出し） / 紙", "fg": "#23395B", "bg": "#F7F0E1", "large": false},
+    {"name": "紺の文字（タイトル・ボタン） / 白", "fg": "#23395B", "bg": "#FFFDF8", "large": false},
+    {"name": "赤の文字（コマ割りの注記の見出し） / 紙", "fg": "#B8432F", "bg": "#F7F0E1", "large": false},
+    {"name": "紺の文字（荷札の英字・行き先の TO） / 荷札", "fg": "#23395B", "bg": "#E3CFAA", "large": false},
+    {"name": "赤の文字（英字の添え書き・いいね済み） / 白", "fg": "#B8432F", "bg": "#FFFDF8", "large": false},
+    {"name": "紙の文字 / 紺（タブ・ボタン・順位）", "fg": "#F7F0E1", "bg": "#23395B", "large": false},
+    {"name": "紙の文字 / 青緑（ラベル・カテゴリのバッジ）", "fg": "#F7F0E1", "bg": "#1F6F6B", "large": false},
+    {"name": "紙の文字 / 赤（ロゴ・ラベル・選んだピン）", "fg": "#F7F0E1", "bg": "#B8432F", "large": false},
+    {"name": "墨の文字 / からし色（属性のバッジ・選んだタブ・見出しの英字・ラベル）", "fg": "#2A2420", "bg": "#E0A526", "large": false}
+  ]
+}

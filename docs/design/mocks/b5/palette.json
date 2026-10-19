@@ -21,6 +21,6 @@
     {"name": "朱の文字（コメントの札・いいね済み・看板の中のバッジ） / 白", "fg": "#A8341F", "bg": "#FFFFFF", "large": false},
     {"name": "濃い水色の文字（看板の中の属性のバッジ・ロゴ） / 白", "fg": "#1E6E80", "bg": "#FFFFFF", "large": false},
     {"name": "濃い水色の文字（ロゴ・コマ割りの注記の見出し） / タイル", "fg": "#1E6E80", "bg": "#F2F7F7", "large": false},
-    {"name": "ロゴの map（朱・大きな文字） / タイル", "fg": "#A8341F", "bg": "#F2F7F7", "large": true}
+    {"name": "ロゴの map（朱） / タイル", "fg": "#A8341F", "bg": "#F2F7F7", "large": false}
   ]
 }

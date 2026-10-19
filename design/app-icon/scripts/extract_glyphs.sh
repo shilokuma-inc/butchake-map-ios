@@ -11,7 +11,9 @@ set -euo pipefail
 SCRIPTS_DIR="$(CDPATH='' cd -- "$(dirname "$0")" && pwd)"
 ICON_DIR="$(dirname "$SCRIPTS_DIR")"
 CACHE_DIR="${APP_ICON_FONT_CACHE:-$HOME/Library/Caches/butchake-map-app-icon/fonts}"
-FONTS_URL="https://github.com/google/fonts/raw/main/ofl"
+# 上流の更新で glyphs.json（と候補の SVG）が変わらないよう、取得した時点の google/fonts のコミットに固定する
+FONTS_COMMIT="47d54ca1ebb14fd864695f1d39dc734f39017c33"
+FONTS_URL="https://github.com/google/fonts/raw/$FONTS_COMMIT/ofl"
 
 # キー・google/fonts のパス・使う文字
 specs=(

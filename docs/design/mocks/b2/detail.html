@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>B-2 駅のスタンプラリー — 投稿詳細</title>
+<meta name="mock-fonts" content="BIZ UDPGothic|DotGothic16|Kaisei Decol">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=DotGothic16&family=Kaisei+Decol:wght@700&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .detail { display: flex; flex-direction: column; gap: 16px; padding: 4px 16px 0; }
+  .station .sign-name { font-size: 30px; padding-top: 8px; }
+  .detail-title { font-size: 21px; font-weight: 700; line-height: 1.45; }
+  .detail-meta { display: flex; align-items: center; gap: 14px; }
+  .detail-author { flex: 1; font-size: 15px; font-weight: 700; }
+  .detail-author span { display: block; font-family: var(--font-ticket); font-weight: 400; font-size: 13px; color: var(--color-text-secondary); }
+  .route { position: relative; display: flex; flex-direction: column; gap: 18px; padding-left: 40px; }
+  .route::before { content: ""; position: absolute; left: 13px; top: 6px; bottom: -40px; width: 8px; border-radius: 4px; background: var(--rail); }
+  .stop { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border-radius: 8px; background: #FFFFFF; border: 1px solid #D9CFB6; }
+  .stop > .rank { position: absolute; left: -40px; top: 8px; width: 34px; height: 34px; font-size: 18px; border-width: 4px; }
+  .stop-head { display: flex; align-items: flex-start; gap: 10px; }
+  .stop-head > div { flex: 1; }
+  .stop-name { font-size: 18px; font-weight: 700; line-height: 1.35; }
+  .stop-address { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 14px; color: var(--color-text-secondary); }
+  .stop .stamp-mark { width: 56px; height: 56px; }
+  .stop .stamp-mark strong { font-size: 14px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 投稿詳細: 都市の駅名標・タイトル・作者といいね／スター。3 つのスポットを路線図の駅として並べ、行った駅にはスタンプを押す。コメントは駅の掲示板
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const stop = (s, stamped) => `<article class="stop">${parts.rank(s.order)}
+    <div class="stop-head"><div><p class="stop-name">${esc(s.name)}</p><p class="stop-address">${icon('mappin', { size: 14 })}${esc(s.address)}</p></div>
+      ${stamped ? parts.stamp('10.18', '済', '金沢') : '<span class="stamp-slot" style="width:56px;height:56px">未</span>'}</div>
+    ${parts.notice(s.recommendation)}
+    <span class="rail-button secondary" style="align-self:flex-start">${icon('map', { size: 17 })}${esc(data.strings.openInMaps)}</span>
+  </article>`;
+  Mock.mount(Mock.screen({
+    nav: { title: '', back: true, trailing: ['share'] },
+    body: `<div class="detail">
+      <div class="sign station"><p class="sign-name">${esc(post.city)}</p><p class="sign-en">KANAZAWA · ${esc(post.prefecture)}</p>
+        <p class="sign-bar"><span>◀ ${esc(data.categories[post.category].title)}</span><span>${esc(data.authorTypes[post.authorType].title)} ▶</span></p></div>
+      <h1 class="detail-title">${esc(post.title)}</h1>
+      <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+      <div class="detail-meta"><p class="detail-author">${esc(post.authorName)}<span>${esc(post.date)}</span></p>${parts.likeButton(post)}${parts.starButton(post)}</div>
+      <div class="route">${stop(post.spots[0], true)}${stop(post.spots[1], false)}</div>
+    </div>`,
+  }));
+</script>
+</body>
+</html>

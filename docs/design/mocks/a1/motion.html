@@ -86,11 +86,11 @@
       どれも「視差効果を減らす」（Reduce Motion）がオンのときは、拡大・移動・紙吹雪をやめて色とフェードだけにする。点滅はしない。</p></div>
 
     <div class="motion">
-      ${note('いいね', [['時間', '0.45 秒'], ['イージング', 'spring（response 0.35・damping 0.55）。1.35 倍まで弾んで戻る'], ['ハプティクス', '2 コマ目で impact（light）'], ['Reduce Motion', '拡大と放射の線をやめ、ハートの色を 0.15 秒でクロスフェード。件数はそのまま切り替える']])}
+      ${note('いいね', [['時間', '0.6 秒（spring が落ち着くまで）'], ['イージング', 'spring（response 0.35・damping 0.55）。1.35 倍まで弾んで戻る'], ['ハプティクス', '2 コマ目で impact（light）'], ['Reduce Motion', '拡大と放射の線をやめ、ハートの色を 0.15 秒でクロスフェード。件数はそのまま切り替える']])}
       ${frame('0.00', '押す（0.9 倍に縮む）', `${like(false, 0.9, 128)}<span class="tap" style="left:72px;top:126px"></span>`)}
       ${frame('0.12', 'ハートが塗られ 1.35 倍に', `${burst}${like(true, 1.35, 129)}<span class="sticker plus-one" style="background:var(--orange)">+1</span>`)}
       ${frame('0.28', '少し縮んで戻る（0.95 倍）', `${like(true, 0.95, 129)}<span class="sticker plus-one" style="top:30px;opacity:.6">+1</span>`)}
-      ${frame('0.45', '落ち着く', like(true, 1, 129))}
+      ${frame('0.60', '落ち着く', like(true, 1, 129))}
     </div>
 
     <div class="motion">
@@ -105,7 +105,7 @@
       ${note('マップのピンが跳ねる', [['時間', '0.5 秒（シートは 0.35 秒）'], ['イージング', 'ピンは つぶれる → 18pt 跳ねる → 着地（spring・damping 0.5）。シートは easeOut で下から'], ['ハプティクス', '4 コマ目の着地で selection'], ['Reduce Motion', '跳ねる・つぶれるをやめ、選んだピンの色と大きさを 0.2 秒で切り替える。シートはフェードで出す']])}
       ${frame('0.00', 'ピンをタップ', `${pinStage(186, 1, false, false, false)}<span class="tap" style="left:104px;top:126px"></span>`)}
       ${frame('0.10', 'ぎゅっとつぶれる', pinStage(186, 0.78, true, false, false))}
-      ${frame('0.25', '18pt 跳ねる', pinStage(162, 1.05, true, false, true))}
+      ${frame('0.25', '18pt 跳ねる', pinStage(168, 1.05, true, false, true))}
       ${frame('0.50', '着地してシートが上がる', pinStage(186, 1, true, true, false))}
     </div>
   </div>`);

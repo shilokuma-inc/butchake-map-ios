@@ -6,7 +6,6 @@
   --ink: #1C1A17;
   --yellow: #FFD23F;
   --orange: #FF7A1A;
-  --orange-deep: #B34700;
   --pink: #E8336D;
   --cream: #FFF3C9;
 
@@ -81,7 +80,7 @@ body { font-weight: 500; }
 .count-button { color: var(--ink); font-weight: 800; }
 .like-button.is-on { color: var(--ink); }
 .like-button.is-on .icon { color: var(--pink); }
-.star-button.is-on .icon { color: var(--orange); }
+.star-button.is-on .icon { color: var(--ink); }   /* 塗りの黒で保存済みを示す（オレンジは白地で 2.61:1 と、アイコンに求める 3:1 に届かない） */
 .rank {
   width: 28px;
   height: 28px;

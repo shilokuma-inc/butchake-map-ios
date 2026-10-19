@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="1500x1340">
+<meta name="mock-scale" content="2">
+<title>比較シート — ホーム</title>
+<link rel="stylesheet" href="compare.css">
+<style>
+  .sheet { width: 1500px; height: 1340px; }
+  .grid { grid-template-columns: repeat(6, 213px); }
+  .frame-clip { width: 213px; height: 463px; }
+  .frame-clip iframe { width: 402px; height: 874px; transform: scale(.53); }
+</style>
+</head>
+<body>
+<div class="sheet"><h1>10 案のホーム</h1><p class="lead">今のデザイン（current）と、方向性 A（ポップ＆ツッコミ）・B（レトロ観光パンフ）の 5 案ずつ。どれも同じモックデータで描いています。</p>
+<div class="grid" id="grid"></div></div>
+<script src="designs.js"></script>
+<script>
+  // 各案の home.html を縮めて並べる（画像ではなく、案のページそのものを iframe で読み込む）
+  document.getElementById('grid').innerHTML = window.DESIGNS.map(d => `<div class="cell">
+    <div class="frame-clip"><iframe src="../mocks/${d.id}/home.html" title="${d.name}" scrolling="no"></iframe></div>
+    <p class="cap"><span class="id ${d.dir === 'A' ? 'a' : d.dir === 'B' ? 'b' : ''}">${d.id}</span><strong>${d.name}</strong></p>
+    <p class="note">${d.note}</p></div>`).join('');
+  window.mockReady = window.waitForFrames();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「まだ投稿がありません」: ラベルがまだ 1 枚も貼られていない、まっさらな旅かばん -->
+  <rect x="130" y="34" width="60" height="34" rx="12" fill="none" stroke="#2A2420" stroke-width="8"/>
+  <rect x="56" y="62" width="208" height="150" rx="20" fill="#23395B"/>
+  <path d="M56 136 H264" stroke="#3C5378" stroke-width="6"/>
+  <g fill="none" stroke="#F7F0E1" stroke-width="3" stroke-dasharray="6 6" opacity=".7">
+    <ellipse cx="112" cy="104" rx="36" ry="24"/><ellipse cx="206" cy="176" rx="36" ry="24"/>
+  </g>
+  <path d="M256 70 C 286 70, 292 100, 280 120" fill="none" stroke="#2A2420" stroke-width="3"/>
+  <path d="M264 118 H304 V160 H264 L256 152 V126 Z" fill="#E3CFAA"/>
+  <circle cx="264" cy="139" r="4" fill="#23395B"/>
+</svg>

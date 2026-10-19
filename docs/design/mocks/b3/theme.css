@@ -1,0 +1,163 @@
+/*
+ * B-3「純喫茶のメニュー」のトークンと飾り。雛形（tokens.css・frame.css）の後に読み込む。
+ * クリーム・こげ茶・赤（とクリームソーダの緑）。レースペーパーの縁、メニュー表の点線のリーダー、金の細い罫。
+ * 見出しは明朝（Zen Old Mincho）、本文は Kiwi Maru、英字の飾りは Playfair Display（イタリック）。
+ */
+:root {
+  --brown: #4A2C1D;
+  --red: #A8262E;
+  --cream: #F3E7D0;
+  --paper: #FFFBF2;
+  --soda: #2F6B47;          /* クリームソーダの緑 */
+  --gold: #B8862B;          /* 罫・飾りだけ（文字には使わない） */
+
+  --color-bg: var(--cream);
+  --color-surface: var(--paper);
+  --color-text: var(--brown);
+  --color-text-secondary: #6B5444;
+  --color-primary: var(--brown);
+  --color-accent: var(--red);
+  --color-on-primary: var(--paper);
+  --color-like: var(--red);
+  --color-star: var(--brown);
+  --color-separator: #D9C6A5;
+
+  --font-body: "Kiwi Maru", "Hiragino Mincho ProN", serif;
+  --font-heading: "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+  --font-script: "Playfair Display", serif;
+  --font-number: "Playfair Display", serif;
+  --weight-heading: 900;
+
+  --radius-card: 6px;
+  --radius-badge: 999px;
+  --radius-thumb: 50%;
+  --border-card: none;
+  --shadow-card: 0 2px 10px rgba(74, 44, 29, .12);
+  --icon-stroke: 1.8;
+
+  --tabbar-bg: var(--brown);
+  --tabbar-border: 2px solid var(--gold);
+  --tabbar-color: var(--cream);
+  --tabbar-active: var(--brown);
+  --tabbar-radius: 14px;
+  --tabbar-shadow: 0 6px 18px rgba(74, 44, 29, .3);
+
+  --map-land: #F1E3C6;
+  --map-water: #C7D8CF;
+  --map-park: #D6DFB8;
+  --map-road: #FFFBF2;
+  --map-road-minor: #F8EEDA;
+}
+
+/* 木目のような細い縦縞 */
+.screen { background: var(--cream) repeating-linear-gradient(90deg, rgba(74, 44, 29, .025) 0 3px, transparent 3px 9px); }
+
+/* MARK: 画面の骨組み */
+
+.tab-item.is-active { background: var(--cream); }
+.tab-title { font-size: 10.5px; font-weight: 500; }
+.nav-button { background: var(--paper); border: 1.5px solid var(--gold); box-shadow: none; color: var(--brown); }
+
+/* MARK: 見出し（金の罫に挟んだ明朝と英字の筆記体） */
+
+.section-header { display: flex; align-items: baseline; gap: 10px; font-size: 21px; letter-spacing: .08em; }
+.section-header .en { font-family: var(--font-script); font-style: italic; font-weight: 500; font-size: 15px; letter-spacing: 0; color: var(--red); }
+.section-header::after { content: ""; flex: 1; height: 0; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); padding-top: 2px; align-self: center; }
+
+/* MARK: レースペーパー（縁が波形の白い紙） */
+
+.lace {
+  position: relative;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 50% 0, transparent 5px, var(--paper) 5.5px) 0 0 / 14px 14px repeat-x,
+    var(--paper);
+  border-radius: 50% / 18px;
+  box-shadow: 0 0 0 6px var(--paper), 0 6px 16px 6px rgba(74, 44, 29, .1);
+  outline: 3px dotted var(--color-separator);
+  outline-offset: 2px;
+}
+
+/* メニュー表のカード */
+.menu {
+  position: relative;
+  padding: 16px 16px 14px;
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--gold), var(--shadow-card);
+}
+.menu-row { display: flex; align-items: baseline; gap: 6px; font-size: 15px; }
+.menu-row .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.menu-row .leader { flex: 1; min-width: 20px; border-bottom: 2px dotted var(--color-separator); transform: translateY(-4px); }
+.menu-row .price { font-family: var(--font-script); font-style: italic; font-weight: 700; color: var(--red); white-space: nowrap; }
+
+/* MARK: 部品 */
+
+.card { position: relative; }
+.badge { padding: 3px 11px; font-weight: 500; border: 1px solid currentColor; }
+.badge-category { color: var(--red); background: var(--paper); }
+.badge-author { color: var(--paper); background: var(--soda); border-color: var(--soda); }
+.count-button { color: var(--brown); }
+.like-button.is-on { color: var(--red); }
+.star-button.is-on { color: var(--brown); }
+.rank {
+  width: 26px;
+  height: 26px;
+  background: var(--brown);
+  color: var(--cream);
+  font-family: var(--font-number);
+  font-style: italic;
+  font-size: 16px;
+  font-weight: 700;
+}
+.thumbnail { background: var(--cream); color: var(--brown); box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px var(--gold); }
+.post-title, .carousel-title { font-family: var(--font-heading); font-weight: 700; }
+
+/* ロゴ（ぶっちゃけmap のロゴタイプ。喫茶店の看板） */
+.logo { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; white-space: nowrap; }
+.logo-en { font-family: var(--font-script); font-style: italic; font-weight: 700; font-size: .42em; color: var(--red); letter-spacing: .04em; }
+.logo-main { margin-top: .08em; font-family: var(--font-heading); font-weight: 900; color: var(--brown); letter-spacing: .14em; }
+.logo-rule { display: flex; align-items: center; gap: .3em; width: 100%; margin-top: .14em; font-family: var(--font-script); font-style: italic; font-size: .3em; color: var(--brown); }
+.logo-rule::before, .logo-rule::after { content: ""; flex: 1; border-top: 1px solid var(--gold); }
+
+/* ぶっちゃけコメント（伝票） */
+.slip { padding: 12px 14px; border-radius: 4px; background: var(--paper);
+  background-image: repeating-linear-gradient(transparent 0 25px, #EBDDC3 25px 26px); background-position: 0 34px; box-shadow: inset 4px 0 0 var(--red), var(--shadow-card); }
+.slip-label { font-family: var(--font-heading); font-weight: 700; font-size: 13px; letter-spacing: .14em; color: var(--red); }
+.slip-text { margin-top: 4px; font-size: 16px; line-height: 26px; }
+
+/* ボタン */
+.cafe-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--brown);
+  color: var(--paper);
+  font-size: 15px;
+  box-shadow: 0 0 0 2px var(--cream), 0 0 0 3px var(--gold);
+}
+.cafe-button.secondary { background: var(--paper); color: var(--brown); }
+.cafe-button.red { background: var(--red); }
+
+/* 地図のピン（ソーサーの上のカップ） */
+.map-pin {
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 2px solid var(--paper);
+  background: var(--brown);
+  color: var(--cream);
+  font-family: var(--font-number);
+  font-style: italic;
+  font-size: 16px;
+  box-shadow: 0 0 0 4px var(--cream), 0 0 0 5px var(--gold), 0 3px 6px 4px rgba(74, 44, 29, .25);
+}
+.map-pin.is-selected { width: 46px; height: 46px; margin: -23px 0 0 -23px; background: var(--red); font-size: 22px; }
+
+.carousel-card { width: 262px; display: flex; flex-direction: column; gap: 8px; }
+.menu-kicker { font-size: 13px; color: var(--color-text-secondary); letter-spacing: .06em; }
+.menu-list { display: flex; flex-direction: column; gap: 6px; }
+.carousel-card .menu-row { font-size: 15px; }
+.carousel-card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }

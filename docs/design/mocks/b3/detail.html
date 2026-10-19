@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>B-3 純喫茶のメニュー — 投稿詳細</title>
+<meta name="mock-fonts" content="Zen Old Mincho|Kiwi Maru|Playfair Display">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&family=Kiwi+Maru:wght@400;500&family=Playfair+Display:ital,wght@1,500;1,700&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .detail { display: flex; flex-direction: column; gap: 18px; padding: 6px 16px 0; }
+  .cover { padding: 20px 18px 16px; text-align: center; }
+  .cover .en { font-family: var(--font-script); font-style: italic; font-size: 15px; color: var(--red); }
+  .detail-title { margin-top: 4px; font-family: var(--font-heading); font-weight: 900; font-size: 23px; line-height: 1.45; letter-spacing: .04em; }
+  .detail-area { display: inline-flex; align-items: center; gap: 4px; margin-top: 8px; font-size: 15px; color: var(--color-text-secondary); }
+  .cover .badges { justify-content: center; margin-top: 10px; }
+  .detail-meta { display: flex; align-items: center; gap: 14px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--gold); text-align: left; }
+  .detail-author { flex: 1; font-size: 15px; }
+  .detail-author span { display: block; font-size: 13px; color: var(--color-text-secondary); }
+  .item { display: flex; flex-direction: column; gap: 12px; }
+  .item-head { display: flex; align-items: center; gap: 12px; }
+  .plate { flex: none; position: relative; width: 74px; height: 74px; border-radius: 50%; background: var(--paper);
+    box-shadow: inset 0 0 0 6px var(--cream), inset 0 0 0 7px var(--gold), 0 2px 6px rgba(74, 44, 29, .18); display: flex; align-items: center; justify-content: center; color: var(--brown); }
+  .no { font-family: var(--font-script); font-style: italic; font-weight: 700; font-size: 30px; color: var(--red); line-height: 1; }
+  .no small { font-size: 15px; }
+  .item-name { font-family: var(--font-heading); font-weight: 900; font-size: 19px; line-height: 1.35; }
+  .item-address { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 14px; color: var(--color-text-secondary); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 投稿詳細: レースペーパーの表紙（筆記体の添え書き・明朝のタイトル）、スポットはメニュー表のカード（お皿の上のアイコン・No.1）、コメントは伝票
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const category = data.categories[post.category];
+  const item = s => `<article class="menu item">
+    <div class="item-head"><span class="plate">${icon(category.icon, { size: 30 })}</span>
+      <div style="flex:1"><p class="no" aria-label="${s.order}位">No.${s.order}</p><p class="item-name">${esc(s.name)}</p>
+        <p class="item-address">${icon('mappin', { size: 14 })}${esc(s.address)}</p></div></div>
+    ${parts.slip(s.recommendation)}
+    <span class="cafe-button secondary" style="align-self:flex-start">${icon('map', { size: 18 })}${esc(data.strings.openInMaps)}</span>
+  </article>`;
+  Mock.mount(Mock.screen({
+    nav: { title: '', back: true, trailing: ['share'] },
+    body: `<div class="detail">
+      <header class="lace cover"><p class="en">Today's special</p>
+        <h1 class="detail-title">${esc(post.title)}</h1>
+        <p class="detail-area">${icon('mappin', { size: 15 })}${esc(post.prefecture)} ${esc(post.city)}</p>
+        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+        <div class="detail-meta"><p class="detail-author">${esc(post.authorName)}<span>${esc(post.date)}</span></p>${parts.likeButton(post)}${parts.starButton(post)}</div>
+      </header>
+      ${post.spots.slice(0, 2).map(item).join('')}
+    </div>`,
+  }));
+</script>
+</body>
+</html>

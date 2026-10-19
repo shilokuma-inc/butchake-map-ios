@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>B-3 純喫茶のメニュー — マップ</title>
+<meta name="mock-fonts" content="Zen Old Mincho|Kiwi Maru|Playfair Display">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@700;900&family=Kiwi+Maru:wght@400;500&family=Playfair+Display:ital,wght@1,500;1,700&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .map-screen .screen-scroll { z-index: 1; pointer-events: none; }
+  .map-screen .status-bar, .map-screen .nav-bar { background: var(--cream); }
+  .map-screen .nav-bar { border-bottom: 1px solid var(--gold); box-shadow: 0 3px 0 -1px var(--cream), 0 4px 0 -1px var(--gold); }
+  .map-screen .nav-inline-title { font-family: var(--font-heading); font-weight: 900; font-size: 18px; letter-spacing: .14em; }
+  .map-illustration { top: 106px; }
+  .map-illustration .map-pin { z-index: 3; }
+  .map-illustration svg.steam { inset: auto; width: 32px; height: 34px; z-index: 4; }
+  .sheet-panel { position: absolute; left: 0; right: 0; bottom: 0; height: 420px; padding: 12px 16px 34px; z-index: 5;
+    border-radius: 18px 18px 0 0; background: var(--paper); box-shadow: inset 0 6px 0 -2px var(--paper), inset 0 7px 0 -2px var(--gold), 0 -6px 18px rgba(74, 44, 29, .2);
+    display: flex; flex-direction: column; gap: 10px; }
+  .grabber { align-self: center; width: 40px; height: 5px; border-radius: 3px; background: var(--gold); }
+  .sheet-title { font-family: var(--font-heading); font-weight: 900; font-size: 19px; line-height: 1.4; }
+  .sheet-area { display: flex; align-items: center; gap: 4px; margin-top: 2px; font-size: 15px; color: var(--color-text-secondary); }
+  .spot-line { display: flex; align-items: center; gap: 10px; }
+  .spot-name { font-size: 17px; font-weight: 500; }
+  .spot-address { margin-top: 2px; font-size: 14px; color: var(--color-text-secondary); }
+  .slip-text { font-size: 15px; }
+  .sheet-actions { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+  .sheet-actions .cafe-button { margin-left: auto; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // マップ: 淡い色の地図に、金の縁のソーサーのようなピン。選んだピンは赤で、上に湯気
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const spot = post.spots[1];
+  const pins = post.spots.map(s => ({ order: s.order, x: s.mapPosition.x, y: s.mapPosition.y * 0.5 + 6, selected: s === spot }));
+  const sel = pins.find(p => p.selected);
+  const steam = `<svg class="steam" style="left:calc(${sel.x}% - 16px);top:calc(${sel.y}% - 66px)" width="32" height="34" viewBox="0 0 32 34" aria-hidden="true">
+    <path d="M10 32 q-6 -8 0 -15 q6 -7 0 -15 M22 32 q-6 -8 0 -15 q6 -7 0 -15" fill="none" stroke="#A8262E" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+  Mock.mount(Mock.screen({
+    className: 'map-screen',
+    nav: { title: 'マップ' },
+    overlay: `${Mock.mapIllustration(pins).replace('<span class="map-pin', `${steam}<span class="map-pin`)}
+      <section class="sheet-panel">
+        <span class="grabber"></span>
+        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+        <div><h2 class="sheet-title">${esc(post.title)}</h2>
+          <p class="sheet-area">${icon('mappin', { size: 14 })}${esc(post.prefecture)} ${esc(post.city)}</p></div>
+        <div class="spot-line">${parts.rank(spot.order)}
+          <div><p class="spot-name">${esc(spot.name)}</p><p class="spot-address">${esc(spot.address)}</p></div></div>
+        ${parts.slip(spot.recommendation)}
+        <div class="sheet-actions">${parts.likeButton(post)}${parts.starButton(post)}
+          <span class="cafe-button">${esc(data.strings.viewPost)}${icon('chevronRight', { size: 16 })}</span></div>
+      </section>`,
+  }));
+</script>
+</body>
+</html>

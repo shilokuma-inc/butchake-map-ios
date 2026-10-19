@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「見つかりませんでした」: 飲み終わってからっぽのカップとソーサー -->
+  <ellipse cx="160" cy="186" rx="110" ry="24" fill="#F3E7D0" stroke="#B8862B" stroke-width="4"/>
+  <path d="M90 92 H230 L218 166 Q 214 184 196 184 H124 Q 106 184 102 166 Z" fill="#FFFBF2" stroke="#4A2C1D" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M230 108 q40 0 40 30 q0 30 -46 34" fill="none" stroke="#4A2C1D" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="160" cy="92" rx="70" ry="10" fill="#EBDDC3" stroke="#4A2C1D" stroke-width="5"/>
+  <path d="M138 132 q6 -6 12 0 M170 132 q6 -6 12 0" fill="none" stroke="#4A2C1D" stroke-width="4" stroke-linecap="round"/>
+  <path d="M146 152 q14 -8 28 0" fill="none" stroke="#4A2C1D" stroke-width="4" stroke-linecap="round"/>
+  <path d="M262 44 a12 12 0 1 1 18 10 q-6 4 -6 12" fill="none" stroke="#A8262E" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="274" cy="78" r="4" fill="#A8262E"/>
+</svg>

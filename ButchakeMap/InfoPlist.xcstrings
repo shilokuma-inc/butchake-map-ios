@@ -1,0 +1,24 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSPhotoLibraryAddUsageDescription" : {
+      "comment" : "共有シートの「画像を保存」でシェアカードを写真に保存するときの説明",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Used to save share card images to your photo library."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "シェアカードの画像を写真ライブラリに保存するために使います。"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

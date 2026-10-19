@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct ButchakeMap: App {
+    /// 全タブで共有する投稿のリポジトリ（メモリのみ）
+    @State private var repository = MockDataRepository()
+
     var body: some Scene {
         WindowGroup {
             rootView
+                .environment(repository)
         }
     }
 
@@ -19,7 +23,7 @@ struct ButchakeMap: App {
     @ViewBuilder private var rootView: some View {
         switch ScreenshotDemo.scene {
         case .home, nil:
-            ContentView()
+            MainTabView(initialTab: .home)
         }
     }
 }

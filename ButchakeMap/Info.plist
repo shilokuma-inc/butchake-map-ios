@@ -4,5 +4,11 @@
 <dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+	</array>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Used to save share card images to your photo library.</string>
 </dict>
 </plist>

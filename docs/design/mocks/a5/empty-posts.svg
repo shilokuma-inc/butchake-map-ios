@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「まだ投稿がありません」: 放送前のテレビ画面にカラーバーと「準備中」のテロップ（文字は線で略す） -->
+  <rect x="40" y="30" width="240" height="160" rx="18" fill="#141414"/>
+  <g>
+    <rect x="56" y="46" width="30" height="96" fill="#FFFFFF"/><rect x="86" y="46" width="30" height="96" fill="#FFE600"/>
+    <rect x="116" y="46" width="30" height="96" fill="#5BD0F0"/><rect x="146" y="46" width="30" height="96" fill="#3BCB7A"/>
+    <rect x="176" y="46" width="30" height="96" fill="#E4007F"/><rect x="206" y="46" width="30" height="96" fill="#D7141E"/>
+    <rect x="236" y="46" width="28" height="96" fill="#1C3FAA"/>
+  </g>
+  <path d="M56 152 H230 L222 176 H56 Z" fill="#FFE600"/>
+  <path d="M66 156 L80 164 L66 172 Z" fill="#D7141E"/>
+  <path d="M92 164 H180" stroke="#141414" stroke-width="6" stroke-linecap="round"/>
+  <path d="M120 190 L100 214 M200 190 L220 214" stroke="#141414" stroke-width="8" stroke-linecap="round"/>
+</svg>

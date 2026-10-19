@@ -1,0 +1,24 @@
+{
+  "colors": [
+    {"name": "赤", "hex": "#D7141E"},
+    {"name": "黄", "hex": "#FFE600"},
+    {"name": "青（画面）", "hex": "#1C3FAA"},
+    {"name": "墨", "hex": "#141414"},
+    {"name": "白", "hex": "#FFFFFF"},
+    {"name": "背景", "hex": "#F4F6FA"},
+    {"name": "補足の文字", "hex": "#4B5160"}
+  ],
+  "pairs": [
+    {"name": "本文 / 白", "fg": "#141414", "bg": "#FFFFFF", "large": false},
+    {"name": "本文 / 背景", "fg": "#141414", "bg": "#F4F6FA", "large": false},
+    {"name": "補足の文字 / 白", "fg": "#4B5160", "bg": "#FFFFFF", "large": false},
+    {"name": "補足の文字 / 背景", "fg": "#4B5160", "bg": "#F4F6FA", "large": false},
+    {"name": "白の文字 / 墨（テロップの帯・下テロップ）", "fg": "#FFFFFF", "bg": "#141414", "large": false},
+    {"name": "白の文字 / 赤（テロップ・順位・ボタン・ON AIR・ロゴの map・選んだタブ）", "fg": "#FFFFFF", "bg": "#D7141E", "large": false},
+    {"name": "墨の文字 / 黄（テロップ・属性のバッジ・選んだピン）", "fg": "#141414", "bg": "#FFE600", "large": false},
+    {"name": "白の文字 / 青（カテゴリのバッジ・画面の枠）", "fg": "#FFFFFF", "bg": "#1C3FAA", "large": false},
+    {"name": "赤の文字（ハンコ・いいね済みの件数） / 白", "fg": "#D7141E", "bg": "#FFFFFF", "large": false},
+    {"name": "縁取りの大きな文字（白・墨の縁） / 青のいちばん明るい色", "fg": "#FFFFFF", "bg": "#3A63D6", "large": true},
+    {"name": "白のアイコン・文字 / 青のいちばん明るい色（画面の枠）", "fg": "#FFFFFF", "bg": "#3A63D6", "large": false}
+  ]
+}

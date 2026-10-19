@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「見つかりませんでした」: ワイプの顔が「？」とツッコむ -->
+  <circle cx="140" cy="128" r="74" fill="#FFFFFF" stroke="#FFE600" stroke-width="10"/>
+  <circle cx="140" cy="128" r="80" fill="none" stroke="#141414" stroke-width="5"/>
+  <circle cx="140" cy="128" r="56" fill="#FFE600"/>
+  <circle cx="122" cy="116" r="7" fill="#141414"/><circle cx="158" cy="116" r="7" fill="#141414"/>
+  <path d="M120 150 H160" stroke="#141414" stroke-width="7" stroke-linecap="round"/>
+  <path d="M232 50 a20 20 0 1 1 28 18 q-8 5 -8 16" fill="none" stroke="#D7141E" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="252" cy="104" r="6" fill="#D7141E"/>
+  <path d="M206 60 l-14 -10 M210 82 l-18 2" stroke="#D7141E" stroke-width="5" stroke-linecap="round"/>
+</svg>

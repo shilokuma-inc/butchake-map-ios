@@ -18,7 +18,7 @@ extension XCUIApplication {
     /// 英語・米国のロケールで、縦向きで起動したアプリ
     static func launchedInEnglish() -> XCUIApplication {
         // 起動テストは UI の構成ごとに走り、シミュレーターを横向きのまま残すことがある。
-        // 横向きでは都道府県の一覧で選んでもフォームに戻らないため、縦向きに戻してから起動する
+        // 縦向きを前提に要素を探すので、縦向きに戻してから起動する
         XCUIDevice.shared.orientation = .portrait
         let app = XCUIApplication()
         app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]

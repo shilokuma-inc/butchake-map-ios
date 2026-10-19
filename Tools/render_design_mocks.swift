@@ -15,6 +15,7 @@
 //   - 寸法の違い（ページの中身が mock-size からはみ出している・書き出した画像のピクセル数が違う）
 //   - ページの JavaScript のエラー
 //   - 読み込めなかった CSS・スクリプト・画像、Web フォントを読み込んでいるのに mock-fonts が無いページ
+// ページが window.mockReady（Promise）を置いていれば、それが終わるまで待ってから検査する（iframe で別のページを並べる比較シートのため）。
 // ページと同じディレクトリに palette.json があれば、読み込む前に window.MOCK_PALETTE として渡す
 // （ブランドシートでコントラスト比の表を描くため）。
 
@@ -114,6 +115,9 @@ struct RenderError: Error, CustomStringConvertible {
 /// 読み込みが終わったページで、フォント・画像・寸法を確かめる JavaScript（エラーの文言の配列を返す）
 private let inspectionScript = """
 await document.fonts.ready;
+if (window.mockReady) {
+  await window.mockReady;
+}
 await new Promise(resolve => setTimeout(resolve, 300));
 await document.fonts.ready;
 const errors = [...(window.__mockErrors || [])];

@@ -198,18 +198,21 @@ private struct PostFormContent: View {
         Section {
             Button(action: viewModel.publish) {
                 Text("Publish")
-                    .bold()
                     .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.b2Primary)
             .disabled(viewModel.isLoadingPhoto)
             .accessibilityIdentifier("postForm.publish")
+            .modifier(B2ButtonRow())
             if viewModel.showsSaveDraftButton {
                 Button(action: viewModel.saveDraft) {
                     Text("Save Draft")
                         .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.b2Secondary)
                 .disabled(!viewModel.canSaveDraft)
                 .accessibilityIdentifier("postForm.saveDraft")
+                .modifier(B2ButtonRow())
             }
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
@@ -277,6 +280,17 @@ private struct PostFormContent: View {
                 onOutcomeDismissed(outcome)
             }
         }
+    }
+}
+
+/// B-2 のボタンを置く Form の行。白の行の地と区切り線を消し、ボタンを紙の地に直に置く
+/// （ボタンの下に出る 3pt の影の分も含め、上下に間をとる）
+private struct B2ButtonRow: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 9, trailing: 0))
     }
 }
 

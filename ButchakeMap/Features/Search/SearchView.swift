@@ -54,22 +54,42 @@ struct SearchView: View {
                 .foregroundStyle(Color.textSecondary)
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
-            Picker(selection: $filter.prefecture) {
-                Text("All Prefectures")
-                    .tag(String?.none)
-                ForEach(viewModel.prefectures, id: \.self) { prefecture in
-                    Text(verbatim: prefecture)
-                        .tag(String?.some(prefecture))
+            // .menu の Picker は大きな文字でラベルの上下が切れるので、Menu の中に Picker を置き、ラベルは自前で出す。
+            // VoiceOver では Picker と同じく「都道府県」と、選んでいる都道府県を読む
+            Menu {
+                Picker(selection: $filter.prefecture) {
+                    Text("All Prefectures")
+                        .tag(String?.none)
+                    ForEach(viewModel.prefectures, id: \.self) { prefecture in
+                        Text(verbatim: prefecture)
+                            .tag(String?.some(prefecture))
+                    }
+                } label: {
+                    Text("Prefecture")
                 }
             } label: {
-                Text("Prefecture")
+                HStack(spacing: 6) {
+                    selectedPrefectureName
+                        .multilineTextAlignment(.leading)
+                    Image(systemName: "chevron.up.chevron.down")
+                        .imageScale(.small)
+                }
+                .font(.b2Heading(size: 15, relativeTo: .subheadline))
+                .foregroundStyle(Color.brandPrimary)
             }
-            .pickerStyle(.menu)
-            .tint(Color.brandPrimary)
-            // 大きな文字で、選んだ都道府県の文字の上下が切れないよう、高さは文字に合わせる
-            .fixedSize(horizontal: false, vertical: true)
+            .accessibilityLabel(Text("Prefecture"))
+            .accessibilityValue(selectedPrefectureName)
         }
         .padding(.horizontal)
+    }
+
+    /// 選んでいる都道府県（選んでいなければ「すべての都道府県」）
+    private var selectedPrefectureName: Text {
+        if let prefecture = filter.prefecture {
+            Text(verbatim: prefecture)
+        } else {
+            Text("All Prefectures")
+        }
     }
 
     private var categoryChips: some View {

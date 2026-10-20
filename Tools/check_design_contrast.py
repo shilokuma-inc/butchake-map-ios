@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """デザイン案の配色（palette.json）の文字と背景のコントラスト比を WCAG 2.x の式で計算し、AA を満たすか確かめる。
 
-    python3 Tools/check_design_contrast.py docs/design/mocks/a1 [docs/design/mocks/b1 …]
+    python3 Tools/check_design_contrast.py docs/design/mocks/b2 [docs/design/mocks/<案 ID> …]
 
 案のディレクトリの palette.json を読み、組ごとの比を Markdown の表で出す（ブランドシートと PR 本文に載せる）。
 AA の基準は、通常の文字で 4.5:1、大きな文字（18pt 以上、または 14pt 以上の太字）で 3:1。

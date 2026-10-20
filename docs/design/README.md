@@ -3,29 +3,34 @@
 「ぶっちゃけmap」のデザイン案を、静止画のモックで比べるための置き場です。
 依頼は Issue #44「デザインを改善したい」、方針は Discussion #45 で決めました。
 
-- 比べるのは静止画だけです。案ごとの PR に書き出した画像を添付し、それを見比べて採用する案を 1 つ選びます
-- **モックはアプリに組み込みません。** 採用した案の本実装（色・フォント・アイコン・動きをアプリに入れること）は、案を選んだ後に別の依頼で行います
-- 方向性は A（ポップ＆ツッコミ）と B（レトロ観光パンフ）の 2 つで、それぞれ 5 案（計 10 案）を作ります
+**10 案から B-2「駅のスタンプラリー」（`b2`）を採用しました**（[Discussion #45 のコメント](https://github.com/shilokuma-inc/butchake-map-ios/discussions/45#discussioncomment-19058453)）。
+採用しなかった 9 案と比較シートは #74 で片付けました。今ここにあるのは採用した `b2` と、比較の基準の `current` だけです。
+片付けた案のファイルは、最終 PR #73 のマージの時点（[`af85f40`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design)）を見てください。
+
+- 比べるのは静止画だけです。案ごとの PR に書き出した画像を添付し、それを見比べて採用する案を 1 つ選びました
+- **モックはアプリに組み込みません。** 採用した案の本実装（色・フォント・アイコン・動きをアプリに入れること）は、別の依頼で行います
+- 方向性は A（ポップ＆ツッコミ）と B（レトロ観光パンフ）の 2 つで、それぞれ 5 案（計 10 案）を作りました
+- 採用しなかった案のアイデア（動きのコマ割り・いいねボタン・アイコン・部品など）は、組織のデザインのナレッジ（`shilokuma-inc/design-knowledge`、非公開）にカテゴリ別にまとめています
 
 ## 案の一覧
 
 | 案 ID | 名前 | 方向性 | 配色 | 書体 | 「面白さ」の出し方 | PR | 採用したときの本実装の作業量の目安 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `current` | 今のデザイン（比較の基準） | — | 青 `#2B6CB0`・オレンジ `#DD6B20` | システムフォント | — | #47 | — |
-| `a1` | 王道ポップ | A | オレンジ・イエロー・黒の太線 | Mochiy Pop One・M PLUS Rounded 1c | 傾いたステッカー（バズり中！）・吹き出しのコメント・1位のリボン | #50 | 中（太線と影の部品・ステッカーの回転） |
-| `a2` | マンガのツッコミ | A | 白黒の網点＋赤 1 色 | Reggae One・Yusei Magic・M PLUS 1p | 集中線・効果音（ドーン!!）・コマ割りのスポット・作者のフキダシ | #54 | 大（集中線と網点を `Canvas` で描く・効果音の文字） |
-| `a3` | 駄菓子屋のおまけシール | A | ピンク・水色・黄とキラキラ | Hachi Maru Pop・Zen Maru Gothic | 1 文字ずつのシールのロゴ・レア！のキラキラシール・おまけの袋 | #59 | 中（白いフチの影・ホログラムのグラデーション） |
-| `a4` | ネオブルータリズム | A | 原色 5 色のベタ・黒の太枠 | Dela Gothic One・Murecho | 大きな順位の数字・押すと沈むボタン・今週いちばんの 1 | #64 | 小（枠と影と色が中心で、形が単純） |
-| `a5` | バラエティ番組のテロップ | A | 赤・黄・白と番組の青 | RocknRoll One・Zen Kaku Gothic Antique | 縁取り文字・テロップの帯・ワイプの顔・ぶっちゃけのハンコ | #68 | 中（縁取り文字・テロップの帯の形） |
-| `b1` | 昭和の観光パンフ | B | クリームに朱と紺 | Dela Gothic One・しっぽり明朝 B1・Zen Kaku Gothic New | 切手のカード・投稿日の消印・其の一の帯・便せんのコメント | #52 | 中（ミシン目の `Shape`・消印） |
-| `b2` | 駅のスタンプラリー | B | 紺のインク・路線の緑・クラフト紙 | BIZ UDPゴシック・DotGothic16・Kaisei Decol | 駅名標の見出し・きっぷ・スタンプ帳・路線図の駅 | #56 | 大（スタンプ帳や「済／未」は今のアプリに無い表現。決め直しが要る） |
-| `b3` | 純喫茶のメニュー | B | こげ茶・赤・クリームとクリームソーダの緑 | Zen Old Mincho・Kiwi Maru・Playfair Display | メニュー表の品書き・レースペーパー・伝票・めくる遷移 | #62 | 中（レースの縁・めくりの遷移） |
-| `b4` | 旅かばんのラベル | B | 色あせた紺・青緑・赤・からし色 | Train One・M PLUS 2・Bungee | 楕円のホテルラベル・荷札・エアメール・飛行機の航路 | #66 | 中（楕円のラベル・荷札の形） |
-| `b5` | 昭和の銭湯と看板 | B | 水色と朱・タイルの白 | Yuji Syuku・Rampart One・Zen Kaku Gothic New | のれん・富士山のペンキ絵・下足札・ホーロー看板・のれんをくぐる遷移 | #70 | 中（ペンキ絵のイラスト・縦書きの下足札・のれんの遷移） |
+| [`a1`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/a1) | 王道ポップ | A | オレンジ・イエロー・黒の太線 | Mochiy Pop One・M PLUS Rounded 1c | 傾いたステッカー（バズり中！）・吹き出しのコメント・1位のリボン | #50 | 中（太線と影の部品・ステッカーの回転） |
+| [`a2`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/a2) | マンガのツッコミ | A | 白黒の網点＋赤 1 色 | Reggae One・Yusei Magic・M PLUS 1p | 集中線・効果音（ドーン!!）・コマ割りのスポット・作者のフキダシ | #54 | 大（集中線と網点を `Canvas` で描く・効果音の文字） |
+| [`a3`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/a3) | 駄菓子屋のおまけシール | A | ピンク・水色・黄とキラキラ | Hachi Maru Pop・Zen Maru Gothic | 1 文字ずつのシールのロゴ・レア！のキラキラシール・おまけの袋 | #59 | 中（白いフチの影・ホログラムのグラデーション） |
+| [`a4`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/a4) | ネオブルータリズム | A | 原色 5 色のベタ・黒の太枠 | Dela Gothic One・Murecho | 大きな順位の数字・押すと沈むボタン・今週いちばんの 1 | #64 | 小（枠と影と色が中心で、形が単純） |
+| [`a5`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/a5) | バラエティ番組のテロップ | A | 赤・黄・白と番組の青 | RocknRoll One・Zen Kaku Gothic Antique | 縁取り文字・テロップの帯・ワイプの顔・ぶっちゃけのハンコ | #68 | 中（縁取り文字・テロップの帯の形） |
+| [`b1`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/b1) | 昭和の観光パンフ | B | クリームに朱と紺 | Dela Gothic One・しっぽり明朝 B1・Zen Kaku Gothic New | 切手のカード・投稿日の消印・其の一の帯・便せんのコメント | #52 | 中（ミシン目の `Shape`・消印） |
+| `b2` | **駅のスタンプラリー（採用）** | B | 紺のインク・路線の緑・クラフト紙 | BIZ UDPゴシック・DotGothic16・Kaisei Decol | 駅名標の見出し・きっぷ・スタンプ帳・路線図の駅 | #56 | 大（スタンプ帳や「済／未」は今のアプリに無い表現。決め直しが要る） |
+| [`b3`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/b3) | 純喫茶のメニュー | B | こげ茶・赤・クリームとクリームソーダの緑 | Zen Old Mincho・Kiwi Maru・Playfair Display | メニュー表の品書き・レースペーパー・伝票・めくる遷移 | #62 | 中（レースの縁・めくりの遷移） |
+| [`b4`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/b4) | 旅かばんのラベル | B | 色あせた紺・青緑・赤・からし色 | Train One・M PLUS 2・Bungee | 楕円のホテルラベル・荷札・エアメール・飛行機の航路 | #66 | 中（楕円のラベル・荷札の形） |
+| [`b5`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/mocks/b5) | 昭和の銭湯と看板 | B | 水色と朱・タイルの白 | Yuji Syuku・Rampart One・Zen Kaku Gothic New | のれん・富士山のペンキ絵・下足札・ホーロー看板・のれんをくぐる遷移 | #70 | 中（ペンキ絵のイラスト・縦書きの下足札・のれんの遷移） |
 
 - 書体はすべて Google Fonts の SIL OFL 1.1（英字だけの Playfair Display・Bungee を含む）。採用したら書体を同梱する（1 本あたり数 MB）
 - 作業量の目安は、色・書体・部品・画面のレイアウト・アイコン・動きをアプリに入れる作業の相対的な大きさ（小・中・大）。どの案もダークモードの配色は別に決める
-- 比較シート: `docs/design/compare/`（ホームの一覧 `homes.html`・アイコンの一覧 `icons.html`・ロゴの一覧 `logos.html`）。`Tools/render_design_mocks.sh compare` で書き出す。各案のページを iframe で読み込んで並べている
+- 比較シート（ホームの一覧 `homes.html`・アイコンの一覧 `icons.html`・ロゴの一覧 `logos.html`。#72）は片付けました。[`af85f40` の `docs/design/compare/`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design/compare) に残っています
 
 - A. ポップ＆ツッコミ: ビビッドなオレンジ・イエローに黒の太い線。極太の丸ゴシック、吹き出しやステッカー風のバッジを少し傾けて置き、「ぶっちゃけ」のツッコミ感・にぎやかさを出す
 - B. レトロ観光パンフ: クリーム地に朱色と紺。昭和の観光案内や切手・スタンプ風の飾り。見出しは太いレトロ系の書体で、懐かしさと旅のわくわく感を出す
@@ -34,9 +39,9 @@
 ## 書き出し方
 
 ```sh
-Tools/render_design_mocks.sh a1 b1      # 案を指定する
-Tools/render_design_mocks.sh --all      # 全案（と docs/design/compare/）
-python3 Tools/check_design_contrast.py docs/design/mocks/a1   # 配色のコントラスト比を確かめる
+Tools/render_design_mocks.sh b2 current # 案を指定する
+Tools/render_design_mocks.sh --all      # 全案
+python3 Tools/check_design_contrast.py docs/design/mocks/b2   # 配色のコントラスト比を確かめる
 ```
 
 - 書き出しは macOS の WebKit で行います（`Tools/render_design_mocks.swift` を `xcrun swift` で動かす。Google Chrome は要りません）。
@@ -51,14 +56,14 @@ python3 Tools/check_design_contrast.py docs/design/mocks/a1   # 配色のコン�
   - Web フォント（`fonts.googleapis.com`）を読み込んでいるのに `<meta name="mock-fonts">` が無いページ（Web フォントを使うページでは `mock-fonts` が必須）
   - JSON のオブジェクトとして読めない `palette.json`
   - 英小文字・数字・ハイフン・下線以外を含む案 ID
-- 比較シートのように iframe で別のページを並べるページは、`window.mockReady`（Promise）を置くと、書き出しはそれを待ってから検査・撮影する
+- iframe で別のページを並べるページは、`window.mockReady`（Promise）を置くと、書き出しはそれを待ってから検査・撮影する
 - `check_design_contrast.py` は案の `palette.json` の組ごとに WCAG のコントラスト比を出し、AA 未満（通常の文字で 4.5:1、大きな文字で 3:1）があれば 0 以外で終わります。
   出した表は PR 本文に載せます。ブランドシートには、同じ式で計算した表を `Mock.paletteTable()` で描きます
 - `current` は今のアプリを写した比較の基準なので、AA 未満の組（オレンジの小さな文字など）もそのまま載せています。`check_design_contrast.py` が通らなくてよいのは `current` だけです
 
 ## ページの作り方
 
-1 案は `docs/design/mocks/<案 ID>/` に置きます（`a1`〜`a5`・`b1`〜`b5`）。`current` を写して始めると早いです。
+1 案は `docs/design/mocks/<案 ID>/` に置きます（10 案は `a1`〜`a5`・`b1`〜`b5` で作り、今は採用した `b2` だけを残しています）。`current` を写して始めると早いです。
 
 | ファイル | 中身 |
 | --- | --- |

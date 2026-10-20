@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「見つかりませんでした」: 開けたおまけの袋が、からっぽ -->
+  <defs><linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFD1EC"/><stop offset=".22" stop-color="#C9F1FF"/><stop offset=".42" stop-color="#FFF6B8"/>
+    <stop offset=".62" stop-color="#D9C8FF"/><stop offset=".8" stop-color="#C9FFE6"/><stop offset="1" stop-color="#FFD1EC"/></linearGradient></defs>
+  <g transform="rotate(-8 160 130)">
+    <path d="M100 70 L220 70 L230 210 L90 210 Z" fill="url(#holo)" stroke="#FFFFFF" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M100 70 L120 46 L140 70 L160 46 L180 70 L200 46 L220 70" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="140" cy="130" r="6" fill="#3A2340"/><circle cx="180" cy="130" r="6" fill="#3A2340"/>
+    <ellipse cx="160" cy="162" rx="12" ry="9" fill="none" stroke="#3A2340" stroke-width="5"/>
+  </g>
+  <path d="M252 52 a12 12 0 1 1 18 10 q-6 4 -6 12" fill="none" stroke="#FF5FA2" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="264" cy="86" r="4.5" fill="#FF5FA2"/>
+  <path d="M70 54 L73.84 66.16 L86 70 L73.84 73.84 L70 86 L66.16 73.84 L54 70 L66.16 66.16 Z" fill="#5BD0F0" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/><path d="M262 168 L264.88 177.12 L274 180 L264.88 182.88 L262 192 L259.12 182.88 L250 180 L259.12 177.12 Z" fill="#FFE14D" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/>
+</svg>

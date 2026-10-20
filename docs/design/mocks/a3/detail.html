@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>A-3 駄菓子屋のおまけシール — 投稿詳細</title>
+<meta name="mock-fonts" content="Hachi Maru Pop|Zen Maru Gothic">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Zen+Maru+Gothic:wght@500;700;900&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .detail { display: flex; flex-direction: column; gap: 30px; padding: 8px 16px 0; }
+  .head { position: relative; padding: 18px 16px 16px; border-radius: 24px; background: var(--holo); box-shadow: 0 0 0 5px #FFFFFF, 0 3px 10px 5px rgba(122, 40, 90, .14); }
+  .detail-title { padding-right: 40px; font-family: var(--font-heading); font-weight: 400; font-size: 24px; line-height: 1.4; }
+  .detail-area { display: flex; align-items: center; gap: 4px; margin-top: 8px; font-size: 15px; font-weight: 700; }
+  .head .badges { margin-top: 12px; }
+  .detail-meta { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 2px dashed rgba(255, 255, 255, .9); }
+  .avatar { flex: none; display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 50%;
+    background: var(--yellow); font-family: var(--font-heading); font-size: 17px; box-shadow: 0 0 0 3px #FFFFFF; }
+  .detail-author { flex: 1; font-size: 15px; font-weight: 700; }
+  .detail-author span { display: block; font-size: 13px; font-weight: 500; color: var(--ink); }
+  /* キラキラの地の上は文字をすべて濃い文字色にする（濃いピンクは淡い紫の上で 3.82:1、補足の色は 4.51:1 とぎりぎりのため） */
+  .head .count-button { color: var(--ink); }
+  .spot { display: flex; flex-direction: column; gap: 14px; padding-top: 20px; }
+  .rank-seal { position: absolute; top: -18px; left: 14px; display: inline-flex; align-items: baseline; gap: 2px; padding: 4px 14px; border-radius: 999px;
+    background: var(--c); font-family: var(--font-heading); font-size: 24px; line-height: 1.2; transform: rotate(-5deg);
+    box-shadow: 0 0 0 3px #FFFFFF, 0 2px 6px 3px rgba(122, 40, 90, .2); }
+  .rank-seal small { font-size: 14px; }
+  .photo { position: relative; display: flex; align-items: center; justify-content: center; height: 128px; border-radius: 18px;
+    background: radial-gradient(circle at 20% 30%, #FFFFFF 0 6px, transparent 7px) 0 0 / 40px 40px, var(--c); }
+  .photo .icon-wrap { display: inline-flex; padding: 14px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 0 3px #FFFFFF, 0 2px 6px 3px rgba(122, 40, 90, .15); }
+  .spot-name { font-size: 19px; font-weight: 900; line-height: 1.35; }
+  .spot-address { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 14px; color: var(--color-text-secondary); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 投稿詳細: キラキラの見出しのシール・作者といいね／スター。スポットは順位のシールを貼ったカード、写真の枠は水玉、コメントはメモ帳のシール
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const category = data.categories[post.category];
+  const seal = ['', '#FFE14D', '#5BD0F0', '#FF5FA2'];
+  const spot = s => `<article class="card spot">
+    <span class="rank-seal" style="--c:${seal[s.order]}">${s.order}<small>位</small></span>
+    <div class="photo" style="--c:${seal[s.order]}"><span class="icon-wrap">${icon(category.icon, { size: 34 })}</span></div>
+    <div><p class="spot-name">${esc(s.name)}</p><p class="spot-address">${icon('mappin', { size: 14 })}${esc(s.address)}</p></div>
+    ${parts.memo(s.recommendation)}
+    <span class="candy-button secondary" style="align-self:flex-start">${icon('map', { size: 18 })}${esc(data.strings.openInMaps)}</span>
+  </article>`;
+  Mock.mount(Mock.screen({
+    nav: { title: '', back: true, trailing: ['share'] },
+    body: `<div class="detail">
+      <header class="head">${Mock.sparkle('right:18px;top:14px;width:20px;height:20px')}${Mock.sparkle('right:44px;top:34px', '#FF5FA2')}
+        <h1 class="detail-title">${esc(post.title)}</h1>
+        <p class="detail-area">${icon('mappin', { size: 15 })}${esc(post.prefecture)} ${esc(post.city)}</p>
+        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+        <div class="detail-meta"><span class="avatar">金</span><p class="detail-author">${esc(post.authorName)}<span>${esc(post.date)}</span></p>
+          ${parts.likeButton(post)}${parts.starButton(post)}</div>
+      </header>
+      ${post.spots.slice(0, 2).map(spot).join('')}
+    </div>`,
+  }));
+</script>
+</body>
+</html>

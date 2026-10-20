@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- B-5「昭和の銭湯と看板」のアプリアイコン: 白いタイルの壁に富士山のペンキ絵、手前に朱ののれん（湯気のしるし）。角丸は iOS がかけるので描かない -->
+  <rect width="1024" height="1024" fill="#F2F7F7"/>
+  <g stroke="#DCE9EA" stroke-width="4"><path d="M0 64 H1024" /><path d="M0 128 H1024" /><path d="M0 192 H1024" /><path d="M0 256 H1024" /><path d="M0 320 H1024" /><path d="M0 384 H1024" /><path d="M0 448 H1024" /><path d="M0 512 H1024" /><path d="M0 576 H1024" /><path d="M0 640 H1024" /><path d="M0 704 H1024" /><path d="M0 768 H1024" /><path d="M0 832 H1024" /><path d="M0 896 H1024" /><path d="M0 960 H1024" /><path d="M64 0 V1024" /><path d="M128 0 V1024" /><path d="M192 0 V1024" /><path d="M256 0 V1024" /><path d="M320 0 V1024" /><path d="M384 0 V1024" /><path d="M448 0 V1024" /><path d="M512 0 V1024" /><path d="M576 0 V1024" /><path d="M640 0 V1024" /><path d="M704 0 V1024" /><path d="M768 0 V1024" /><path d="M832 0 V1024" /><path d="M896 0 V1024" /><path d="M960 0 V1024" /></g>
+  <rect x="96" y="160" width="832" height="520" rx="24" fill="#7CC6D6"/>
+  <circle cx="760" cy="300" r="56" fill="#F2D28A"/>
+  <path d="M190 680 L512 330 L834 680 Z" fill="#3E7FA6"/>
+  <path d="M430 418 L512 330 L594 418 L560 438 L532 410 L504 444 L470 416 L450 434 Z" fill="#FFFFFF"/>
+  <path d="M96 640 q40 -30 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t32 0" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+  <rect x="96" y="660" width="832" height="20" fill="#1E6E80"/>
+  <rect x="240" y="80" width="544" height="20" rx="10" fill="#8A6A44"/>
+  <g>
+    <path d="M250 96 H504 V420 Q 504 440 484 440 H270 Q 250 440 250 420 Z" fill="#A8341F"/>
+    <path d="M520 96 H774 V420 Q 774 440 754 440 H540 Q 520 440 520 420 Z" fill="#A8341F"/>
+    <path d="M520 96 V440" stroke="#F2F7F7" stroke-width="16"/>
+    <g fill="none" stroke="#FFFFFF" stroke-width="22" stroke-linecap="round">
+      <path d="M330 330 q-20 -30 0 -60 q20 -30 0 -60 M377 330 q-20 -30 0 -60 q20 -30 0 -60 M424 330 q-20 -30 0 -60 q20 -30 0 -60"/>
+      <path d="M600 330 q-20 -30 0 -60 q20 -30 0 -60 M647 330 q-20 -30 0 -60 q20 -30 0 -60 M694 330 q-20 -30 0 -60 q20 -30 0 -60"/>
+      <path d="M310 360 q67 40 134 0 M580 360 q67 40 134 0"/>
+    </g>
+  </g>
+  <rect x="96" y="740" width="832" height="200" rx="20" fill="#1B3A5C"/>
+  <rect x="112" y="756" width="800" height="168" rx="12" fill="none" stroke="#FFFFFF" stroke-width="8"/>
+  <circle cx="140" cy="784" r="10" fill="#C9D3D8"/><circle cx="884" cy="784" r="10" fill="#C9D3D8"/>
+  <path d="M260 840 H764" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+</svg>

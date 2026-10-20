@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「まだ投稿がありません」: メニュー表の品書きがまだ白紙で、「準備中」の札 -->
+  <rect x="70" y="18" width="180" height="204" rx="6" fill="#FFFBF2" stroke="#B8862B" stroke-width="3"/>
+  <rect x="80" y="28" width="160" height="184" rx="3" fill="none" stroke="#B8862B" stroke-width="1.5"/>
+  <path d="M120 54 H200" stroke="#4A2C1D" stroke-width="5" stroke-linecap="round"/>
+  <g stroke="#D9C6A5" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"><path d="M100 92 H220"/><path d="M100 120 H220"/><path d="M100 148 H220"/></g>
+  <g transform="rotate(-8 160 182)">
+    <path d="M130 164 L160 150 L190 164" fill="none" stroke="#4A2C1D" stroke-width="2.5"/>
+    <rect x="118" y="164" width="84" height="36" rx="5" fill="#A8262E"/>
+    <path d="M136 182 H184" stroke="#FFFBF2" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>

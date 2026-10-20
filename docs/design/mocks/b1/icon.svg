@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- B-1「昭和の観光パンフ」のアプリアイコン: 切手の中に山と太陽と波、朱の消印。角丸は iOS がかけるので描かない -->
+  <rect width="1024" height="1024" fill="#F6ECD6"/>
+  <rect x="176" y="176" width="672" height="672" fill="#FFFAEE"/>
+  <g fill="#F6ECD6"><circle cx="176.0" cy="176" r="20"/><circle cx="176.0" cy="848" r="20"/><circle cx="176" cy="176.0" r="20"/><circle cx="848" cy="176.0" r="20"/><circle cx="243.2" cy="176" r="20"/><circle cx="243.2" cy="848" r="20"/><circle cx="176" cy="243.2" r="20"/><circle cx="848" cy="243.2" r="20"/><circle cx="310.4" cy="176" r="20"/><circle cx="310.4" cy="848" r="20"/><circle cx="176" cy="310.4" r="20"/><circle cx="848" cy="310.4" r="20"/><circle cx="377.6" cy="176" r="20"/><circle cx="377.6" cy="848" r="20"/><circle cx="176" cy="377.6" r="20"/><circle cx="848" cy="377.6" r="20"/><circle cx="444.8" cy="176" r="20"/><circle cx="444.8" cy="848" r="20"/><circle cx="176" cy="444.8" r="20"/><circle cx="848" cy="444.8" r="20"/><circle cx="512.0" cy="176" r="20"/><circle cx="512.0" cy="848" r="20"/><circle cx="176" cy="512.0" r="20"/><circle cx="848" cy="512.0" r="20"/><circle cx="579.2" cy="176" r="20"/><circle cx="579.2" cy="848" r="20"/><circle cx="176" cy="579.2" r="20"/><circle cx="848" cy="579.2" r="20"/><circle cx="646.4" cy="176" r="20"/><circle cx="646.4" cy="848" r="20"/><circle cx="176" cy="646.4" r="20"/><circle cx="848" cy="646.4" r="20"/><circle cx="713.6" cy="176" r="20"/><circle cx="713.6" cy="848" r="20"/><circle cx="176" cy="713.6" r="20"/><circle cx="848" cy="713.6" r="20"/><circle cx="780.8" cy="176" r="20"/><circle cx="780.8" cy="848" r="20"/><circle cx="176" cy="780.8" r="20"/><circle cx="848" cy="780.8" r="20"/><circle cx="848.0" cy="176" r="20"/><circle cx="848.0" cy="848" r="20"/><circle cx="176" cy="848.0" r="20"/><circle cx="848" cy="848.0" r="20"/></g>
+  <rect x="222" y="222" width="580" height="580" fill="#1F3A68"/>
+  <circle cx="640" cy="420" r="104" fill="#B23A26"/>
+  <path d="M222 802 L222 690 L470 430 L560 520 L612 476 L802 690 L802 802 Z" fill="#F6ECD6"/>
+  <path d="M430 472 L470 430 L512 474 L490 494 L470 474 L450 494 Z" fill="#FFFAEE"/>
+  <g fill="none" stroke="#1F3A68" stroke-width="12" stroke-linecap="round" clip-path="url(#inner)"><path d="M210 700 q33 -26 66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0" /><path d="M210 742 q33 -26 66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0" /><path d="M210 784 q33 -26 66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0 t66 0" /></g>
+  <clipPath id="inner"><rect x="222" y="222" width="580" height="580"/></clipPath>
+  <rect x="222" y="222" width="580" height="580" fill="none" stroke="#FFFAEE" stroke-width="10"/>
+  <!-- 朱の消印 -->
+  <g transform="rotate(-14 330 320)" fill="none" stroke="#B23A26">
+    <circle cx="330" cy="320" r="118" stroke-width="20"/>
+    <circle cx="330" cy="320" r="88" stroke-width="8"/>
+    <path d="M200 300 H460 M200 340 H460" stroke-width="10"/>
+  </g>
+</svg>

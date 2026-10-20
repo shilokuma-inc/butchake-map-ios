@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- B-2「駅のスタンプラリー」のアプリアイコン: クラフト紙の台紙に、紺一色の駅スタンプ（電車と山と線路）。下に路線の緑の帯。角丸は iOS がかけるので描かない -->
+  <rect width="1024" height="1024" fill="#E8DCC0"/>
+  <rect y="884" width="1024" height="60" fill="#2F7A45"/>
+  <g transform="rotate(-8 512 470)" fill="none" stroke="#24387F">
+    <circle cx="512" cy="470" r="330" stroke-width="22" stroke-dasharray="40 16"/>
+    <circle cx="512" cy="470" r="290" stroke-width="12"/>
+    <path d="M262 560 L410 380 L480 450 L560 350 L762 560" stroke-width="16" stroke-linejoin="round"/>
+    <g fill="#24387F" stroke="none">
+      <rect x="402" y="420" width="220" height="230" rx="54"/>
+      <rect x="380" y="640" width="264" height="26" rx="13"/>
+    </g>
+    <g fill="#E8DCC0" stroke="none">
+      <rect x="432" y="456" width="160" height="80" rx="16"/>
+      <circle cx="450" cy="600" r="18"/><circle cx="574" cy="600" r="18"/>
+      <rect x="490" y="436" width="44" height="10" rx="5"/>
+    </g>
+    <path d="M330 700 H694 M360 735 H664" stroke-width="14" stroke-linecap="round"/>
+    <path d="M400 700 L380 760 M512 700 V760 M624 700 L644 760" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <!-- インクのかすれ（台紙の色で細い線を抜く） -->
+  <g stroke="#E8DCC0" stroke-width="6" stroke-linecap="round" opacity=".7">
+    <path d="M300 300 l40 -12 M640 240 l30 10 M720 640 l-24 22 M360 700 l20 6"/>
+  </g>
+</svg>

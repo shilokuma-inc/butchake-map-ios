@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「まだ投稿がありません」: 切手帳の空いた枠が 3 つ。最初の 1 枚を待っている -->
+  <rect x="40" y="26" width="240" height="188" fill="#FFFAEE" stroke="#1F3A68" stroke-width="3"/>
+  <path d="M40 54 H280" stroke="#B23A26" stroke-width="3"/>
+  <g fill="none" stroke="#1F3A68" stroke-width="2.5" stroke-dasharray="6 5">
+    <rect x="58" y="74" width="60" height="76"/><rect x="130" y="74" width="60" height="76"/><rect x="202" y="74" width="60" height="76"/>
+  </g>
+  <g fill="#1F3A68"><circle cx="88" cy="112" r="4"/><circle cx="160" cy="112" r="4"/><circle cx="232" cy="112" r="4"/></g>
+  <g transform="rotate(-12 220 178)" fill="none" stroke="#B23A26">
+    <circle cx="220" cy="178" r="30" stroke-width="4"/><circle cx="220" cy="178" r="22" stroke-width="2"/>
+    <path d="M180 172 H260 M180 184 H260" stroke-width="3"/>
+  </g>
+  <path d="M60 172 H150 M60 190 H128" stroke="#C9B48A" stroke-width="4" stroke-linecap="round"/>
+</svg>

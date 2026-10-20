@@ -1,0 +1,193 @@
+/*
+ * A-2「マンガのツッコミ」のトークンと飾り。雛形（tokens.css・frame.css）の後に読み込む。
+ * 白地に黒のスクリーントーン・集中線・コマ枠。見出しは描き文字風（Reggae One）、吹き出しの中は手書き風（Yusei Magic）。差し色は赤 1 色。
+ */
+:root {
+  --ink: #111111;
+  --red: #C8102E;
+
+  --color-bg: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-text: var(--ink);
+  --color-text-secondary: #555555;
+  --color-primary: var(--ink);
+  --color-accent: var(--red);
+  --color-on-primary: #FFFFFF;
+  --color-like: var(--red);
+  --color-star: var(--ink);
+  --color-separator: var(--ink);
+
+  --font-body: "M PLUS 1p", "Hiragino Sans", sans-serif;
+  --font-heading: "Reggae One", "M PLUS 1p", sans-serif;
+  --font-hand: "Yusei Magic", "M PLUS 1p", sans-serif;
+  --font-number: "Reggae One", sans-serif;
+  --weight-heading: 400;
+
+  --panel: 3px solid var(--ink);
+  --radius-card: 0;
+  --radius-badge: 0;
+  --radius-thumb: 0;
+  --border-card: var(--panel);
+  --shadow-card: none;
+  --icon-stroke: 2.4;
+
+  --tabbar-bg: #FFFFFF;
+  --tabbar-border: 3px solid var(--ink);
+  --tabbar-color: var(--ink);
+  --tabbar-active: #FFFFFF;
+  --tabbar-radius: 0;
+  --tabbar-shadow: none;
+
+  --map-land: #E9E9E9;
+  --map-water: #BDBDBD;
+  --map-park: #D2D2D2;
+  --map-road: #FFFFFF;
+  --map-road-minor: #FAFAFA;
+}
+
+body { font-weight: 500; }
+
+/* スクリーントーン（網点）。濃さは --dot で変える */
+.tone { background-image: radial-gradient(var(--ink) var(--dot, 1.1px), transparent calc(var(--dot, 1.1px) + .3px)); background-size: 4px 4px; }
+
+/* 集中線（中心に向かう黒い線）。親を position: relative にして置く */
+.speed-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, var(--ink) 0deg 1.4deg, transparent 1.4deg 7deg);
+  -webkit-mask: radial-gradient(ellipse at center, transparent 34%, #000 62%);
+  mask: radial-gradient(ellipse at center, transparent 34%, #000 62%);
+  opacity: .9;
+}
+
+/* MARK: 画面の骨組み */
+
+.tab-bar { border-width: 3px; }
+.tab-item { border-radius: 0; }
+.tab-item.is-active { background: var(--ink); }
+.tab-title { font-size: 10.5px; font-weight: 800; }
+.nav-button { border: var(--panel); border-radius: 0; background: #FFFFFF; box-shadow: none; }
+
+/* MARK: 見出し（描き文字） */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  letter-spacing: .02em;
+  -webkit-text-stroke: .5px var(--ink);
+}
+.sfx {
+  font-family: var(--font-heading);
+  color: var(--red);
+  -webkit-text-stroke: 1px var(--ink);
+  font-size: 18px;
+  transform: rotate(-8deg) skewX(-8deg);
+  display: inline-block;
+}
+
+/* MARK: 部品 */
+
+.card { position: relative; }
+.badge { padding: 3px 9px; border: 2px solid var(--ink); font-weight: 800; color: var(--ink); }
+.badge-category { background: #FFFFFF; }
+.badge-author { background: var(--ink); color: #FFFFFF; }
+.count-button { color: var(--ink); font-weight: 800; }
+.like-button.is-on { color: var(--red); }
+.star-button.is-on { color: var(--ink); }
+.rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  background: var(--ink);
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 400;
+  transform: skewX(-8deg);
+}
+.thumbnail { border: var(--panel); --dot: .7px; background-color: #FFFFFF; color: var(--ink); position: relative; }
+.thumbnail .icon { position: relative; padding: 3px; background: #FFFFFF; border-radius: 50%; }
+.post-title, .carousel-title { font-family: var(--font-body); font-weight: 800; }
+.spot-row { font-weight: 700; }
+.post-author { font-weight: 700; }
+
+/* 吹き出し（丸い楕円のフキダシ。しっぽは左下） */
+.balloon {
+  position: relative;
+  padding: 12px 16px;
+  border: 2.5px solid var(--ink);
+  border-radius: 50% / 40%;
+  background: #FFFFFF;
+  font-family: var(--font-hand);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+}
+.balloon::before, .balloon::after { content: ""; position: absolute; }
+.balloon::before {
+  left: 24%;
+  bottom: -18px;
+  border: 10px solid transparent;
+  border-top: 20px solid var(--ink);
+  transform: skewX(-25deg);
+}
+.balloon::after {
+  left: calc(24% + 3px);
+  bottom: -11px;
+  border: 7px solid transparent;
+  border-top: 14px solid #FFFFFF;
+  transform: skewX(-25deg);
+}
+.balloon-label { display: block; font-family: var(--font-body); font-weight: 800; font-size: 13px; color: var(--red); }
+
+/* 叫びのフキダシ（ギザギザ） */
+.shout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26px 34px;
+  background: #FFFFFF;
+  clip-path: polygon(50% 0, 58% 14%, 74% 4%, 74% 20%, 94% 16%, 86% 32%, 100% 44%, 86% 54%, 98% 72%, 78% 72%, 80% 92%, 64% 80%, 52% 100%, 44% 82%, 26% 96%, 26% 78%, 4% 84%, 14% 64%, 0 50%, 14% 38%, 4% 20%, 24% 22%, 26% 4%, 42% 16%);
+}
+.shout-wrap { display: inline-block; padding: 3px; background: var(--ink);
+  clip-path: polygon(50% 0, 58% 14%, 74% 4%, 74% 20%, 94% 16%, 86% 32%, 100% 44%, 86% 54%, 98% 72%, 78% 72%, 80% 92%, 64% 80%, 52% 100%, 44% 82%, 26% 96%, 26% 78%, 4% 84%, 14% 64%, 0 50%, 14% 38%, 4% 20%, 24% 22%, 26% 4%, 42% 16%); }
+
+/* ロゴ（ぶっちゃけmap のロゴタイプ） */
+.logo { display: inline-flex; align-items: baseline; line-height: 1; white-space: nowrap; font-family: var(--font-heading); }
+.logo-main { color: var(--ink); letter-spacing: -.02em; transform: skewX(-6deg); display: inline-block; }
+.logo-map { margin-left: 4px; color: #FFFFFF; background: var(--red); padding: 2px 7px 5px; font-family: var(--font-body); font-weight: 800; font-size: .55em; transform: rotate(-6deg); display: inline-block; border: 2px solid var(--ink); }
+.logo-mark { color: var(--red); font-family: var(--font-body); font-weight: 800; font-size: .8em; margin-left: 2px; }
+
+/* ボタン */
+.manga-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: var(--panel);
+  background: var(--ink);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 800;
+  transform: skewX(-8deg);
+}
+.manga-button > * { transform: skewX(8deg); }
+.manga-button.secondary { background: #FFFFFF; color: var(--ink); }
+.manga-button.red { background: var(--red); }
+
+/* 地図のピン（フキダシの形） */
+.map-pin {
+  width: 36px;
+  height: 30px;
+  margin: -40px 0 0 -18px;
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: var(--ink);
+  font-size: 16px;
+  box-shadow: none;
+}
+.map-pin::after { content: ""; position: absolute; left: 10px; bottom: -17px; border: 6px solid transparent; border-top: 11px solid var(--ink); }
+.map-pin.is-selected { width: 50px; height: 40px; margin: -52px 0 0 -25px; background: var(--red); color: #FFFFFF; font-size: 22px; }
+.card-sfx { position: absolute; top: -14px; right: 12px; z-index: 2; font-size: 20px; }

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="1400x1320">
+<meta name="mock-scale" content="2">
+<title>B-5 昭和の銭湯と看板 — 動きのコマ割り</title>
+<meta name="mock-fonts" content="Yuji Syuku|Rampart One|Zen Kaku Gothic New">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Rampart+One&family=Zen+Kaku+Gothic+New:wght@500;700&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .sheet { width: 1400px; height: 1320px; padding: 48px 56px; background: var(--tile); }
+  .sheet-head { display: flex; align-items: center; gap: 28px; }
+  .sheet-head p { font-size: 17px; font-weight: 500; line-height: 1.6; }
+  .motion { display: grid; grid-template-columns: 300px repeat(4, 1fr); gap: 18px; margin-top: 36px; }
+  .motion-note h2 { font-size: 19px; white-space: nowrap; }
+  .motion-note dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; margin: 14px 0 0; font-size: 14.5px; line-height: 1.5; }
+  .motion-note dt { font-weight: 700; color: var(--aqua-deep); white-space: nowrap; }
+  .motion-note dd { margin: 0; }
+  .frame { display: flex; flex-direction: column; gap: 8px; }
+  .frame-box { position: relative; height: 300px; overflow: hidden; border-radius: 8px; background: #FFFFFF; box-shadow: var(--shadow-card); display: flex; align-items: center; justify-content: center; }
+  .frame-cap { display: flex; gap: 8px; align-items: baseline; font-size: 14px; font-weight: 700; }
+  .frame-cap .time { padding: 1px 10px; border-radius: 4px; background: var(--aqua-deep); color: #FFFFFF; font-size: 13px; }
+  .tap { position: absolute; z-index: 3; width: 46px; height: 46px; border: 2.5px dashed var(--vermilion); border-radius: 50%; }
+  .like-big { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 8px; background: #FFFFFF; box-shadow: inset 0 0 0 2px var(--aqua-deep); font-size: 22px; font-weight: 700; }
+  .like-big.on { color: var(--vermilion); }
+  .bubble { position: absolute; border-radius: 50%; border: 2px solid var(--aqua); background: rgba(124, 198, 214, .15); }
+  .noren-big { position: absolute; top: 0; left: 0; right: 0; display: flex; gap: 3px; transform-origin: top center; }
+  .noren-big span { flex: 1; display: flex; justify-content: center; padding-top: 14px; border-radius: 0 0 8px 8px; background: var(--c, var(--aqua-deep)); color: #FFFFFF; font-family: var(--font-heading); font-size: 26px; }
+  .mini-card { width: 210px; padding: 12px; border-radius: 8px; background: #FFFFFF; box-shadow: var(--shadow-card); font-size: 15px; font-weight: 700; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // 動きのコマ割り。1 つの動きを 4 コマに分け、時間・イージング・ハプティクス・Reduce Motion のときの代わりを添える
+  const { icon } = Mock;
+  const frame = (time, caption, inner) => `<div class="frame"><div class="frame-box">${inner}</div>
+    <p class="frame-cap"><span class="time">${time}</span>${caption}</p></div>`;
+  const note = (title, rows) => `<div class="motion-note"><h2 class="fuda">${title}</h2><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
+  const like = (on, count) => `<span class="like-big${on ? ' on' : ''}">${icon(on ? 'heartFill' : 'heart', { size: 28 })}${count}</span>`;
+  const bubbles = list => list.map(([x, y, r, o]) => `<span class="bubble" style="left:${x}px;top:${y}px;width:${r}px;height:${r}px;opacity:${o}"></span>`).join('');
+  const noren = (h, rot = 0, half = 0) => `<div class="noren-big" style="height:${h}px">${['ぶ', 'っ', 'ち', 'ゃ', 'け'].map((c, i) =>
+    `<span style="--c:${i % 2 ? '#A8341F' : '#1E6E80'};transform:translateX(${i < 2 ? -half : i > 2 ? half : 0}px) skewX(${i < 2 ? -rot : i > 2 ? rot : 0}deg);opacity:${i === 2 && half ? 0 : 1}">${c}</span>`).join('')}</div>`;
+  const card = '<div class="mini-card">金沢市民が本気で教える<br>三大回転寿司</div>';
+
+  Mock.mount(`<div class="sheet">
+    <div class="sheet-head">${Mock.logo(36)}<p>B-5「昭和の銭湯と看板」の動き。湯の泡がぷくぷく上がる・下足札をカチッと掛ける・のれんをくぐる。<br>
+      どれも「視差効果を減らす」（Reduce Motion）がオンのときは、泡・揺れ・左右に開く動きをやめてフェードだけにする。点滅はしない。</p></div>
+
+    <div class="motion">
+      ${note('いいね（湯の泡）', [['時間', '0.7 秒'], ['イージング', 'ハートは easeOut 0.15 秒で塗る。小さな泡が 3 つ、easeOut 0.55 秒でゆらぎながら 30pt 上がって消える'], ['ハプティクス', '塗ったときに impact（soft）'], ['Reduce Motion', '泡を出さず、ハートの塗りと件数の色を 0.15 秒でクロスフェード']])}
+      ${frame('0.00', '押す', `${like(false, 128)}<span class="tap" style="left:62px;top:126px"></span>`)}
+      ${frame('0.15', 'ハートが塗られ、泡が出る', `${like(true, 129)}${bubbles([[70, 110, 14, 1], [96, 100, 10, 1], [120, 112, 12, 1]])}`)}
+      ${frame('0.40', '泡が上がる', `${like(true, 129)}${bubbles([[64, 84, 14, .7], [100, 70, 10, .7], [124, 88, 12, .7]])}`)}
+      ${frame('0.70', '消えて落ち着く', `${like(true, 129)}${bubbles([[60, 60, 14, .2], [104, 44, 10, .2]])}`)}
+    </div>
+
+    <div class="motion">
+      ${note('投稿の公開（下足札を掛ける）', [['時間', '0.9 秒'], ['イージング', '「壱番」の木札が上から easeIn 0.2 秒で下りてカチッと掛かり、2 回だけ小さく揺れる（spring・damping 0.5）。続けて「公開しました」の貼り紙がフェードで出る'], ['ハプティクス', '掛かった瞬間に impact（rigid）、貼り紙で notification（success）'], ['Reduce Motion', '下りる・揺れるをやめ、木札と貼り紙を 0.2 秒でフェードイン']])}
+      ${frame('0.00', '「公開する」を押す', '<span class="yu-button red" style="font-size:18px;padding:14px 26px">公開する</span><span class="tap" style="left:140px;top:136px;border-color:#22303A"></span>')}
+      ${frame('0.10', '木札が下りてくる', '<span class="fuda vertical" style="font-size:26px;padding:16px 10px;transform:translateY(-30px)">壱番</span>')}
+      ${frame('0.20', 'カチッと掛かって揺れる', '<span class="fuda vertical" style="font-size:26px;padding:16px 10px;transform:rotate(-6deg);transform-origin:top center">壱番</span>')}
+      ${frame('0.90', '「公開しました」の貼り紙', '<div style="display:flex;flex-direction:column;align-items:center;gap:14px"><span class="fuda vertical" style="font-size:26px;padding:16px 10px">壱番</span><div class="notice" style="width:200px"><p class="notice-label">公開しました</p><p class="notice-text" style="font-size:15px">ホームに出ました</p></div></div>')}
+    </div>
+
+    <div class="motion">
+      ${note('画面遷移（のれんをくぐる）', [['時間', '0.5 秒'], ['イージング', 'のれんが上から easeOut 0.15 秒で下り、真ん中から左右へ easeInOut 0.3 秒で分かれて、奥の投稿詳細が見える'], ['ハプティクス', 'なし'], ['Reduce Motion', 'のれんを出さず、0.2 秒のクロスフェード']])}
+      ${frame('0.00', 'カードを押す', `${card}<span class="tap" style="left:120px;top:140px"></span>`)}
+      ${frame('0.15', 'のれんが下りる', `${card}${noren(300)}`)}
+      ${frame('0.30', '左右に分かれる', `${card}${noren(300, 8, 40)}`)}
+      ${frame('0.50', 'くぐると投稿詳細', `<div class="enamel" style="width:210px"><p style="font-family:var(--font-heading);font-size:14px">ぶっちゃけ湯 本日の三大</p><p style="font-weight:700;font-size:16px;line-height:1.4">金沢市民が本気で教える三大回転寿司</p></div>`)}
+    </div>
+  </div>`);
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="mock-size" content="402x874">
+<title>A-2 マンガのツッコミ — マップ</title>
+<meta name="mock-fonts" content="Reggae One|Yusei Magic|M PLUS 1p">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reggae+One&family=Yusei+Magic&family=M+PLUS+1p:wght@500;700;800&display=block">
+<link rel="stylesheet" href="../../template/tokens.css">
+<link rel="stylesheet" href="../../template/frame.css">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .map-screen .screen-scroll { z-index: 1; pointer-events: none; }
+  .map-screen .status-bar, .map-screen .nav-bar { background: #FFFFFF; }
+  .map-screen .nav-bar { border-bottom: var(--panel); }
+  .map-screen .nav-inline-title { font-family: var(--font-heading); font-weight: 400; font-size: 20px; }
+  .map-illustration { top: 106px; }
+  .map-illustration .map-pin { z-index: 3; }
+  .pin-burst { position: absolute; z-index: 2; width: 150px; height: 150px; margin: -101px 0 0 -75px; border-radius: 50%; overflow: hidden; }
+  .pin-burst .speed-lines { opacity: .7; }
+  .pin-sfx { position: absolute; z-index: 3; font-size: 18px; }
+  .sheet-panel { position: absolute; left: 0; right: 0; bottom: 0; height: 420px; padding: 10px 16px 34px; z-index: 5;
+    border-top: var(--panel); background: #FFFFFF; display: flex; flex-direction: column; gap: 12px; }
+  .grabber { align-self: center; width: 44px; height: 6px; background: var(--ink); }
+  .sheet-title { font-family: var(--font-heading); font-weight: 400; font-size: 21px; line-height: 1.35; }
+  .sheet-area { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 15px; font-weight: 700; color: var(--color-text-secondary); }
+  .spot-line { display: flex; align-items: flex-start; gap: 10px; }
+  .spot-name { font-size: 17px; font-weight: 800; }
+  .spot-address { font-size: 14px; font-weight: 700; color: var(--color-text-secondary); }
+  .sheet-panel .balloon { text-align: left; border-radius: 22px; padding: 10px 14px; font-size: 15px; margin-bottom: 8px; }
+  .sheet-panel .balloon::before { left: 30px; }
+  .sheet-panel .balloon::after { left: 33px; }
+  .sheet-actions { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+  .sheet-actions .manga-button { margin-left: auto; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="../../template/mock-data.js"></script>
+<script src="../../template/icons.js"></script>
+<script src="../../template/mock.js"></script>
+<script src="theme.js"></script>
+<script>
+  // マップ: 白黒のトーンで描いた地図に、フキダシの形のピン。選んだピンは赤くなり、集中線と効果音が付く
+  const { data, parts, icon, esc } = Mock;
+  const post = data.posts[0];
+  const spot = post.spots[1];
+  const pins = post.spots.map(s => ({ order: s.order, x: s.mapPosition.x, y: s.mapPosition.y * 0.5 + 6, selected: s === spot }));
+  const sel = pins.find(p => p.selected);
+  const burst = `<span class="pin-burst" style="left:${sel.x}%;top:${sel.y}%"><span class="speed-lines"></span></span>
+    <span class="sfx pin-sfx" style="left:calc(${sel.x}% - 20px);top:calc(${sel.y}% - 128px)">ここだ!!</span>`;
+  Mock.mount(Mock.screen({
+    className: 'map-screen',
+    nav: { title: 'マップ' },
+    overlay: `${Mock.mapIllustration(pins).replace('<span class="map-pin', `${burst}<span class="map-pin`)}
+      <section class="sheet-panel">
+        <span class="grabber"></span>
+        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
+        <div><h2 class="sheet-title">${esc(post.title)}</h2>
+          <p class="sheet-area">${icon('mappin', { size: 14 })}${esc(post.prefecture)} ${esc(post.city)}</p></div>
+        <div class="spot-line">${parts.rank(spot.order)}
+          <div><p class="spot-name">${esc(spot.name)}</p><p class="spot-address">${esc(spot.address)}</p></div></div>
+        ${parts.balloon(spot.recommendation)}
+        <div class="sheet-actions">${parts.likeButton(post)}${parts.starButton(post)}
+          <span class="manga-button"><span style="display:inline-flex;gap:4px;align-items:center">${esc(data.strings.viewPost)}${icon('chevronRight', { size: 16 })}</span></span></div>
+      </section>`,
+  }));
+</script>
+</body>
+</html>

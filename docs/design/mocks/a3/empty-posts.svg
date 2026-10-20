@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「まだ投稿がありません」: シール台紙の型抜きだけ残っていて、シールはまだ 1 まいも無い -->
+  <defs><linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFD1EC"/><stop offset=".22" stop-color="#C9F1FF"/><stop offset=".42" stop-color="#FFF6B8"/>
+    <stop offset=".62" stop-color="#D9C8FF"/><stop offset=".8" stop-color="#C9FFE6"/><stop offset="1" stop-color="#FFD1EC"/></linearGradient></defs>
+  <rect x="40" y="24" width="240" height="192" rx="16" fill="#FFFFFF" stroke="#F3D3E4" stroke-width="3"/>
+  <g fill="none" stroke="#E7A9C8" stroke-width="3" stroke-dasharray="6 6">
+    <circle cx="100" cy="86" r="34"/><rect x="152" y="54" width="92" height="64" rx="32"/><path d="M100 140 l12 24 26 4 -19 18 5 26 -24 -12 -24 12 5 -26 -19 -18 26 -4 z"/>
+    <rect x="160" y="146" width="76" height="52" rx="12"/>
+  </g>
+  <path d="M244 26 l30 0 -30 30 z" fill="url(#holo)" stroke="#F3D3E4" stroke-width="2"/>
+  <path d="M272 14 L275.84 26.16 L288 30 L275.84 33.84 L272 46 L268.16 33.84 L256 30 L268.16 26.16 Z" fill="#FFE14D" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/>
+</svg>

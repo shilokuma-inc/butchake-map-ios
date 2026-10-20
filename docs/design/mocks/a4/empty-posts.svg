@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- 空の状態「まだ投稿がありません」: 表彰台（I・II・III）の上がぜんぶ空いている -->
+  <g stroke="#111111" stroke-width="5">
+    <rect x="118" y="86" width="84" height="124" fill="#111111" transform="translate(6 6)"/>
+    <rect x="118" y="86" width="84" height="124" fill="#FFD60A"/>
+    <rect x="34" y="126" width="84" height="84" fill="#111111" transform="translate(6 6)"/>
+    <rect x="34" y="126" width="84" height="84" fill="#3BCB7A"/>
+    <rect x="202" y="150" width="84" height="60" fill="#111111" transform="translate(6 6)"/>
+    <rect x="202" y="150" width="84" height="60" fill="#B8A9FF"/>
+  </g>
+  <g fill="#111111"><rect x="154" y="108" width="12" height="60"/><rect x="66" y="146" width="8" height="40"/><rect x="80" y="146" width="8" height="40"/><rect x="232" y="164" width="7" height="30"/><rect x="243" y="164" width="7" height="30"/><rect x="254" y="164" width="7" height="30"/></g>
+  <g fill="none" stroke="#111111" stroke-width="4" stroke-dasharray="6 6"><rect x="138" y="30" width="44" height="44"/><rect x="54" y="72" width="44" height="44"/><rect x="222" y="96" width="44" height="44"/></g>
+</svg>

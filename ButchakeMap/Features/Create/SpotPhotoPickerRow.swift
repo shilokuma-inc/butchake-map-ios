@@ -45,7 +45,7 @@ struct SpotPhotoPickerRow: View {
             }
             if loadFailed {
                 Text("Couldn't load the photo.")
-                    .font(.caption)
+                    .font(.b2Text(size: 12, relativeTo: .caption))
                     .foregroundStyle(.red)
             }
         }

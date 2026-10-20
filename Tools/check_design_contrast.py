@@ -3,7 +3,8 @@
 
     python3 Tools/check_design_contrast.py docs/design/mocks/b2 [docs/design/mocks/<案 ID> …]
 
-案のディレクトリの palette.json を読み、組ごとの比を Markdown の表で出す（ブランドシートと PR 本文に載せる）。
+案のディレクトリの palette.json と、ほかの配色（ダークモードなど）の palette-<名前>.json（例: palette-dark.json）を読み、
+ファイルごとに組の比を Markdown の表で出す（ブランドシートと PR 本文に載せる）。
 AA の基準は、通常の文字で 4.5:1、大きな文字（18pt 以上、または 14pt 以上の太字）で 3:1。
 AA 未満の組が 1 つでもあれば 0 以外で終わる。標準ライブラリだけで動く。
 
@@ -53,9 +54,16 @@ def contrast_ratio(fg, bg):
     return (lighter + 0.05) / (darker + 0.05)
 
 
-def check_directory(directory):
-    """1 案の palette.json を検査し、(表の行, AA 未満の件数) を返す"""
+def palette_paths(directory):
+    """1 案の配色のファイル。palette.json を先に、palette-<名前>.json を名前の順に続ける"""
     path = Path(directory) / "palette.json"
+    if not path.is_file():
+        raise ValueError(f"{path} がありません")
+    return [path] + sorted(Path(directory).glob("palette-*.json"))
+
+
+def check_palette(path):
+    """1 つの配色のファイルを検査し、(表の行, AA 未満の件数) を返す"""
     try:
         palette = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
@@ -97,16 +105,22 @@ def main(argv):
     total_failures = 0
     for directory in argv[1:]:
         try:
-            rows, failures = check_directory(directory)
+            paths = palette_paths(directory)
         except ValueError as error:
             print(f"エラー: {error}", file=sys.stderr)
             return 1
-        total_failures += failures
-        print(f"### {directory}\n")
-        print("| 組 | 文字 | 背景 | 文字の大きさ | コントラスト比 | 判定 |")
-        print("| --- | --- | --- | --- | --- | --- |")
-        print("\n".join(rows))
-        print()
+        for path in paths:
+            try:
+                rows, failures = check_palette(path)
+            except ValueError as error:
+                print(f"エラー: {error}", file=sys.stderr)
+                return 1
+            total_failures += failures
+            print(f"### {path}\n")
+            print("| 組 | 文字 | 背景 | 文字の大きさ | コントラスト比 | 判定 |")
+            print("| --- | --- | --- | --- | --- | --- |")
+            print("\n".join(rows))
+            print()
     if total_failures:
         print(f"AA 未満の組が {total_failures} 件あります", file=sys.stderr)
         return 1

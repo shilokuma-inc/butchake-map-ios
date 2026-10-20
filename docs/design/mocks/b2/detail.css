@@ -1,0 +1,16 @@
+.detail { display: flex; flex-direction: column; gap: 16px; padding: 4px 16px 0; }
+.station .sign-name { font-size: 30px; padding-top: 8px; }
+.detail-title { font-size: 21px; font-weight: 700; line-height: 1.45; }
+.detail-meta { display: flex; align-items: center; gap: 14px; }
+.detail-author { flex: 1; font-size: 15px; font-weight: 700; }
+.detail-author span { display: block; font-family: var(--font-ticket); font-weight: 400; font-size: 13px; color: var(--color-text-secondary); }
+.route { position: relative; display: flex; flex-direction: column; gap: 18px; padding-left: 40px; }
+.route::before { content: ""; position: absolute; left: 13px; top: 6px; bottom: -40px; width: 8px; border-radius: 4px; background: var(--rail); }
+.stop { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border-radius: 8px; background: #FFFFFF; border: 1px solid #D9CFB6; }
+.stop > .rank { position: absolute; left: -40px; top: 8px; width: 34px; height: 34px; font-size: 18px; border-width: 4px; }
+.stop-head { display: flex; align-items: flex-start; gap: 10px; }
+.stop-head > div { flex: 1; }
+.stop-name { font-size: 18px; font-weight: 700; line-height: 1.35; }
+.stop-address { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 14px; color: var(--color-text-secondary); }
+.stop .stamp-mark { width: 56px; height: 56px; }
+.stop .stamp-mark strong { font-size: 14px; }

@@ -33,6 +33,14 @@ nonisolated struct MapPin: Identifiable, Hashable, Sendable {
     }
 }
 
+/// 駅名標の帯に出す、路線の前後の駅（ピン）の番号。端の駅では片方が nil
+nonisolated struct MapStationNeighbors: Equatable, Sendable {
+    let previous: Int?
+    let next: Int?
+
+    static let none = Self(previous: nil, next: nil)
+}
+
 struct PostMapViewModel {
     /// 全ピンが入る範囲に足す余白の倍率
     static let fittingPaddingRatio = 1.4
@@ -51,11 +59,33 @@ struct PostMapViewModel {
 
     /// 公開済みの投稿（新しい順）のスポットを番号順に並べたピン。座標の無いスポットと下書きは除く
     var pins: [MapPin] {
-        repository.publishedPosts.flatMap { post in
-            post.spots.sorted { $0.order < $1.order }.compactMap { spot in
-                Self.pin(post: post, spot: spot)
-            }
+        repository.publishedPosts.flatMap(Self.routePins(of:))
+    }
+
+    /// 選んだピンの投稿の路線: その投稿のピンを順位の順（1 → 2 → 3）に並べたもの。座標の無いスポットは飛ばす。
+    /// 選んでいない・投稿が消えた（下書きに戻った）ときは空
+    func routePins(for pinID: MapPinID?) -> [MapPin] {
+        guard let pinID, let post = post(for: pinID) else {
+            return []
         }
+        return Self.routePins(of: post)
+    }
+
+    /// 路線（`MapPolyline`）に渡す座標の並び。`routePins(for:)` の順
+    func routeCoordinates(for pinID: MapPinID?) -> [CLLocationCoordinate2D] {
+        routePins(for: pinID).map(\.coordinate)
+    }
+
+    /// ピンの路線の前後の駅の番号（駅名標の帯の「◀ 1」「3 ▶」）。座標が無く路線に乗らないスポットは前後に数えない
+    func neighbors(for pinID: MapPinID) -> MapStationNeighbors {
+        let route = routePins(for: pinID)
+        guard let index = route.firstIndex(where: { $0.id == pinID }) else {
+            return .none
+        }
+        return MapStationNeighbors(
+            previous: index > route.startIndex ? route[index - 1].order : nil,
+            next: index + 1 < route.endIndex ? route[index + 1].order : nil
+        )
     }
 
     /// 初期表示の範囲: 全ピンが入る範囲（ピンが無ければ日本全体）
@@ -102,6 +132,13 @@ struct PostMapViewModel {
                 longitudeDelta: min(max((maxLongitude - minLongitude) * fittingPaddingRatio, minimumSpan), maximumLongitudeSpan)
             )
         )
+    }
+
+    /// 投稿のスポットを順位の順に並べたピン（座標の無いスポットは除く）
+    private static func routePins(of post: Post) -> [MapPin] {
+        post.spots.sorted { $0.order < $1.order }.compactMap { spot in
+            pin(post: post, spot: spot)
+        }
     }
 
     private static func pin(post: Post, spot: Spot) -> MapPin? {

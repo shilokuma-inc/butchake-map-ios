@@ -9,18 +9,7 @@
 <link rel="stylesheet" href="../../template/tokens.css">
 <link rel="stylesheet" href="../../template/frame.css">
 <link rel="stylesheet" href="theme.css">
-<style>
-  .nav-large .nav-large-title { padding: 2px 16px 10px; }
-  .rally-card { display: flex; align-items: center; gap: 12px; margin: 0 16px; padding: 12px 14px; border-radius: 8px; background: var(--kraft); border: 1px solid #CDBF9C; }
-  .rally-card p { flex: 1; font-size: 15px; font-weight: 700; line-height: 1.5; }
-  .rally-card p small { display: block; font-family: var(--font-ticket); font-weight: 400; font-size: 13px; color: var(--ink); }
-  .rally-card .stamp-mark, .rally-card .stamp-slot { width: 52px; height: 52px; }
-  .rally-card .stamp-mark strong { font-size: 13px; }
-  .home { display: flex; flex-direction: column; gap: 18px; padding-top: 18px; }
-  .home section { display: flex; flex-direction: column; gap: 12px; }
-  .carousel { padding: 0 16px 4px; }
-  .feed { display: flex; flex-direction: column; gap: 14px; padding: 0 16px; }
-</style>
+<link rel="stylesheet" href="home.css">
 </head>
 <body>
 <div id="app"></div>
@@ -28,25 +17,6 @@
 <script src="../../template/icons.js"></script>
 <script src="../../template/mock.js"></script>
 <script src="theme.js"></script>
-<script>
-  // ホーム: 駅名標のロゴ・今月のスタンプ帳（押した数）・駅名標の見出し・きっぷのカルーセル・台紙の投稿カード
-  const { data, parts } = Mock;
-  const posts = data.posts;
-  const byLikes = [...posts].sort((a, b) => b.likeCount - a.likeCount);
-  Mock.mount(Mock.screen({
-    nav: { large: true, titleHTML: Mock.logo(24) },
-    tab: 'home',
-    body: `<div class="rally-card"><p>スタンプ帳<small>今月 2 / 3 こ あつめた</small></p>
-        ${parts.stamp('10.12', '横浜', '')}${parts.stamp('10.18', '金沢', '')}<span class="stamp-slot">？</span></div>
-      <div class="home">
-        <section>${parts.sectionHeader(data.strings.weeklyPicks, 'THIS WEEK', '', data.strings.trending)}
-          <div class="carousel">${posts.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
-        <section>${parts.sectionHeader(data.strings.trending, 'TRENDING', data.strings.weeklyPicks, data.strings.latestPosts)}
-          <div class="carousel">${byLikes.slice(0, 3).map(parts.carouselCard).join('')}</div></section>
-        <section>${parts.sectionHeader(data.strings.latestPosts, 'LATEST', data.strings.trending, '')}
-          <div class="feed">${posts.slice(0, 2).map(parts.postCard).join('')}</div></section>
-      </div>`,
-  }));
-</script>
+<script src="home.js"></script>
 </body>
 </html>

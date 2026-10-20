@@ -10,5 +10,12 @@
 	</array>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Used to save share card images to your photo library.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BIZUDPGothic-Regular.ttf</string>
+		<string>BIZUDPGothic-Bold.ttf</string>
+		<string>DotGothic16-Regular.ttf</string>
+		<string>KaiseiDecol-Bold.ttf</string>
+	</array>
 </dict>
 </plist>

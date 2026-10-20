@@ -5,7 +5,8 @@
 
 import SwiftUI
 
-/// 投稿詳細（3 スポットとぶっちゃけコメント）。自分の投稿はツールバーのメニューから編集・削除できる
+/// 投稿詳細（B-2: 都市の駅名標・3 スポットを路線図の駅として縦に並べる・ぶっちゃけコメントは駅の掲示板）。
+/// 自分の投稿はツールバーのメニューから編集・削除できる
 struct PostDetailView: View {
     @Environment(MockDataRepository.self) private var repository
     @Environment(\.dismiss) private var dismiss
@@ -14,6 +15,7 @@ struct PostDetailView: View {
     @State private var isConfirmingDeletion = false
     /// 削除した投稿。詳細を閉じて戻るアニメーションの間、「投稿が見つかりません」ではなく消す前の内容を出し続ける
     @State private var deletedPost: Post?
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let postID: Post.ID
 
     private var viewModel: PostDetailViewModel {
@@ -25,11 +27,15 @@ struct PostDetailView: View {
             if let post = viewModel.post ?? deletedPost {
                 content(post: post)
             } else {
-                ContentUnavailableView(
-                    "Post not found",
-                    systemImage: "exclamationmark.magnifyingglass",
-                    description: Text("This post may have been deleted.")
-                )
+                ContentUnavailableView {
+                    Label {
+                        Text("Post not found")
+                    } icon: {
+                        EmptyStateIllustration(kind: .notFound)
+                    }
+                } description: {
+                    Text("This post may have been deleted.")
+                }
                 .navigationTitle(Text("Post Details"))
             }
         }
@@ -49,16 +55,27 @@ struct PostDetailView: View {
 
     private func content(post: Post) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            // 上の路線の帯の紺の丸が、一覧（前の駅）からこの投稿（次の駅）へ進む。初めて表示されたときだけ動かす
+            NextStationArrival(spacing: 16) {
                 header(post: post)
                 // 削除後の戻るアニメーション中も出せるよう、Repository ではなく受け取った投稿から並べる
-                ForEach(PostDetailViewModel.orderedSpots(of: post)) { spot in
-                    SpotDetailCard(spot: spot, category: post.category)
+                RouteLine {
+                    ForEach(PostDetailViewModel.orderedSpots(of: post)) { spot in
+                        RouteStationRow(number: spot.order) {
+                            SpotDetailCard(
+                                spot: spot,
+                                stampDate: PostDetailViewModel.stampDate(of: post),
+                                stampPlace: PostDetailViewModel.stampPlace(of: post)
+                            )
+                        }
+                    }
                 }
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.top, 4)
+            .padding(.bottom)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.paper)
         .navigationTitle(post.title)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -127,76 +144,104 @@ struct PostDetailView: View {
     }
 
     private func header(post: Post) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let sign = PostDetailViewModel.stationSignText(of: post)
+        return VStack(alignment: .leading, spacing: 16) {
+            StationSign(
+                name: Text(verbatim: sign.name),
+                english: sign.english.map { Text(verbatim: $0) },
+                previous: Text(post.category.displayName),
+                next: Text(post.authorType.displayName),
+                nameFont: .b2Heading(size: 30, relativeTo: .largeTitle),
+                nameTracking: 3.6
+            )
+            // 駅名標の英字と帯は飾りなので、地名（都道府県 市区町村）を 1 つの要素として読む
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(post.area))
             Text(post.title)
-                .font(.title2.bold())
+                .font(.b2Heading(size: 21, relativeTo: .title2))
+                .foregroundStyle(Color.textPrimary)
+                .lineSpacing(4)
                 .accessibilityAddTraits(.isHeader)
-            Label(post.area, systemImage: "mappin.and.ellipse")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            HStack(spacing: 8) {
+            // アクセシビリティの大きな文字では、横に並べると文字が 1 字ずつ折り返すので縦に積む
+            stackedLayout(spacing: 8) {
                 CategoryBadge(category: post.category)
                 AuthorTypeBadge(authorType: post.authorType)
             }
-            HStack(spacing: 16) {
+            stackedLayout(spacing: 14) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(post.authorName)
-                        .font(.footnote.weight(.semibold))
+                        .font(.b2Heading(size: 15, relativeTo: .subheadline))
+                        .foregroundStyle(Color.textPrimary)
                     Text(post.createdAt, format: .dateTime.year().month().day())
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.b2Ticket(size: 13, relativeTo: .footnote))
+                        .foregroundStyle(Color.textSecondary)
                 }
                 Spacer(minLength: 0)
-                LikeButton(post: post, action: viewModel.toggleLike)
-                StarButton(post: post, action: viewModel.toggleStar)
+                HStack(spacing: 14) {
+                    LikeButton(post: post, action: viewModel.toggleLike)
+                    StarButton(post: post, action: viewModel.toggleStar)
+                }
             }
         }
     }
+
+    /// 通常は横に、アクセシビリティの大きな文字では縦（左寄せ）に並べる
+    private func stackedLayout<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+            : AnyLayout(HStackLayout(spacing: spacing))
+        return layout(content)
+    }
 }
 
-/// 詳細に並べる 1 スポットのカード
+/// 詳細に並べる 1 スポットのカード（路線図の駅。写真・スポット名と住所・スタンプ「済」・駅の掲示板・マップで開く）
 struct SpotDetailCard: View {
     let spot: Spot
-    let category: Category
+    /// スタンプの上の日付（投稿日の「M.d」）と下の地名。Discussion #77 の Q2 のとおり、どの駅にも「済」を押す
+    let stampDate: String
+    let stampPlace: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             if let photoData = spot.photoData {
                 SpotPhotoImage(data: photoData)
                     .frame(height: SpotPhotoPlaceholder.height)
-                    .clipShape(.rect(cornerRadius: 12))
-            } else {
-                SpotPhotoPlaceholder(category: category)
+                    .clipShape(.rect(cornerRadius: 4))
             }
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Image(systemName: "\(spot.order).circle.fill")
-                    .font(.title2)
-                    .foregroundStyle(Color.brandPrimary)
-                    // VoiceOver で ①②③ の順番を「スポット 1」のように読ませる
-                    .accessibilityLabel(Text("Spot \(spot.order)"))
-                VStack(alignment: .leading, spacing: 2) {
+            HStack(alignment: .top, spacing: 10) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(spot.name)
-                        .font(.headline)
+                        .font(.b2Heading(size: 18, relativeTo: .headline))
+                        .foregroundStyle(Color.textPrimary)
                     if !spot.address.isEmpty {
-                        Text(spot.address)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        Label {
+                            Text(spot.address)
+                        } icon: {
+                            Image(systemName: "mappin")
+                        }
+                        .font(.b2Text(size: 14, relativeTo: .subheadline))
+                        .foregroundStyle(Color.textSecondary)
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                // VoiceOver で番号の丸の代わりに「スポット 1」と読み、続けて名前と住所を読む
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("Spot \(spot.order)"))
+                .accessibilityValue(Text(verbatim: [spot.name, spot.address].filter { !$0.isEmpty }.joined(separator: ", ")))
+                StampMark(top: stampDate, main: "済", bottom: stampPlace, size: 56)
             }
-            .accessibilityElement(children: .combine)
             if !spot.recommendation.isEmpty {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Honest Comment")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(Color.brandAccent)
-                    Text(spot.recommendation)
-                        .font(.body)
-                }
+                NoticeBoard(label: Text("Honest Comment"), text: Text(spot.recommendation))
             }
             OpenInMapsButton(spot: spot)
         }
-        .cardStyle()
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(Color.surface, in: .rect(cornerRadius: 8))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(Color.cardBorder, lineWidth: 1)
+        }
     }
 }
 
@@ -210,9 +255,7 @@ struct OpenInMapsButton: View {
         // 座標も名前も住所も無く URL を作れないスポットにはボタンを出さない
         if ExternalMapLink.url(for: spot, in: .appleMaps) != nil {
             Button("Open in Maps", systemImage: "map", action: open)
-                .font(.subheadline.weight(.semibold))
-                .buttonStyle(.bordered)
-                .tint(Color.brandPrimary)
+                .buttonStyle(.b2Secondary)
                 // 3 スポットのボタンが同じ読み上げにならないよう、VoiceOver ではスポット名も読む
                 .accessibilityLabel(accessibilityLabel)
                 .confirmationDialog("Open in Maps", isPresented: $isChoosingApp, titleVisibility: .visible) {
@@ -279,10 +322,11 @@ struct SpotPhotoPlaceholder: View {
 #Preview("座標の無いスポット") {
     SpotDetailCard(
         spot: Spot(order: 1, name: "レトロ喫茶 ぶっちゃけ", address: "東京都台東区", recommendation: "固めのプリンが名物。"),
-        category: .gourmet
+        stampDate: "10.18",
+        stampPlace: "台東区"
     )
     .padding()
-    .background(Color(.systemGroupedBackground))
+    .background(Color.paper)
     .environment(MockDataRepository.preview)
 }
 
@@ -303,10 +347,11 @@ struct SpotPhotoPlaceholder: View {
             recommendation: "固めのプリンが名物。",
             photoData: UIImage(systemName: "cup.and.saucer.fill")?.pngData()
         ),
-        category: .gourmet
+        stampDate: "10.18",
+        stampPlace: "台東区"
     )
     .padding()
-    .background(Color(.systemGroupedBackground))
+    .background(Color.paper)
     .environment(MockDataRepository.preview)
 }
 

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 設定画面（アプリのバージョン・表示言語の案内・アカウント削除のモック）
+/// 設定画面（アプリのバージョン・表示言語の案内・書体のライセンス・アカウント削除のモック）
 struct SettingsView: View {
     @State private var isConfirmingDeletion = false
     @State private var isShowingMockNotice = false
@@ -22,19 +22,32 @@ struct SettingsView: View {
             Section {
                 LabeledContent {
                     Text(verbatim: appVersion)
+                        .foregroundStyle(Color.textSecondary)
                 } label: {
                     Text("Version")
+                        .foregroundStyle(Color.textPrimary)
                 }
                 LabeledContent {
                     Text("Same as Device")
+                        .foregroundStyle(Color.textSecondary)
                 } label: {
                     Text("Language")
+                        .foregroundStyle(Color.textPrimary)
+                }
+                NavigationLink {
+                    FontLicensesView()
+                } label: {
+                    Text("Font Licenses")
+                        .foregroundStyle(Color.textPrimary)
                 }
             } header: {
                 Text("About This App")
+                    .foregroundStyle(Color.textSecondary)
             } footer: {
                 Text("The display language follows your device settings.")
+                    .foregroundStyle(Color.textSecondary)
             }
+            .listRowBackground(Color.surface)
 
             Section {
                 Button(role: .destructive) {
@@ -44,8 +57,14 @@ struct SettingsView: View {
                 }
             } footer: {
                 Text("This is a mock app, so no data is actually deleted.")
+                    .foregroundStyle(Color.textSecondary)
             }
+            .listRowBackground(Color.surface)
         }
+        // B-2: 地は紙、行は白、行の文字は文字色（値は補足の文字）、リンクなどの色はインク
+        .scrollContentBackground(.hidden)
+        .background(Color.paper)
+        .tint(Color.brandPrimary)
         .navigationTitle(Text("Settings"))
         .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog("Delete your account?", isPresented: $isConfirmingDeletion, titleVisibility: .visible) {

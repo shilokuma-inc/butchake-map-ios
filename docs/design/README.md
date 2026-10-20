@@ -8,9 +8,41 @@
 片付けた案のファイルは、最終 PR #73 のマージの時点（[`af85f40`](https://github.com/shilokuma-inc/butchake-map-ios/tree/af85f40b76a9f742dcbe52c6ed26cd3c1ef7ddae/docs/design)）を見てください。
 
 - 比べるのは静止画だけです。案ごとの PR に書き出した画像を添付し、それを見比べて採用する案を 1 つ選びました
-- **モックはアプリに組み込みません。** 採用した案の本実装（色・フォント・アイコン・動きをアプリに入れること）は、別の依頼で行います
+- モックの HTML / CSS はアプリに組み込みません。採用した B-2 の本実装（色・書体・部品・アイコン・動きをアプリに入れること）は、Discussion #77 で決めて SwiftUI で作り直しました（下の「B-2 の本実装」）
 - 方向性は A（ポップ＆ツッコミ）と B（レトロ観光パンフ）の 2 つで、それぞれ 5 案（計 10 案）を作りました
 - 採用しなかった案のアイデア（動きのコマ割り・いいねボタン・アイコン・部品など）は、組織のデザインのナレッジ（`shilokuma-inc/design-knowledge`、非公開）にカテゴリ別にまとめています
+
+## B-2 の本実装
+
+B-2 をアプリに組み込む進め方は [Discussion #77「デザイン案 B-2「駅のスタンプラリー」をアプリに組み込みたい」](https://github.com/shilokuma-inc/butchake-map-ios/discussions/77) で決め、統合ブランチ `epic/b2-design` で 1 つずつ PR にしました。
+実装した内容と、モックから決め直したこと（スタンプ帳・「済」・駅名標の英字・ダークの配色など）は [`mocks/b2/README.md` の「本実装で決めたこと」](mocks/b2/README.md#本実装で決めたこと) にまとめています。
+
+| PR | 内容 |
+| --- | --- |
+| #79 | 【DOCS】B-2 のダークモードの配色をモックで作る |
+| #82 | 【FEAT】B-2 の色を Color Set に入れ、画面の地・カード・tint を B-2 の色にする |
+| #84 | 【FEAT】B-2 の書体（BIZ UDPゴシック・DotGothic16・Kaisei Decol）を同梱し、Dynamic Type に追従する書体の指定を用意する |
+| #87 | 【FEAT】空の状態のイラスト（empty-posts・empty-search）を ContentUnavailableView に使う |
+| #88 | 【FEAT】設定画面に書体のライセンス（SIL OFL 1.1）を出す |
+| #91 | 【FEAT】B-2 の部品（駅名標・きっぷ・掲示板の札）を DesignSystem に足す |
+| #92 | 【FEAT】B-2 の部品（スタンプ・路線図の駅・発車標の数字）を DesignSystem に足す |
+| #95 | 【FEAT】ロゴを SVG に起こしてアプリに入れる |
+| #96 | 【FEAT】投稿詳細を B-2 にする（都市の駅名標と都道府県のローマ字・路線図の 3 駅・駅の掲示板） |
+| #99 | 【FEAT】アプリアイコンを B-2 の icon.svg にする（.icon と 1024 の PNG） |
+| #101 | 【FEAT】ホームを B-2 にする（ロゴの見出し・駅名標の見出し・きっぷのカルーセル・台紙のフィード） |
+| #104 | 【FEAT】ホームにスタンプ帳（今月の自分の投稿数）を置く |
+| #105 | 【FEAT】マップを B-2 にする（3 つのピンを路線でつなぎ、選んだ駅に駅名標を立てる） |
+| #108 | 【FEAT】投稿の作成・下書きの編集を B-2 の見た目で揃える |
+| #110 | 【FEAT】検索・マイページ・設定を B-2 の見た目で揃える |
+| #112 | 【FEAT】シェアカードを B-2 にする（台紙のカード） |
+| #114 | 【FEAT】いいねを発車標のパタパタの動きにする |
+| #117 | 【FEAT】投稿の公開でスタンプを押す動きを入れる |
+| #119 | 【FEAT】投稿詳細への画面遷移を「次の駅へ」の動きにする |
+| #120 | 【FEAT】ダークモードの配色を入れる（タスク 1 で確かめた配色） |
+
+- アプリの部品は `ButchakeMap/DesignSystem/` にあります（駅名標 `StationSign`・きっぷ `Ticket`・掲示板の札 `NoticeBoard`・スタンプ `StampMark`・路線図の駅 `RouteStationRow`・発車標の数字 `DepartureBoardNumber`・ボタン `B2ButtonStyle`・書体 `B2Font` など）
+- 色は `ButchakeMap/Assets.xcassets` の Color Set（ライトとダークの 2 値）、書体は `ButchakeMap/Resources/Fonts` に同梱しています
+- App Store の素材（`AppStore/` のスクリーンショットとクリエイティブ）は、この epic では作り直していません
 
 ## 案の一覧
 
@@ -54,11 +86,13 @@ python3 Tools/check_design_contrast.py docs/design/mocks/b2   # 配色のコン�
   - ページの JavaScript のエラー・Promise のエラー（`unhandledrejection`）
   - 読み込めない CSS・スクリプト・画像
   - Web フォント（`fonts.googleapis.com`）を読み込んでいるのに `<meta name="mock-fonts">` が無いページ（Web フォントを使うページでは `mock-fonts` が必須）
-  - JSON のオブジェクトとして読めない `palette.json`
+  - JSON のオブジェクトとして読めない `palette.json`、`mock-palette` で指定したのに無い・読めない配色のファイル
   - 英小文字・数字・ハイフン・下線以外を含む案 ID
 - iframe で別のページを並べるページは、`window.mockReady`（Promise）を置くと、書き出しはそれを待ってから検査・撮影する
-- `check_design_contrast.py` は案の `palette.json` の組ごとに WCAG のコントラスト比を出し、AA 未満（通常の文字で 4.5:1、大きな文字で 3:1）があれば 0 以外で終わります。
-  出した表は PR 本文に載せます。ブランドシートには、同じ式で計算した表を `Mock.paletteTable()` で描きます
+- `check_design_contrast.py` は案の `palette.json` と、ほかの配色の `palette-<名前>.json`（ダークモードの `palette-dark.json` など）の組ごとに WCAG のコントラスト比を出し、
+  AA 未満（通常の文字で 4.5:1、大きな文字で 3:1）があれば 0 以外で終わります。出した表は PR 本文に載せます。
+  ブランドシートには、同じ式で計算した表を `Mock.paletteTable()` で描きます。ページに渡す配色は既定で `palette.json` で、
+  ダークのブランドシートのように別の配色を描くページは `<meta name="mock-palette" content="palette-dark.json">` で指定します
 - `current` は今のアプリを写した比較の基準なので、AA 未満の組（オレンジの小さな文字など）もそのまま載せています。`check_design_contrast.py` が通らなくてよいのは `current` だけです
 
 ## ページの作り方
@@ -71,6 +105,7 @@ python3 Tools/check_design_contrast.py docs/design/mocks/b2   # 配色のコン�
 | `brand.html` | ブランドシート: アプリアイコン（1024 と 60pt 相当）・ロゴ・空の状態のイラスト・カラーパレットとコントラスト比・書体見本（日本語と英語）・主な部品 |
 | `motion.html` | 動きのコマ割り: 1 つの動きを 3〜4 コマに分け、時間・イージング・ハプティクス・Reduce Motion のときの代わりを注記する（3 つ以上） |
 | `palette.json` | 色の見本（`colors`）と、文字色と背景色の組（`pairs`。`large` は大きな文字か） |
+| `*-dark.html`・`theme-dark.css`・`palette-dark.json` | ダークモードの画面・ブランドシート・配色（作った案だけ。`b2` にある） |
 | `README.md` | コンセプト・「面白さ」の出し方・配色・書体（名前・ライセンス・同梱するおよそのサイズ）・アイコン／ロゴ／イラスト・動き・本実装の注意 |
 | `*.svg` | 自分で描いたアイコン・ロゴ・イラスト |
 

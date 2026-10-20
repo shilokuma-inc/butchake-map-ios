@@ -29,6 +29,34 @@ struct PostDetailViewModel {
         post.spots.sorted { $0.order < $1.order }
     }
 
+    /// 投稿詳細の頭の、都市の駅名標に出す文字（Discussion #77 の Q6）
+    struct StationSignText: Equatable {
+        /// 大きな文字。市区町村、空なら都道府県
+        let name: String
+        /// 英字の行。都道府県のローマ字（47 都道府県に無い名前なら nil）
+        let english: String?
+    }
+
+    static func stationSignText(of post: Post) -> StationSignText {
+        let city = post.city.trimmingCharacters(in: .whitespacesAndNewlines)
+        let prefecture = post.prefecture.trimmingCharacters(in: .whitespacesAndNewlines)
+        return StationSignText(
+            name: city.isEmpty ? prefecture : city,
+            english: Prefecture(rawValue: prefecture)?.romanizedName
+        )
+    }
+
+    /// 駅のスタンプの上の日付（投稿日の「M.d」。端末のカレンダー）
+    static func stampDate(of post: Post, calendar: Calendar = .current) -> String {
+        let components = calendar.dateComponents([.month, .day], from: post.createdAt)
+        return "\(components.month ?? 0).\(components.day ?? 0)"
+    }
+
+    /// 駅のスタンプの下の地名（市区町村、空なら都道府県）
+    static func stampPlace(of post: Post) -> String {
+        stationSignText(of: post).name
+    }
+
     var isMine: Bool {
         post.map(repository.isMine) ?? false
     }

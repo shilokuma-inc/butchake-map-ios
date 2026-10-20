@@ -193,6 +193,38 @@
         }
       }
     },
+    "Bound for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bound for %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ゆき"
+          }
+        }
+      }
+    },
+    "Butchake Line" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Butchake Line"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ぶっちゃけ線"
+          }
+        }
+      }
+    },
     "Butchake Map" : {
       "localizations" : {
         "en" : {
@@ -525,6 +557,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿を編集"
+          }
+        }
+      }
+    },
+    "Font Licenses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Font Licenses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "書体のライセンス"
           }
         }
       }
@@ -1121,6 +1169,22 @@
         }
       }
     },
+    "Published" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Published"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開"
+          }
+        }
+      }
+    },
     "Published posts can't be saved as drafts." : {
       "localizations" : {
         "en" : {
@@ -1441,6 +1505,38 @@
         }
       }
     },
+    "Stamp Book" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stamp Book"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スタンプ帳"
+          }
+        }
+      }
+    },
+    "Stamp book, %lld this month" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stamp book, %lld this month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スタンプ帳、今月 %lld こ"
+          }
+        }
+      }
+    },
     "Tap the star on a post to save it here." : {
       "localizations" : {
         "en" : {
@@ -1469,6 +1565,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "表示言語は端末の設定（日本語 / 英語）に従います。"
+          }
+        }
+      }
+    },
+    "The fonts bundled with this app are licensed under the SIL Open Font License 1.1." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The fonts bundled with this app are licensed under the SIL Open Font License 1.1."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアプリに同梱している書体は、SIL Open Font License 1.1 で提供されています。"
           }
         }
       }
@@ -1549,6 +1661,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "モックのため、何も削除されていません。"
+          }
+        }
+      }
+    },
+    "This month: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month: %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月 %lld こ"
           }
         }
       }
@@ -1661,6 +1789,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "キーワード・都道府県・カテゴリを変えて探してみてください。"
+          }
+        }
+      }
+    },
+    "Unable to load the license text." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to load the license text."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライセンス文を読み込めませんでした。"
           }
         }
       }

@@ -53,6 +53,7 @@ struct PostMapView: View {
                 MapPinSheet(pinID: pinID, onOpenDetail: openDetail)
                     .presentationDetents([.medium, .large])
                     .presentationDragIndicator(.visible)
+                    .presentationBackground(Color.paper)
             }
             // 削除・下書きへの変更などでピンが消えたら、開いているシートも閉じる
             .onChange(of: pins.map(\.id)) { _, pinIDs in
@@ -215,9 +216,11 @@ private struct MaxWidthLayout: Layout {
     }
 }
 
-/// ピンをタップしたときのハーフシート。どの投稿の何番目のスポットかを出す
+/// ピンをタップしたときのハーフシート（モックの .sheet-panel）。どの投稿の何番目のスポットかを、
+/// 番号の丸・スタンプ「済」・駅の掲示板（ぶっちゃけコメント）で出す
 struct MapPinSheet: View {
     @Environment(MockDataRepository.self) private var repository
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let pinID: MapPinID
     let onOpenDetail: (Post.ID) -> Void
 
@@ -243,64 +246,93 @@ struct MapPinSheet: View {
 
     private func content(post: Post, spot: Spot) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 12) {
+                // アクセシビリティの大きな文字では、横に並べると文字が 1 字ずつ折り返すので縦に積む
+                stackedLayout(spacing: 8) {
                     CategoryBadge(category: post.category)
+                    AuthorTypeBadge(authorType: post.authorType)
+                }
+                VStack(alignment: .leading, spacing: 2) {
                     Text(post.title)
-                        .font(.title3.bold())
+                        .font(.b2Heading(size: 19, relativeTo: .title3))
+                        .foregroundStyle(Color.textPrimary)
+                        .lineSpacing(4)
                         .accessibilityAddTraits(.isHeader)
-                    Label(post.area, systemImage: "mappin.and.ellipse")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-                spotCard(spot: spot)
-                HStack(spacing: 16) {
-                    LikeButton(post: post) { viewModel.toggleLike(postID: post.id) }
-                    StarButton(post: post) { viewModel.toggleStar(postID: post.id) }
-                    Spacer(minLength: 0)
-                    Button("View Post", systemImage: "chevron.right") {
-                        onOpenDetail(post.id)
+                    Label {
+                        Text(post.area)
+                    } icon: {
+                        Image(systemName: "mappin.and.ellipse")
                     }
-                    .font(.subheadline.weight(.semibold))
-                    .buttonStyle(.borderedProminent)
-                    .tint(Color.brandPrimary)
+                    .font(.b2Text(size: 15, relativeTo: .subheadline))
+                    .foregroundStyle(Color.textSecondary)
                 }
+                spotLine(post: post, spot: spot)
+                if !spot.recommendation.isEmpty {
+                    NoticeBoard(label: Text("Honest Comment"), text: Text(spot.recommendation))
+                }
+                stackedLayout(spacing: 16) {
+                    HStack(spacing: 16) {
+                        LikeButton(post: post) { viewModel.toggleLike(postID: post.id) }
+                        StarButton(post: post) { viewModel.toggleStar(postID: post.id) }
+                    }
+                    Spacer(minLength: 0)
+                    Button {
+                        onOpenDetail(post.id)
+                    } label: {
+                        // モックどおり矢印は文字の右に置く（B2ButtonStyle の Label はアイコンを左に置くので、ここは並べて組む）
+                        HStack(spacing: 6) {
+                            Text("View Post")
+                            Image(systemName: "chevron.right")
+                                .accessibilityHidden(true)
+                        }
+                    }
+                    .buttonStyle(.b2Primary)
+                }
+                .padding(.top, 4)
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.top, 20)
+            .padding(.bottom)
         }
         .background(Color.paper)
     }
 
-    private func spotCard(spot: Spot) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Image(systemName: "\(spot.order).circle.fill")
-                    .font(.title2)
-                    .foregroundStyle(Color.brandPrimary)
-                    // VoiceOver で ①②③ の順番を「スポット 1」のように読ませる
-                    .accessibilityLabel(Text("Spot \(spot.order)"))
-                VStack(alignment: .leading, spacing: 2) {
+    /// 番号の丸・スポット名と住所・スタンプ「済」の行
+    private func spotLine(post: Post, spot: Spot) -> some View {
+        stackedLayout(spacing: 10) {
+            HStack(alignment: dynamicTypeSize.isAccessibilitySize ? .top : .center, spacing: 10) {
+                RouteRankBadge(number: spot.order)
+                VStack(alignment: .leading, spacing: 3) {
                     Text(spot.name)
-                        .font(.headline)
+                        .font(.b2Heading(size: 17, relativeTo: .headline))
+                        .foregroundStyle(Color.textPrimary)
                     if !spot.address.isEmpty {
                         Text(spot.address)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.b2Text(size: 14, relativeTo: .subheadline))
+                            .foregroundStyle(Color.textSecondary)
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .accessibilityElement(children: .combine)
-            if !spot.recommendation.isEmpty {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Honest Comment")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(Color.brandAccent)
-                    Text(spot.recommendation)
-                        .font(.body)
-                }
-            }
+            // VoiceOver で番号の丸の代わりに「スポット 2」と読み、続けて名前と住所を読む（今の読み上げのまま）
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text("Spot \(spot.order)"))
+            .accessibilityValue(Text(verbatim: [spot.name, spot.address].filter { !$0.isEmpty }.joined(separator: ", ")))
+            StampMark(
+                top: PostDetailViewModel.stampDate(of: post),
+                main: "済",
+                bottom: PostDetailViewModel.stampPlace(of: post),
+                size: 54
+            )
         }
-        .cardStyle()
+    }
+
+    /// 通常は横に、アクセシビリティの大きな文字では縦（左寄せ）に並べる
+    private func stackedLayout<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+            : AnyLayout(HStackLayout(spacing: spacing))
+        return layout(content)
     }
 }
 

@@ -138,19 +138,27 @@ struct LikeButton: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// 札の桁ごとの前後の数字（件数が変わるたびに、前の件数から新しい件数へ入れ替える）
     @State private var flapSlots: [DepartureBoardFlapSlot]
-    /// 札を回し始めるたびに増やす（KeyframeAnimator と、止まったときのハプティクスのきっかけ）
+    /// 札の前後の数字と、押したあとの変化か
+    @State private var turn: LikeFlapTurn
+    /// 札を回し始めるたびに増やす（KeyframeAnimator のきっかけ）
     @State private var turnCount = 0
-    /// 札が止まるたびに増やす（selection のハプティクスのきっかけ）
+    /// 押したあとの変化で、札が止まるたびに増やす（selection のハプティクスのきっかけ）
     @State private var settledCount = 0
+    /// 止まったときにハプティクスを鳴らすための待ち（続けて押したら取り消して、最後の 1 回だけ鳴らす）
+    @State private var hapticTask: Task<Void, Never>?
 
     init(post: Post, action: @escaping () -> Void) {
         self.post = post
         self.action = action
         _flapSlots = State(initialValue: DepartureBoardFlap.slots(from: post.likeCount, to: post.likeCount))
+        _turn = State(initialValue: LikeFlapTurn(count: post.likeCount))
     }
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            turn.tapped()
+            action()
+        } label: {
             LikeButtonLabel(
                 heartFill: post.isLiked ? 1 : 0,
                 heartAnimation: reduceMotion
@@ -167,24 +175,31 @@ struct LikeButton: View {
         .onChange(of: LikeCountKey(postID: post.id, count: post.likeCount)) { oldKey, newKey in
             guard oldKey.postID == newKey.postID else {
                 // 別の投稿に変わったときは回さずに入れ替える
+                turn.reset(count: newKey.count)
                 flapSlots = DepartureBoardFlap.slots(from: newKey.count, to: newKey.count)
                 return
             }
-            flapSlots = DepartureBoardFlap.slots(from: oldKey.count, to: newKey.count)
+            let isTapped = turn.countChanged(to: newKey.count, at: Date())
+            flapSlots = DepartureBoardFlap.slots(from: turn.from, to: turn.to)
             turnCount &+= 1
-        }
-        .task(id: turnCount) {
-            guard turnCount > 0 else {
+            // 押していない変化（ほかの画面で押した・同期など）では鳴らさない。続けて押したら最後の 1 回だけ鳴らす
+            hapticTask?.cancel()
+            hapticTask = nil
+            guard isTapped else {
                 return
             }
             let duration = reduceMotion ? DepartureBoardFlap.crossfadeDuration : DepartureBoardFlap.totalDuration
-            do {
-                try await Task.sleep(for: .seconds(duration))
-            } catch {
-                // 止まる前にもう一度押されたら、次の動きが止まったときに 1 回だけ鳴らす
-                return
+            hapticTask = Task {
+                try? await Task.sleep(for: .seconds(duration))
+                guard !Task.isCancelled else {
+                    return
+                }
+                settledCount &+= 1
             }
-            settledCount &+= 1
+        }
+        .onDisappear {
+            hapticTask?.cancel()
+            hapticTask = nil
         }
         .sensoryFeedback(.selection, trigger: settledCount)
     }

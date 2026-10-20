@@ -19,6 +19,8 @@ struct HomeView: View {
                 LazyVStack(alignment: .leading, spacing: 18) {
                     HomeLogo()
                         .padding(.horizontal)
+                    StampBookCard(book: viewModel.stampBook())
+                        .padding(.horizontal)
                     carousel(section: .weeklyPicks, posts: viewModel.weeklyPicks())
                     carousel(section: .trending, posts: viewModel.trendingPosts)
                     feed

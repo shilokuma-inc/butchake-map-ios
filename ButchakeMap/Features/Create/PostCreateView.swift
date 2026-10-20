@@ -63,6 +63,11 @@ private struct PostFormContent: View {
             }
             actionSection
         }
+        // B-2 の地（紙）に白の行を並べ、文字は BIZ UDPゴシック、ボタンや選択の色はインクにする
+        .font(.b2Body)
+        .scrollContentBackground(.hidden)
+        .background(Color.paper)
+        .tint(Color.brandPrimary)
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle(Text(title))
         .sheet(item: $locationPickerOrder) { picker in
@@ -88,7 +93,7 @@ private struct PostFormContent: View {
     }
 
     private var basicInfoSection: some View {
-        Section("Basic Info") {
+        Section {
             textField("Title", text: $viewModel.post.title, field: .title)
             VStack(alignment: .leading, spacing: 4) {
                 NavigationLink {
@@ -120,7 +125,18 @@ private struct PostFormContent: View {
                 }
             }
             .accessibilityIdentifier("postForm.authorType")
+        } header: {
+            sectionHeader(Text("Basic Info"))
         }
+        .listRowBackground(Color.surface)
+    }
+
+    /// セクションの見出し（BIZ UDPゴシック Bold・文字色）。英語でも大文字にせず、書いたとおりに出す
+    private func sectionHeader(_ text: Text) -> some View {
+        text
+            .font(.b2Heading(size: 15, relativeTo: .subheadline))
+            .foregroundStyle(Color.textPrimary)
+            .textCase(nil)
     }
 
     private func spotSection(spot: Binding<Spot>) -> some View {
@@ -144,8 +160,9 @@ private struct PostFormContent: View {
             )
             textField("Honest Comment", text: spot.recommendation, field: .spotRecommendation(order: order), axis: .vertical)
         } header: {
-            Text("Spot \(order)")
+            sectionHeader(Text("Spot \(order)"))
         }
+        .listRowBackground(Color.surface)
     }
 
     /// 位置の行。未選択なら「地図で位置を選ぶ」、選択済みなら小さな地図と選び直し・解除
@@ -199,6 +216,8 @@ private struct PostFormContent: View {
                 }
                 Text("All fields except addresses and locations are required to publish.")
             }
+            .font(.b2Text(size: 13, relativeTo: .footnote))
+            .foregroundStyle(Color.textSecondary)
         }
     }
 
@@ -238,7 +257,7 @@ private struct PostFormContent: View {
     private func errorText(for field: PostCreateViewModel.Field) -> some View {
         if let error = viewModel.error(for: field) {
             Text(error.message)
-                .font(.caption)
+                .font(.b2Text(size: 12, relativeTo: .caption))
                 .foregroundStyle(.red)
         }
     }
@@ -268,6 +287,10 @@ private struct PrefectureSelectionList: View {
                 option(Text(verbatim: prefecture.rawValue), value: prefecture.rawValue)
             }
         }
+        .font(.b2Body)
+        .scrollContentBackground(.hidden)
+        .background(Color.paper)
+        .tint(Color.brandPrimary)
         .navigationTitle(Text("Prefecture"))
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -291,6 +314,7 @@ private struct PrefectureSelectionList: View {
             .contentShape(Rectangle())
         }
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .listRowBackground(Color.surface)
     }
 }
 

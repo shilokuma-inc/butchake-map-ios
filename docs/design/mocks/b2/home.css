@@ -1,0 +1,10 @@
+.nav-large .nav-large-title { padding: 2px 16px 10px; }
+.rally-card { display: flex; align-items: center; gap: 12px; margin: 0 16px; padding: 12px 14px; border-radius: 8px; background: var(--kraft); border: 1px solid #CDBF9C; }
+.rally-card p { flex: 1; font-size: 15px; font-weight: 700; line-height: 1.5; }
+.rally-card p small { display: block; font-family: var(--font-ticket); font-weight: 400; font-size: 13px; color: var(--ink); }
+.rally-card .stamp-mark, .rally-card .stamp-slot { width: 52px; height: 52px; }
+.rally-card .stamp-mark strong { font-size: 13px; }
+.home { display: flex; flex-direction: column; gap: 18px; padding-top: 18px; }
+.home section { display: flex; flex-direction: column; gap: 12px; }
+.carousel { padding: 0 16px 4px; }
+.feed { display: flex; flex-direction: column; gap: 14px; padding: 0 16px; }

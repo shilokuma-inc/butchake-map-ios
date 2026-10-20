@@ -9,30 +9,7 @@
 <link rel="stylesheet" href="../../template/tokens.css">
 <link rel="stylesheet" href="../../template/frame.css">
 <link rel="stylesheet" href="theme.css">
-<style>
-  .map-screen .screen-scroll { z-index: 1; pointer-events: none; }
-  .map-screen .status-bar, .map-screen .nav-bar { background: var(--paper); }
-  .map-screen .nav-bar { border-bottom: 2px solid var(--text); }
-  .map-screen .nav-inline-title { font-size: 18px; letter-spacing: .12em; }
-  .map-illustration { top: 106px; }
-  .map-illustration .map-pin { z-index: 3; }
-  .map-illustration svg.route { inset: 0; z-index: 2; }
-  .pin-sign { position: absolute; z-index: 4; transform: translate(-100%, -50%); margin-left: -32px; }
-  .pin-sign .sign-name { font-size: 15px; padding: 3px 10px 1px; letter-spacing: .04em; }
-  .pin-sign .sign-bar { font-size: 13px; padding: 1px 8px; }
-  .sheet-panel { position: absolute; left: 0; right: 0; bottom: 0; height: 420px; padding: 10px 16px 34px; z-index: 5;
-    border-top: 2px solid var(--text); border-radius: 18px 18px 0 0; background: var(--paper); display: flex; flex-direction: column; gap: 10px; }
-  .grabber { align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #B9AE92; }
-  .sheet-title { font-size: 19px; font-weight: 700; line-height: 1.4; }
-  .sheet-area { display: flex; align-items: center; gap: 4px; margin-top: 2px; font-size: 15px; color: var(--color-text-secondary); }
-  .spot-line { display: flex; align-items: center; gap: 10px; }
-  .spot-line .stamp-mark strong { font-size: 14px; }
-  .spot-name { font-size: 17px; font-weight: 700; }
-  .spot-address { margin-top: 3px; font-size: 14px; color: var(--color-text-secondary); }
-  .notice-text { font-size: 15px; padding: 8px 12px; }
-  .sheet-actions { display: flex; align-items: center; gap: 16px; margin-top: auto; }
-  .sheet-actions .rail-button { margin-left: auto; }
-</style>
+<link rel="stylesheet" href="map.css">
 </head>
 <body>
 <div id="app"></div>
@@ -40,39 +17,6 @@
 <script src="../../template/icons.js"></script>
 <script src="../../template/mock.js"></script>
 <script src="theme.js"></script>
-<script>
-  // マップ: 3 つのスポットを順位の順（1 → 2 → 3）に路線でつなぎ、ピンは駅の丸。選んだ駅は紺のスタンプの丸と、小さな駅名標
-  const { data, parts, icon, esc } = Mock;
-  const post = data.posts[0];
-  const spot = post.spots[1];
-  const pins = post.spots.map(s => ({ order: s.order, x: s.mapPosition.x, y: s.mapPosition.y * 0.5 + 6, selected: s === spot }));
-  // 3 の駅は 1 と 2 の間にあり、路線（1 → 2 → 3）が重なって見えるので、このモックでは 2 の先（右上）に置く
-  Object.assign(pins.find(p => p.order === 3), { x: 84, y: 20 });
-  // 地図の高さ（874 - 106）に対する % を、SVG の座標（402 x 768）に直して路線を引く
-  const pt = p => `${(p.x / 100) * 402} ${(p.y / 100) * 768}`;
-  const order = [...pins].sort((a, b) => a.order - b.order);
-  const route = `<svg class="route" viewBox="0 0 402 768" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M ${pt(order[0])} L ${pt(order[1])} L ${pt(order[2])}" fill="none" stroke="#2F7A45" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const sel = pins.find(p => p.selected);
-  const sign = `<div class="pin-sign sign" style="left:${sel.x}%;top:${sel.y}%"><p class="sign-name">もりもり寿し</p>
-    <p class="sign-bar"><span>◀ 1</span><span>3 ▶</span></p></div>`;
-  Mock.mount(Mock.screen({
-    className: 'map-screen',
-    nav: { title: 'マップ' },
-    overlay: `${Mock.mapIllustration(pins).replace('<span class="map-pin', `${route}${sign}<span class="map-pin`)}
-      <section class="sheet-panel">
-        <span class="grabber"></span>
-        <div class="badges">${parts.categoryBadge(post)}${parts.authorBadge(post)}</div>
-        <div><h2 class="sheet-title">${esc(post.title)}</h2>
-          <p class="sheet-area">${icon('mappin', { size: 14 })}${esc(post.prefecture)} ${esc(post.city)}</p></div>
-        <div class="spot-line">${parts.rank(spot.order)}
-          <div style="flex:1"><p class="spot-name">${esc(spot.name)}</p><p class="spot-address">${esc(spot.address)}</p></div>
-          ${parts.stamp('10.18', '済', '金沢', 'width:54px;height:54px')}</div>
-        ${parts.notice(spot.recommendation)}
-        <div class="sheet-actions">${parts.likeButton(post)}${parts.starButton(post)}
-          <span class="rail-button">${esc(data.strings.viewPost)}${icon('chevronRight', { size: 16 })}</span></div>
-      </section>`,
-  }));
-</script>
+<script src="map.js"></script>
 </body>
 </html>

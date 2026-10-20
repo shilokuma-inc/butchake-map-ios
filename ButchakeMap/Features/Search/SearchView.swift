@@ -9,6 +9,7 @@ import SwiftUI
 struct SearchView: View {
     @Environment(MockDataRepository.self) private var repository
     @State private var filter = SearchFilter()
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var viewModel: SearchViewModel {
         SearchViewModel(repository: repository)
@@ -41,28 +42,54 @@ struct SearchView: View {
         }
     }
 
+    /// 都道府県のメニュー。アクセシビリティの大きな文字では、選んだ都道府県が 1 字ずつ折り返さないよう見出しの下に置く
     private var prefectureMenu: some View {
-        HStack {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+            : AnyLayout(HStackLayout())
+        return layout {
             // VoiceOver では Picker のラベルで「都道府県」と読むので、見出しの Label は読ませない（二重に読まれるため）
             Label("Prefecture", systemImage: "mappin.and.ellipse")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.b2Text(size: 15, relativeTo: .subheadline))
+                .foregroundStyle(Color.textSecondary)
                 .accessibilityHidden(true)
             Spacer(minLength: 0)
-            Picker(selection: $filter.prefecture) {
-                Text("All Prefectures")
-                    .tag(String?.none)
-                ForEach(viewModel.prefectures, id: \.self) { prefecture in
-                    Text(verbatim: prefecture)
-                        .tag(String?.some(prefecture))
+            // .menu の Picker は大きな文字でラベルの上下が切れるので、Menu の中に Picker を置き、ラベルは自前で出す。
+            // VoiceOver では Picker と同じく「都道府県」と、選んでいる都道府県を読む
+            Menu {
+                Picker(selection: $filter.prefecture) {
+                    Text("All Prefectures")
+                        .tag(String?.none)
+                    ForEach(viewModel.prefectures, id: \.self) { prefecture in
+                        Text(verbatim: prefecture)
+                            .tag(String?.some(prefecture))
+                    }
+                } label: {
+                    Text("Prefecture")
                 }
             } label: {
-                Text("Prefecture")
+                HStack(spacing: 6) {
+                    selectedPrefectureName
+                        .multilineTextAlignment(.leading)
+                    Image(systemName: "chevron.up.chevron.down")
+                        .imageScale(.small)
+                }
+                .font(.b2Heading(size: 15, relativeTo: .subheadline))
+                .foregroundStyle(Color.brandPrimary)
             }
-            .pickerStyle(.menu)
-            .tint(Color.brandPrimary)
+            .accessibilityLabel(Text("Prefecture"))
+            .accessibilityValue(selectedPrefectureName)
         }
         .padding(.horizontal)
+    }
+
+    /// 選んでいる都道府県（選んでいなければ「すべての都道府県」）
+    private var selectedPrefectureName: Text {
+        if let prefecture = filter.prefecture {
+            Text(verbatim: prefecture)
+        } else {
+            Text("All Prefectures")
+        }
     }
 
     private var categoryChips: some View {
@@ -113,8 +140,7 @@ struct SearchView: View {
                 Button("Clear Filters") {
                     filter = SearchFilter()
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(Color.brandPrimary)
+                .buttonStyle(.b2Primary)
             }
         } else {
             ForEach(posts) { post in
@@ -137,7 +163,8 @@ struct SearchView: View {
     }
 }
 
-/// カテゴリの絞り込みのチップ。選択中は塗りつぶす
+/// カテゴリの絞り込みのチップ（B-2 のバッジと同じ形）。
+/// 選んでいないときは白の地に緑の枠と文字、選んだときは緑の地に白の文字（どちらも 5.26:1）
 struct CategoryChip: View {
     let title: LocalizedStringResource
     let symbolName: String
@@ -151,11 +178,16 @@ struct CategoryChip: View {
             } icon: {
                 Image(systemName: symbolName)
             }
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(isSelected ? Color.white : Color.brandAccent)
+            .font(.b2Heading(size: 15, relativeTo: .subheadline))
+            .foregroundStyle(isSelected ? Color.surface : Color.brandAccent)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(isSelected ? Color.brandAccent : Color.brandAccent.opacity(0.15), in: .capsule)
+            .background(isSelected ? Color.brandAccent : Color.surface, in: .capsule)
+            .overlay {
+                Capsule()
+                    .strokeBorder(Color.brandAccent, lineWidth: 1.5)
+            }
+            .contentShape(.capsule)
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])

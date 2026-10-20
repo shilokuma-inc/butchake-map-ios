@@ -95,7 +95,7 @@ enum PublishStampTimeline {
         var inkScale: Double
         /// 「公開しました」の不透明度
         var messageOpacity: Double
-        /// 台紙の数に今押すスタンプを入れたか（見出しの「N / 3」）
+        /// 台紙の数に今押すスタンプを入れたか（見出しの「今月 N こ」）
         var isStamped: Bool
     }
 

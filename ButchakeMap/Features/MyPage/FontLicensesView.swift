@@ -45,11 +45,8 @@ struct FontLicenseDetailView: View {
     var body: some View {
         ScrollView {
             if let text = font.licenseText() {
-                Text(verbatim: text)
-                    .font(.footnote.monospaced())
-                    .foregroundStyle(Color.textPrimary)
-                    .textSelection(.enabled)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                LicenseTextView(text: text)
+                    .cardStyle()
                     .padding()
             } else {
                 ContentUnavailableView("Unable to load the license text.", systemImage: "doc.text")
@@ -58,6 +55,39 @@ struct FontLicenseDetailView: View {
         .background(Color.paper)
         .navigationTitle(Text(verbatim: font.familyName))
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+/// ライセンス文の本文。原文は 70〜80 字ごとに改行しているので、表示のときだけ段落の中の改行をつなぎ（FontLicense.reflowed(_:)）、
+/// 画面の幅で折り返す。等幅をやめて本文の書体で出す。
+/// 区切り線（-----）の行は、どの幅でも 1 行に収まらず折り返してしまうので、罫線として描く（飾りなので読み上げない）
+private struct LicenseTextView: View {
+    let text: String
+
+    var body: some View {
+        let lines = FontLicense.reflowed(text).components(separatedBy: "\n")
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(lines.indices, id: \.self) { index in
+                let line = lines[index]
+                if FontLicense.isSeparator(line) {
+                    Rectangle()
+                        .fill(Color.separatorLine)
+                        .frame(height: 1)
+                        .padding(.vertical, 8)
+                        .accessibilityHidden(true)
+                } else if line.isEmpty {
+                    // 段落の間の空行（1 行分の高さをあける）
+                    Text(verbatim: " ")
+                        .accessibilityHidden(true)
+                } else {
+                    Text(verbatim: line)
+                        .foregroundStyle(Color.textPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+        }
+        .font(.footnote)
+        .textSelection(.enabled)
     }
 }
 

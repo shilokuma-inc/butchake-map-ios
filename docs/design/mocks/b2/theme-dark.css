@@ -5,21 +5,21 @@
  */
 :root {
   --ink: #A3B6F5;          /* スタンプのインク（明るい紺） */
-  --paper: #13161F;        /* 画面の地（夜の紺） */
-  --kraft: #3B3224;        /* 台紙（暗いクラフト紙） */
+  --paper: #1E2230;        /* 画面の地（夜の紺） */
+  --kraft: #4A3F2E;        /* 台紙（暗いクラフト紙） */
   --text: #ECE7DA;
   --rail: #6BC48A;         /* 路線の色（明るい緑） */
-  --surface: #1F2330;      /* 白の地の代わり（カード・駅名標・きっぷ） */
-  --on-color: #13161F;     /* インク・緑・文字色の地に載せる文字 */
-  --border: #3A3F4F;       /* カードの枠・区切り線 */
-  --ticket-border: #4A5063;
-  --dotted: #8F8873;       /* スタンプの空き欄の点線（文字以外の 3:1 を台紙でも満たす） */
-  --kraft-border: #5A4D38;
+  --surface: #2A2F40;      /* 白の地の代わり（カード・駅名標・きっぷ） */
+  --on-color: #1E2230;     /* インク・緑・文字色の地に載せる文字 */
+  --border: #474D60;       /* カードの枠・区切り線 */
+  --ticket-border: #565D72;
+  --dotted: #9F987F;       /* スタンプの空き欄の点線（文字以外の 3:1 を台紙でも満たす） */
+  --kraft-border: #66573F;
 
   --color-bg: var(--paper);
   --color-surface: var(--surface);
   --color-text: var(--text);
-  --color-text-secondary: #B5AE9C;
+  --color-text-secondary: #BDB6A4;
   --color-primary: var(--ink);
   --color-accent: var(--rail);
   --color-on-primary: var(--on-color);
@@ -38,11 +38,11 @@
   --tabbar-active: var(--on-color);
   --tabbar-shadow: 0 3px 0 #000000;
 
-  --map-land: #1C2029;
-  --map-water: #1F3550;
-  --map-park: #1F3326;
-  --map-road: #2C3140;
-  --map-road-minor: #252A36;
+  --map-land: #262B37;
+  --map-water: #27405E;
+  --map-park: #283F30;
+  --map-road: #353B4C;
+  --map-road-minor: #2E3442;
 }
 
 html, body { background: var(--paper); color: var(--text); }

@@ -24,6 +24,8 @@ struct PublishStamp: Equatable {
     let date: String
     /// 今押すスタンプの下の文字（市区町村、空なら都道府県）
     let place: String
+    /// 押したあとの今月のスタンプの数（見出しの「今月 N こ」。Discussion #77 の Q1 のとおり分母は出さない）
+    var monthCount = 1
 
     /// 押したあとにページで埋まっている欄の数
     var filledCount: Int {
@@ -55,7 +57,8 @@ struct PublishStamp: Equatable {
         return Self(
             earlier: Array(earlier),
             date: PostDetailViewModel.stampDate(of: published, calendar: calendar),
-            place: PostDetailViewModel.stampPlace(of: published)
+            place: PostDetailViewModel.stampPlace(of: published),
+            monthCount: book.count
         )
     }
 }

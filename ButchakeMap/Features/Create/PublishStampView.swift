@@ -120,12 +120,13 @@ private struct PublishStampAlbum: View {
         }
     }
 
-    /// 見出し（モックの「スタンプ帳 2 / 3」。押したら数が 1 つ増える）
+    /// 見出し（ホームのスタンプ帳と同じ「スタンプ帳 今月 N こ」。押したら数が 1 つ増える。
+    /// モックは「2 / 3」だが、Discussion #77 の Q1 で目標が無いので分母は出さないと決めた）
     private var caption: some View {
-        let count = frame.isStamped ? stamp.filledCount : stamp.earlier.count
+        let count = frame.isStamped ? stamp.monthCount : max(stamp.monthCount - 1, 0)
         return HStack(spacing: 4 * Self.scale) {
             Text("Stamp Book")
-            Text(verbatim: "\(count) / \(PublishStamp.slotCount)")
+            Text("This month: \(count)")
         }
         .font(.b2Heading(size: 14 * Self.scale, relativeTo: .subheadline))
         .foregroundStyle(Color.textPrimary)
@@ -198,7 +199,8 @@ private struct Stamper: View {
                 .init(id: UUID(), date: "10.16", place: "札幌市")
             ],
             date: "10.18",
-            place: "金沢市"
+            place: "金沢市",
+            monthCount: 3
         ),
         elapsed: 0.2
     )
@@ -206,13 +208,13 @@ private struct Stamper: View {
 
 #Preview("Reduce Motion") {
     PublishStampView(
-        stamp: PublishStamp(earlier: [.init(id: UUID(), date: "10.12", place: "横浜市")], date: "10.18", place: "金沢市"),
+        stamp: PublishStamp(earlier: [.init(id: UUID(), date: "10.12", place: "横浜市")], date: "10.18", place: "金沢市", monthCount: 2),
         reducesMotion: true
     )
 }
 
 #Preview("動き") {
     PublishStampView(
-        stamp: PublishStamp(earlier: [.init(id: UUID(), date: "10.12", place: "横浜市")], date: "10.18", place: "金沢市")
+        stamp: PublishStamp(earlier: [.init(id: UUID(), date: "10.12", place: "横浜市")], date: "10.18", place: "金沢市", monthCount: 2)
     )
 }

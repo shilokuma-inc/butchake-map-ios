@@ -177,6 +177,6 @@ extension View {
         }
         .padding()
     }
-    .background(Color(.systemGroupedBackground))
+    .background(Color.paper)
     .environment(MockDataRepository.preview)
 }

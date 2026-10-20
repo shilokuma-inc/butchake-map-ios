@@ -176,6 +176,6 @@ private struct ShareCardContent: Hashable {
 #Preview {
     ShareCardView(post: MockDataRepository.preview.publishedPosts[0])
         .padding()
-        .background(Color(.systemGroupedBackground))
+        .background(Color.paper)
         .environment(MockDataRepository.preview)
 }

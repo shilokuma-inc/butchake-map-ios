@@ -24,7 +24,7 @@ struct SearchView: View {
                 }
                 .padding(.vertical)
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color.paper)
             .navigationTitle(Text("Search"))
             .searchable(
                 text: $filter.keyword,

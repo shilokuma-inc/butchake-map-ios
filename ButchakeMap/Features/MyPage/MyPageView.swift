@@ -26,7 +26,7 @@ struct MyPageView: View {
                     cardList
                 }
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color.paper)
             .navigationTitle(Text("My Page"))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

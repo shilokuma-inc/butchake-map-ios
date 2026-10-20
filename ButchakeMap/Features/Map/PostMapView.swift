@@ -132,7 +132,7 @@ struct MapPinSheet: View {
             }
             .padding()
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.paper)
     }
 
     private func spotCard(spot: Spot) -> some View {

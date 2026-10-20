@@ -23,7 +23,7 @@ struct HomeView: View {
                 }
                 .padding(.vertical)
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color.paper)
             .navigationTitle(Text("Butchake Map"))
             .postDetailDestination()
         }

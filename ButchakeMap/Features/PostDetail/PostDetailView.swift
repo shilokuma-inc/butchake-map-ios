@@ -58,7 +58,7 @@ struct PostDetailView: View {
             }
             .padding()
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.paper)
         .navigationTitle(post.title)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -282,7 +282,7 @@ struct SpotPhotoPlaceholder: View {
         category: .gourmet
     )
     .padding()
-    .background(Color(.systemGroupedBackground))
+    .background(Color.paper)
     .environment(MockDataRepository.preview)
 }
 
@@ -306,7 +306,7 @@ struct SpotPhotoPlaceholder: View {
         category: .gourmet
     )
     .padding()
-    .background(Color(.systemGroupedBackground))
+    .background(Color.paper)
     .environment(MockDataRepository.preview)
 }
 

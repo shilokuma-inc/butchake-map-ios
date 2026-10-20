@@ -9,7 +9,7 @@ Object.assign(pins.find(p => p.order === 3), { x: 84, y: 20 });
 const pt = p => `${(p.x / 100) * 402} ${(p.y / 100) * 768}`;
 const order = [...pins].sort((a, b) => a.order - b.order);
 const route = `<svg class="route" viewBox="0 0 402 768" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M ${pt(order[0])} L ${pt(order[1])} L ${pt(order[2])}" fill="none" stroke="#2F7A45" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  <path d="M ${pt(order[0])} L ${pt(order[1])} L ${pt(order[2])}" fill="none" style="stroke: var(--rail)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const sel = pins.find(p => p.selected);
 const sign = `<div class="pin-sign sign" style="left:${sel.x}%;top:${sel.y}%"><p class="sign-name">もりもり寿し</p>
   <p class="sign-bar"><span>◀ 1</span><span>3 ▶</span></p></div>`;

@@ -16,16 +16,23 @@ struct FontLicensesView: View {
                     } label: {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(verbatim: font.familyName)
+                                .foregroundStyle(Color.textPrimary)
                             Text(verbatim: font.licenseName)
                                 .font(.footnote)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Color.textSecondary)
                         }
                     }
                 }
             } footer: {
                 Text("The fonts bundled with this app are licensed under the SIL Open Font License 1.1.")
+                    .foregroundStyle(Color.textSecondary)
             }
+            .listRowBackground(Color.surface)
         }
+        // B-2: 地は紙、行は白
+        .scrollContentBackground(.hidden)
+        .background(Color.paper)
+        .tint(Color.brandPrimary)
         .navigationTitle(Text("Font Licenses"))
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -40,6 +47,7 @@ struct FontLicenseDetailView: View {
             if let text = font.licenseText() {
                 Text(verbatim: text)
                     .font(.footnote.monospaced())
+                    .foregroundStyle(Color.textPrimary)
                     .textSelection(.enabled)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -47,6 +55,7 @@ struct FontLicenseDetailView: View {
                 ContentUnavailableView("Unable to load the license text.", systemImage: "doc.text")
             }
         }
+        .background(Color.paper)
         .navigationTitle(Text(verbatim: font.familyName))
         .navigationBarTitleDisplayMode(.inline)
     }

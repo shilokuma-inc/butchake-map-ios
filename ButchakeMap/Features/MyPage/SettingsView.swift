@@ -37,9 +37,12 @@ struct SettingsView: View {
                 }
             } header: {
                 Text("About This App")
+                    .foregroundStyle(Color.textSecondary)
             } footer: {
                 Text("The display language follows your device settings.")
+                    .foregroundStyle(Color.textSecondary)
             }
+            .listRowBackground(Color.surface)
 
             Section {
                 Button(role: .destructive) {
@@ -49,8 +52,14 @@ struct SettingsView: View {
                 }
             } footer: {
                 Text("This is a mock app, so no data is actually deleted.")
+                    .foregroundStyle(Color.textSecondary)
             }
+            .listRowBackground(Color.surface)
         }
+        // B-2: 地は紙、行は白、リンクなどの色はインク
+        .scrollContentBackground(.hidden)
+        .background(Color.paper)
+        .tint(Color.brandPrimary)
         .navigationTitle(Text("Settings"))
         .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog("Delete your account?", isPresented: $isConfirmingDeletion, titleVisibility: .visible) {

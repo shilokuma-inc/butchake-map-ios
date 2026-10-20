@@ -42,6 +42,9 @@ private struct DraftEditContent: View {
             } description: {
                 Text("This draft may have been deleted or published.")
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // 見つかったときのフォームと同じ紙の地にする
+            .background(Color.paper)
             // 見つかったときのフォームと同じタイトルにする
             .navigationTitle(Text("Edit Post"))
         }

@@ -63,6 +63,11 @@ private struct PostFormContent: View {
             }
             actionSection
         }
+        // B-2 の地（紙）に白の行を並べ、文字は BIZ UDPゴシック、ボタンや選択の色はインクにする
+        .font(.b2Body)
+        .scrollContentBackground(.hidden)
+        .background(Color.paper)
+        .tint(Color.brandPrimary)
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle(Text(title))
         .sheet(item: $locationPickerOrder) { picker in
@@ -88,7 +93,7 @@ private struct PostFormContent: View {
     }
 
     private var basicInfoSection: some View {
-        Section("Basic Info") {
+        Section {
             textField("Title", text: $viewModel.post.title, field: .title)
             VStack(alignment: .leading, spacing: 4) {
                 NavigationLink {
@@ -120,7 +125,18 @@ private struct PostFormContent: View {
                 }
             }
             .accessibilityIdentifier("postForm.authorType")
+        } header: {
+            sectionHeader(Text("Basic Info"))
         }
+        .listRowBackground(Color.surface)
+    }
+
+    /// セクションの見出し（BIZ UDPゴシック Bold・文字色）。英語でも大文字にせず、書いたとおりに出す
+    private func sectionHeader(_ text: Text) -> some View {
+        text
+            .font(.b2Heading(size: 15, relativeTo: .subheadline))
+            .foregroundStyle(Color.textPrimary)
+            .textCase(nil)
     }
 
     private func spotSection(spot: Binding<Spot>) -> some View {
@@ -144,8 +160,15 @@ private struct PostFormContent: View {
             )
             textField("Honest Comment", text: spot.recommendation, field: .spotRecommendation(order: order), axis: .vertical)
         } header: {
-            Text("Spot \(order)")
+            // 詳細の路線図と同じ駅の番号の丸を添える（丸は読み上げず、読み上げは「スポット 1」のまま）
+            HStack(spacing: 8) {
+                RouteRankBadge(number: order, style: .compact)
+                sectionHeader(Text("Spot \(order)"))
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isHeader)
         }
+        .listRowBackground(Color.surface)
     }
 
     /// 位置の行。未選択なら「地図で位置を選ぶ」、選択済みなら小さな地図と選び直し・解除
@@ -175,18 +198,21 @@ private struct PostFormContent: View {
         Section {
             Button(action: viewModel.publish) {
                 Text("Publish")
-                    .bold()
                     .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.b2Primary)
             .disabled(viewModel.isLoadingPhoto)
             .accessibilityIdentifier("postForm.publish")
+            .modifier(B2ButtonRow(isFirst: true, isLast: !viewModel.showsSaveDraftButton))
             if viewModel.showsSaveDraftButton {
                 Button(action: viewModel.saveDraft) {
                     Text("Save Draft")
                         .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.b2Secondary)
                 .disabled(!viewModel.canSaveDraft)
                 .accessibilityIdentifier("postForm.saveDraft")
+                .modifier(B2ButtonRow(isFirst: false, isLast: true))
             }
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
@@ -199,6 +225,8 @@ private struct PostFormContent: View {
                 }
                 Text("All fields except addresses and locations are required to publish.")
             }
+            .font(.b2Text(size: 13, relativeTo: .footnote))
+            .foregroundStyle(Color.textSecondary)
         }
     }
 
@@ -238,7 +266,7 @@ private struct PostFormContent: View {
     private func errorText(for field: PostCreateViewModel.Field) -> some View {
         if let error = viewModel.error(for: field) {
             Text(error.message)
-                .font(.caption)
+                .font(.b2Text(size: 12, relativeTo: .caption))
                 .foregroundStyle(.red)
         }
     }
@@ -255,6 +283,35 @@ private struct PostFormContent: View {
     }
 }
 
+/// B-2 のボタンを置く Form の行。白の行の地と区切り線を消し、ボタンを紙の地に直に置く。
+/// 行の地を消しても、セクションの最初の行の上と最後の行の下はセクションの角丸で切り抜かれるので、
+/// その側はボタンの角が切れないだけの間をとる（ボタンの下に出る 3pt の影の分も含める）
+private struct B2ButtonRow: ViewModifier {
+    /// セクションの最初の行か
+    let isFirst: Bool
+    /// セクションの最後の行か
+    let isLast: Bool
+
+    /// セクションの端の側の間（セクションの角丸より大きくする）
+    private static let edgeInset: CGFloat = 24
+    /// ボタンとボタンの間の半分（下は影の 3pt を足す）
+    private static let innerInset: CGFloat = 6
+
+    func body(content: Content) -> some View {
+        content
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(
+                EdgeInsets(
+                    top: isFirst ? Self.edgeInset : Self.innerInset,
+                    leading: 0,
+                    bottom: (isLast ? Self.edgeInset : Self.innerInset) + 3,
+                    trailing: 0
+                )
+            )
+    }
+}
+
 /// 都道府県の一覧。選んだらフォームに戻る。
 /// `.pickerStyle(.navigationLink)` の Picker は、iOS 26.5 では選んでも一覧から戻らなかったため、戻る処理を自前で持つ
 private struct PrefectureSelectionList: View {
@@ -268,6 +325,10 @@ private struct PrefectureSelectionList: View {
                 option(Text(verbatim: prefecture.rawValue), value: prefecture.rawValue)
             }
         }
+        .font(.b2Body)
+        .scrollContentBackground(.hidden)
+        .background(Color.paper)
+        .tint(Color.brandPrimary)
         .navigationTitle(Text("Prefecture"))
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -291,6 +352,7 @@ private struct PrefectureSelectionList: View {
             .contentShape(Rectangle())
         }
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .listRowBackground(Color.surface)
     }
 }
 

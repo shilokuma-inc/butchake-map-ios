@@ -123,7 +123,7 @@ struct MyPageView: View {
                 Label {
                     Text(section.emptyTitle)
                 } icon: {
-                    Image(systemName: section.emptySymbolName)
+                    EmptyStateIllustration(kind: .noPosts)
                 }
             } description: {
                 Text(section.emptyDescription)

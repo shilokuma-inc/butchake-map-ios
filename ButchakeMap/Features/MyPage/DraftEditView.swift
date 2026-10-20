@@ -33,11 +33,15 @@ private struct DraftEditContent: View {
                 }
             }
         } else {
-            ContentUnavailableView(
-                "Draft not found",
-                systemImage: "doc.questionmark",
-                description: Text("This draft may have been deleted or published.")
-            )
+            ContentUnavailableView {
+                Label {
+                    Text("Draft not found")
+                } icon: {
+                    EmptyStateIllustration(kind: .notFound)
+                }
+            } description: {
+                Text("This draft may have been deleted or published.")
+            }
             // 見つかったときのフォームと同じタイトルにする
             .navigationTitle(Text("Edit Post"))
         }

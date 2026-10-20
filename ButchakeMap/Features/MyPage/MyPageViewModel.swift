@@ -51,18 +51,6 @@ enum MyPageSection: String, CaseIterable, Identifiable {
             "Drafts you save from the Post tab appear here."
         }
     }
-
-    /// 一覧が空のときの SF Symbol
-    var emptySymbolName: String {
-        switch self {
-        case .myPosts:
-            "square.and.pencil"
-        case .saved:
-            "star"
-        case .drafts:
-            "doc.text"
-        }
-    }
 }
 
 struct MyPageViewModel {

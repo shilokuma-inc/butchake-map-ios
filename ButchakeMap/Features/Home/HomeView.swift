@@ -57,7 +57,13 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 12) {
             SectionHeader(title: "Latest Posts")
             if viewModel.feedPosts.isEmpty {
-                ContentUnavailableView("No posts yet", systemImage: "tray")
+                ContentUnavailableView {
+                    Label {
+                        Text("No posts yet")
+                    } icon: {
+                        EmptyStateIllustration(kind: .noPosts)
+                    }
+                }
             } else {
                 ForEach(viewModel.feedPosts) { post in
                     NavigationLink(value: PostDestination(postID: post.id)) {

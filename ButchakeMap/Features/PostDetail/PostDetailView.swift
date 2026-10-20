@@ -25,11 +25,15 @@ struct PostDetailView: View {
             if let post = viewModel.post ?? deletedPost {
                 content(post: post)
             } else {
-                ContentUnavailableView(
-                    "Post not found",
-                    systemImage: "exclamationmark.magnifyingglass",
-                    description: Text("This post may have been deleted.")
-                )
+                ContentUnavailableView {
+                    Label {
+                        Text("Post not found")
+                    } icon: {
+                        EmptyStateIllustration(kind: .notFound)
+                    }
+                } description: {
+                    Text("This post may have been deleted.")
+                }
                 .navigationTitle(Text("Post Details"))
             }
         }

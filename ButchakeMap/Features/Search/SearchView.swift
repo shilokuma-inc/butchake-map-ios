@@ -93,10 +93,20 @@ struct SearchView: View {
     private var results: some View {
         let posts = viewModel.results(for: filter)
         if repository.publishedPosts.isEmpty {
-            ContentUnavailableView("No posts yet", systemImage: "tray")
+            ContentUnavailableView {
+                Label {
+                    Text("No posts yet")
+                } icon: {
+                    EmptyStateIllustration(kind: .noPosts)
+                }
+            }
         } else if posts.isEmpty {
             ContentUnavailableView {
-                Label("No Results", systemImage: "magnifyingglass")
+                Label {
+                    Text("No Results")
+                } icon: {
+                    EmptyStateIllustration(kind: .notFound)
+                }
             } description: {
                 Text("Try a different keyword, prefecture, or category.")
             } actions: {

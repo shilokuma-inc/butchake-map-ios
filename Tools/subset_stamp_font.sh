@@ -7,7 +7,7 @@ set -euo pipefail
 #
 # 元の書体は Google Fonts の GitHub（https://raw.githubusercontent.com/google/fonts/main/ofl/kaiseidecol/KaiseiDecol-Bold.ttf）から取る。
 # 元の書体のファイルはコミットしない。サブセットにした書体（ButchakeMap/Resources/Fonts/KaiseiDecol/KaiseiDecol-Bold.ttf）をコミットする。
-# 出す文字は Tools/stamp_font_glyphs.txt（改行を入れずに文字だけを並べる。ファイルの中の文字はすべてサブセットに入る）。
+# 出す文字は Tools/stamp_font_glyphs.txt（改行を入れずに文字だけを並べる。ファイルの中の文字はすべてサブセットに入る。先頭の半角スペースも、スタンプの文字列の区切りに使うので消さない）。
 # スタンプに出す文字を増やしたら、このファイルに足して流し直す（ButchakeMapTests の B2FontTests が、足し忘れを見つける）。
 # pyftsubset は fonttools のもの（pip install fonttools）。場所は環境変数 PYFTSUBSET で渡す（無ければ PATH の pyftsubset）。
 # 書体の名前（name テーブル）は元のまま残す。Kaisei Decol の OFL には予約フォント名が無いので、サブセットにも同じ名前を使える。

@@ -91,7 +91,7 @@ nonisolated enum DepartureBoardFlap {
     }
 }
 
-/// いいねの件数を発車標の札で出す（モックの motion.html の .flap。文字色の地に白の BIZ UDPゴシック）。
+/// いいねの件数を発車標の札で出す（モックの motion.html の .flap。文字色の地に白の DotGothic16）。
 /// 変わる桁だけ、上半分がめくれて落ち、下半分が開く。進み具合は外から渡す（いいねのボタンが KeyframeAnimator で進める）
 struct DepartureBoardFlapCount: View {
     let slots: [DepartureBoardFlapSlot]
@@ -127,7 +127,7 @@ struct DepartureBoardFlapCount: View {
         let metrics = CardMetrics(
             size: CGSize(width: Self.cardSize.width * factor, height: Self.cardSize.height * factor),
             cornerRadius: Self.cornerRadius * factor,
-            font: .b2Heading(size: Self.fontSize * B2PartScale.fontAdjustment(scale, max: Self.maxScale), relativeTo: Self.textStyle)
+            font: .b2Ticket(size: Self.fontSize * B2PartScale.fontAdjustment(scale, max: Self.maxScale), relativeTo: Self.textStyle)
         )
         let stages = DepartureBoardFlap.stageProgress(progress)
         let visible = DepartureBoardFlap.visibleSlots(slots, progress: progress)
@@ -234,4 +234,42 @@ private struct DepartureBoardFlapCountPreviewContent: View {
 #Preview("発車標の札が回る（大きな文字）") {
     DepartureBoardFlapCountPreviewContent()
         .environment(\.dynamicTypeSize, .accessibility5)
+}
+
+/// いいねの札の回し方と、止まったときのハプティクスを鳴らすかの決まり（View の外に出して確かめられるようにする）
+nonisolated struct LikeFlapTurn: Equatable {
+    /// 札が回り始める前の数字（今の動きの「前」）
+    private(set) var from: Int
+    /// 札が回った後の数字（今の動きの「後」）
+    private(set) var to: Int
+    /// 今の動きを始めた時刻（止まっているなら nil）
+    private(set) var startedAt: Date?
+    /// 押したあと、まだ件数の変化を受け取っていないか
+    private(set) var isAwaitingTap = false
+
+    init(count: Int) {
+        from = count
+        to = count
+    }
+
+    /// ボタンを押したとき。次の件数の変化で、止まったときに selection を鳴らす
+    mutating func tapped() {
+        isAwaitingTap = true
+    }
+
+    /// 同じ投稿の件数が変わったとき。札を回し始め、押したあとの変化なら true（止まったときに鳴らす）を返す。
+    /// 札がまだ回り始めていない（ハートを塗っている）うちに続けて変わったら、今見えている「前」の数字から回し直す
+    mutating func countChanged(to newCount: Int, at now: Date) -> Bool {
+        let isBeforeTurn = startedAt.map { now.timeIntervalSince($0) < DepartureBoardFlap.heartFillDuration } ?? false
+        from = isBeforeTurn ? from : to
+        to = newCount
+        startedAt = now
+        defer { isAwaitingTap = false }
+        return isAwaitingTap
+    }
+
+    /// 別の投稿に入れ替わったとき。回さずに入れ替える
+    mutating func reset(count: Int) {
+        self = LikeFlapTurn(count: count)
+    }
 }

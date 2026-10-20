@@ -58,6 +58,107 @@ nonisolated enum Prefecture: String, CaseIterable, Identifiable, Sendable {
 
     var id: Self { self }
 
+    /// 都道府県のローマ字（ヘボン式で長音の記号を付けない大文字。「都」「府」「県」は付けない）。
+    /// 駅名標の英字の行に出す。表示言語によらず同じ英字で、翻訳しない（Discussion #77 の Q6）
+    var romanizedName: String {
+        switch self {
+        case .hokkaido:
+            "HOKKAIDO"
+        case .aomori:
+            "AOMORI"
+        case .iwate:
+            "IWATE"
+        case .miyagi:
+            "MIYAGI"
+        case .akita:
+            "AKITA"
+        case .yamagata:
+            "YAMAGATA"
+        case .fukushima:
+            "FUKUSHIMA"
+        case .ibaraki:
+            "IBARAKI"
+        case .tochigi:
+            "TOCHIGI"
+        case .gunma:
+            "GUNMA"
+        case .saitama:
+            "SAITAMA"
+        case .chiba:
+            "CHIBA"
+        case .tokyo:
+            "TOKYO"
+        case .kanagawa:
+            "KANAGAWA"
+        case .niigata:
+            "NIIGATA"
+        case .toyama:
+            "TOYAMA"
+        case .ishikawa:
+            "ISHIKAWA"
+        case .fukui:
+            "FUKUI"
+        case .yamanashi:
+            "YAMANASHI"
+        case .nagano:
+            "NAGANO"
+        case .gifu:
+            "GIFU"
+        case .shizuoka:
+            "SHIZUOKA"
+        case .aichi:
+            "AICHI"
+        case .mie:
+            "MIE"
+        case .shiga:
+            "SHIGA"
+        case .kyoto:
+            "KYOTO"
+        case .osaka:
+            "OSAKA"
+        case .hyogo:
+            "HYOGO"
+        case .nara:
+            "NARA"
+        case .wakayama:
+            "WAKAYAMA"
+        case .tottori:
+            "TOTTORI"
+        case .shimane:
+            "SHIMANE"
+        case .okayama:
+            "OKAYAMA"
+        case .hiroshima:
+            "HIROSHIMA"
+        case .yamaguchi:
+            "YAMAGUCHI"
+        case .tokushima:
+            "TOKUSHIMA"
+        case .kagawa:
+            "KAGAWA"
+        case .ehime:
+            "EHIME"
+        case .kochi:
+            "KOCHI"
+        case .fukuoka:
+            "FUKUOKA"
+        case .saga:
+            "SAGA"
+        case .nagasaki:
+            "NAGASAKI"
+        case .kumamoto:
+            "KUMAMOTO"
+        case .oita:
+            "OITA"
+        case .miyazaki:
+            "MIYAZAKI"
+        case .kagoshima:
+            "KAGOSHIMA"
+        case .okinawa:
+            "OKINAWA"
+        }
+    }
+
     /// 都道府県庁の所在地の座標。投稿作成で位置を選ぶ地図を、選んだ都道府県の辺りから始めるのに使う
     var capitalCoordinate: CLLocationCoordinate2D? {
         Self.capitalCoordinates[self].map { CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }

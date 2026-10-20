@@ -6,7 +6,8 @@
 import SwiftUI
 
 /// ホームの頭のスタンプ帳（台紙のカード。今月の自分の投稿 1 つ = スタンプ 1 こ。Discussion #77 の Q1）。
-/// 今月の新しい順に 3 こまで押し、その後ろに次の 1 こ分の空き欄（「？」）を置く。0 こなら台紙のイラストを出す。
+/// 今月の新しい 3 こまでを古い順に押し、その後ろに次の 1 こ分の空き欄（「？」）を置く。0 こなら台紙のイラストを出す。
+/// 横に収まらないとき（大きめの文字・幅の狭い端末）は、見出しの下にスタンプを並べる。
 /// VoiceOver ではカード全体を 1 つの要素として「スタンプ帳、今月 N こ」と読む
 struct StampBookCard: View {
     let book: StampBook
@@ -19,17 +20,16 @@ struct StampBookCard: View {
     var body: some View {
         Group {
             if dynamicTypeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: 10) {
-                    caption
-                    ScrollView(.horizontal, showsIndicators: false) {
+                stacked
+            } else {
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 12) {
+                        caption
+                            .fixedSize()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         stamps
                     }
-                }
-            } else {
-                HStack(spacing: 12) {
-                    caption
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    stamps
+                    stacked
                 }
             }
         }
@@ -44,6 +44,16 @@ struct StampBookCard: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Stamp book, \(book.count) this month"))
         .accessibilityIdentifier("home.stampBook")
+    }
+
+    /// 見出しの下にスタンプを並べる（収まらなければ横にスクロール）
+    private var stacked: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            caption
+            ScrollView(.horizontal, showsIndicators: false) {
+                stamps
+            }
+        }
     }
 
     private var caption: some View {

@@ -97,11 +97,15 @@ struct MapPinSheet: View {
         if let post = viewModel.post(for: pinID), let spot = viewModel.spot(for: pinID) {
             content(post: post, spot: spot)
         } else {
-            ContentUnavailableView(
-                "Post not found",
-                systemImage: "exclamationmark.magnifyingglass",
-                description: Text("This post may have been deleted.")
-            )
+            ContentUnavailableView {
+                Label {
+                    Text("Post not found")
+                } icon: {
+                    EmptyStateIllustration(kind: .notFound)
+                }
+            } description: {
+                Text("This post may have been deleted.")
+            }
         }
     }
 

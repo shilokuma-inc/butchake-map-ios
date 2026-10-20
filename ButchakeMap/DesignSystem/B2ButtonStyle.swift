@@ -37,6 +37,8 @@ struct B2ButtonStyle: ButtonStyle {
                     .offset(y: isPressed ? 0 : 3)
             }
             .offset(y: isPressed ? 3 : 0)
+            // 地と影を 1 枚にまとめてから薄くする（別々に薄くすると、白の地の下から影の黒が透けて灰色になる）
+            .compositingGroup()
             .opacity(isEnabled ? 1 : 0.5)
             .contentShape(.rect(cornerRadius: 8))
     }

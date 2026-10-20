@@ -15,6 +15,7 @@ struct PostDetailView: View {
     @State private var isConfirmingDeletion = false
     /// 削除した投稿。詳細を閉じて戻るアニメーションの間、「投稿が見つかりません」ではなく消す前の内容を出し続ける
     @State private var deletedPost: Post?
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     let postID: Post.ID
 
     private var viewModel: PostDetailViewModel {
@@ -160,11 +161,12 @@ struct PostDetailView: View {
                 .foregroundStyle(Color.textPrimary)
                 .lineSpacing(4)
                 .accessibilityAddTraits(.isHeader)
-            HStack(spacing: 8) {
+            // アクセシビリティの大きな文字では、横に並べると文字が 1 字ずつ折り返すので縦に積む
+            stackedLayout(spacing: 8) {
                 CategoryBadge(category: post.category)
                 AuthorTypeBadge(authorType: post.authorType)
             }
-            HStack(spacing: 14) {
+            stackedLayout(spacing: 14) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(post.authorName)
                         .font(.b2Heading(size: 15, relativeTo: .subheadline))
@@ -174,10 +176,20 @@ struct PostDetailView: View {
                         .foregroundStyle(Color.textSecondary)
                 }
                 Spacer(minLength: 0)
-                LikeButton(post: post, action: viewModel.toggleLike)
-                StarButton(post: post, action: viewModel.toggleStar)
+                HStack(spacing: 14) {
+                    LikeButton(post: post, action: viewModel.toggleLike)
+                    StarButton(post: post, action: viewModel.toggleStar)
+                }
             }
         }
+    }
+
+    /// 通常は横に、アクセシビリティの大きな文字では縦（左寄せ）に並べる
+    private func stackedLayout<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+            : AnyLayout(HStackLayout(spacing: spacing))
+        return layout(content)
     }
 }
 

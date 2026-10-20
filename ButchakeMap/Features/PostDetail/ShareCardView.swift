@@ -113,8 +113,9 @@ struct ShareCardView: View {
                 bottom: PostDetailViewModel.stampPlace(of: post),
                 size: Self.stampSize
             )
+            // 枠は strokeBorder で内側に引くので、白い余白 6pt と枠 2pt を合わせて 8pt 空ける（全体はモックの 84pt）
             ShareCardQRCode(url: post.shareURL)
-                .padding(6)
+                .padding(8)
                 .background(Color.surface, in: .rect(cornerRadius: 6))
                 .overlay {
                     RoundedRectangle(cornerRadius: 6)

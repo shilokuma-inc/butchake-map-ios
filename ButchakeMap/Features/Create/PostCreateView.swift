@@ -70,6 +70,14 @@ private struct PostFormContent: View {
         .tint(Color.brandPrimary)
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle(Text(title))
+        // 台紙を重ねている間は、見えていない下のフォームを VoiceOver で読ませない（空に戻ったフォームで「公開する」を押せないように）
+        .accessibilityHidden(viewModel.publishStamp != nil)
+        // 新しく公開したら、結果のアラートの前にスタンプ帳の台紙へスタンプを押す（1.0 秒）。アラートを閉じるまで重ねたままにする
+        .overlay {
+            if let stamp = viewModel.publishStamp {
+                PublishStampView(stamp: stamp, onFinished: viewModel.finishPressingStamp)
+            }
+        }
         .sheet(item: $locationPickerOrder) { picker in
             SpotLocationPickerView(
                 order: picker.id,
@@ -273,10 +281,9 @@ private struct PostFormContent: View {
 
     private var isShowingOutcome: Binding<Bool> {
         Binding {
-            viewModel.outcome != nil
+            viewModel.showsOutcomeAlert
         } set: { isPresented in
-            if !isPresented, let outcome = viewModel.outcome {
-                viewModel.outcome = nil
+            if !isPresented, let outcome = viewModel.dismissOutcome() {
                 onOutcomeDismissed(outcome)
             }
         }

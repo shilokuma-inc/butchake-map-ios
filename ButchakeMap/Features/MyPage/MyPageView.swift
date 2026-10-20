@@ -103,16 +103,8 @@ struct MyPageView: View {
     }
 
     private var sectionPicker: some View {
-        Picker(selection: $section) {
-            ForEach(MyPageSection.allCases) { section in
-                Text(section.title)
-                    .tag(section)
-            }
-        } label: {
-            Text("List")
-        }
-        .pickerStyle(.segmented)
-        .padding(.horizontal)
+        MyPageSectionPicker(selection: $section)
+            .padding(.horizontal)
     }
 
     @ViewBuilder
@@ -153,34 +145,41 @@ struct MyPageView: View {
 private struct ProfileHeader: View {
     let viewModel: MyPageViewModel
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(spacing: 16) {
-            HStack(spacing: 16) {
-                Image(systemName: "person.crop.circle.fill")
-                    .font(.system(size: 64))
-                    .foregroundStyle(Color.brandPrimary)
-                    .accessibilityHidden(true)
+            // アクセシビリティの大きな文字では、名前と自己紹介が細い列に押し込まれないよう、アイコンの下に置く
+            profileLayout {
+                ProfileAvatar()
                 VStack(alignment: .leading, spacing: 4) {
                     Text(verbatim: viewModel.userName)
-                        .font(.title3.bold())
+                        .font(.b2Heading(size: 20, relativeTo: .title3))
+                        .foregroundStyle(Color.textPrimary)
                         .accessibilityAddTraits(.isHeader)
                     Text("Collecting honest big threes from my travels.")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .font(.b2Text(size: 15, relativeTo: .subheadline))
+                        .foregroundStyle(Color.textSecondary)
                 }
                 Spacer(minLength: 0)
             }
             // 件数の文言が 2 行に折り返しても数字の高さがそろうよう、上でそろえる
             HStack(alignment: .top) {
                 ProfileStat(title: "Posts", value: viewModel.count(in: .myPosts))
-                Divider()
+                ProfileStatDivider()
                 ProfileStat(title: "Saved", value: viewModel.count(in: .saved))
-                Divider()
+                ProfileStatDivider()
                 ProfileStat(title: "Likes Received", value: viewModel.receivedLikeCount)
             }
             .fixedSize(horizontal: false, vertical: true)
         }
         .cardStyle()
+    }
+
+    private var profileLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+            : AnyLayout(HStackLayout(spacing: 16))
     }
 }
 
@@ -191,19 +190,96 @@ private struct ProfileStat: View {
 
     var body: some View {
         VStack(spacing: 2) {
+            // 件数は発車標と同じドットの書体（数字の幅がそろう）
             Text(value, format: .number)
-                .font(.headline)
-                .monospacedDigit()
-            // 「保存した三大」「Likes Received」は文字を大きくすると 1 行に収まらないので、切らずに 2 行まで折り返す
+                .font(.b2Ticket(size: 22, relativeTo: .title3))
+                .foregroundStyle(Color.brandPrimary)
+            // 「保存した三大」「Likes Received」は文字を大きくすると 1 行に収まらないので、切らずに 3 行まで折り返す
             Text(title)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.b2Text(size: 12, relativeTo: .caption))
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
-                .lineLimit(2)
+                .lineLimit(3)
                 .minimumScaleFactor(0.8)
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
+    }
+}
+
+/// プロフィールのアイコン（投稿カードのサムネイルと同じ、台紙の地にインクの人のアイコンと枠の丸）。飾りなので読み上げない
+private struct ProfileAvatar: View {
+    @ScaledMetric(relativeTo: .title3) private var size: CGFloat = 64
+
+    var body: some View {
+        let side = min(size, 112)
+        Image(systemName: "person.fill")
+            .font(.system(size: side * 0.46))
+            .foregroundStyle(Color.brandPrimary)
+            .frame(width: side, height: side)
+            .background(Color.kraft, in: .circle)
+            .overlay {
+                Circle()
+                    .strokeBorder(Color.brandPrimary, lineWidth: 2)
+            }
+            .accessibilityHidden(true)
+    }
+}
+
+/// 件数の間の縦の区切り線（台紙の罫線の色）
+private struct ProfileStatDivider: View {
+    var body: some View {
+        Rectangle()
+            .fill(Color.separatorLine)
+            .frame(width: 1)
+            .accessibilityHidden(true)
+    }
+}
+
+/// 自分の投稿 / 保存した三大 / 下書きの切り替え（B-2 のタブと同じ、白の地にインクの枠、選んだものはインクの地に白の文字）。
+/// アクセシビリティの大きな文字では横に収まらないので縦に積む。
+/// VoiceOver では「一覧」のまとまりの中の 3 つのボタンとして読み、選んでいるものに「選択中」を付ける
+/// （.segmented の Picker を accessibilityRepresentation にすると、縦に積んだときに読み上げの枠が横並びのままになり、別の項目を選んでしまう）
+private struct MyPageSectionPicker: View {
+    @Binding var selection: MyPageSection
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 4))
+            : AnyLayout(HStackLayout(spacing: 4))
+        layout {
+            ForEach(MyPageSection.allCases) { section in
+                segment(section)
+            }
+        }
+        .padding(4)
+        .background(Color.surface, in: .rect(cornerRadius: 8))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(Color.textPrimary, lineWidth: 2)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(Text("List"))
+    }
+
+    private func segment(_ section: MyPageSection) -> some View {
+        let isSelected = selection == section
+        return Button {
+            selection = section
+        } label: {
+            Text(section.title)
+                .font(.b2Heading(size: 14, relativeTo: .subheadline))
+                .foregroundStyle(isSelected ? Color.surface : Color.textPrimary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, minHeight: 32)
+                .padding(.horizontal, 4)
+                .background(isSelected ? Color.brandPrimary : Color.clear, in: .rect(cornerRadius: 6))
+                .contentShape(.rect(cornerRadius: 6))
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
@@ -217,20 +293,21 @@ private struct DraftRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 if let title = MyPageViewModel.draftTitle(of: draft) {
                     Text(verbatim: title)
-                        .font(.headline)
+                        .font(.b2Heading(size: 17, relativeTo: .headline))
+                        .foregroundStyle(Color.textPrimary)
                 } else {
                     Text("Untitled Draft")
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
+                        .font(.b2Heading(size: 17, relativeTo: .headline))
+                        .foregroundStyle(Color.textSecondary)
                 }
                 if !draft.area.isEmpty {
                     Text(verbatim: draft.area)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .font(.b2Text(size: 15, relativeTo: .subheadline))
+                        .foregroundStyle(Color.textSecondary)
                 }
                 Text("Last saved \(draft.createdAt.formatted(date: .abbreviated, time: .shortened))")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.b2Text(size: 13, relativeTo: .footnote))
+                    .foregroundStyle(Color.textSecondary)
             }
             Spacer(minLength: 0)
         }
@@ -247,4 +324,10 @@ private struct DraftRow: View {
 #Preview("投稿なし") {
     MyPageView()
         .environment(MockDataRepository(posts: []))
+}
+
+#Preview("大きな文字") {
+    MyPageView()
+        .environment(MockDataRepository.preview)
+        .environment(\.dynamicTypeSize, .accessibility5)
 }

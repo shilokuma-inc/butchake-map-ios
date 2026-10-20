@@ -1169,6 +1169,22 @@
         }
       }
     },
+    "Published" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Published"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開"
+          }
+        }
+      }
+    },
     "Published posts can't be saved as drafts." : {
       "localizations" : {
         "en" : {

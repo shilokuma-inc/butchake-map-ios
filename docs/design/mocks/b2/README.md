@@ -56,7 +56,7 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
   - アプリでは、ライトの色のままだと白い地と暗い線がダークの地で浮くため、イラストにダークの色の SVG（`ButchakeMap/Assets.xcassets/EmptyPosts.imageset/empty-posts-dark.svg`・`EmptySearch.imageset/empty-search-dark.svg`。上の表のダークの値に置き換えたもの）を dark の appearance に足しています
 - ロゴは、アプリでは `Tools/make_logo_svg.py --theme dark` で `theme-dark.css` の色で書き出した `ButchakeMap/Assets.xcassets/Logo.imageset/logo-dark.svg` を dark の appearance に置いています（シェアカードは画像なので常にライト）
 
-ライトとダークの値（アプリの Color Set の名前は、色の土台のタスクで足す名前の案。ダークの値はダークモードのタスクで dark の appearance に入れる）:
+ライトとダークの値（アプリの Color Set の名前。ダークの値は dark の appearance に入れている）:
 
 | 色 | Color Set | ライト | ダーク |
 | --- | --- | --- | --- |
@@ -67,11 +67,11 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 | 白（カード・駅名標・きっぷ） | `Surface` | `#FFFFFF` | `#2A2F40` |
 | 文字 | `TextPrimary` | `#1B1F2A` | `#ECE7DA` |
 | 補足の文字 | `TextSecondary` | `#4F566A` | `#BDB6A4` |
-| インク・緑・文字色の地に載せる文字 | `TextOnColor`（足す。ライトの白の文字を置き換える） | `#FFFFFF` | `#1E2230` |
-| カードの枠・区切り線 | `CardBorder`・`Separator` | `#D9CFB6`・`#CFC4AA` | `#474D60` |
+| インク・緑・文字色の地に載せる文字 | `TextOnColor`（ライトの白の文字を置き換える） | `#FFFFFF` | `#1E2230` |
+| カードの枠・区切り線 | `CardBorder`・`SeparatorLine` | `#D9CFB6`・`#CFC4AA` | `#474D60` |
 | きっぷの枠 | `TicketBorder` | `#C9C0A8` | `#565D72` |
 | 点線（スタンプの空き欄） | `DottedLine` | `#B9AE92` | `#9F987F` |
-| 台紙の枠（スタンプ帳） | `KraftBorder`（足す） | `#CDBF9C` | `#66573F` |
+| 台紙の枠（スタンプ帳） | `KraftBorder` | `#CDBF9C` | `#66573F` |
 
 コントラスト比（`python3 Tools/check_design_contrast.py docs/design/mocks/b2` の `palette-dark.json` の表）:
 
@@ -88,13 +88,13 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 
 ## 書体
 
-| 用途 | 書体 | ライセンス | 採用したときに同梱するおよそのサイズ |
+| 用途 | 書体 | ライセンス | 同梱するおよそのサイズ |
 | --- | --- | --- | --- |
-| 駅名標・見出し・本文 | BIZ UDPゴシック（Regular 400・Bold 700） | SIL OFL 1.1 | 1 ウェイトあたり数 MB（2 ウェイトで 2 本） |
-| きっぷ・英字・数字（発車標） | DotGothic16（1 ウェイト） | SIL OFL 1.1 | 数 MB（1 本） |
-| スタンプの文字 | Kaisei Decol（Bold 700） | SIL OFL 1.1 | 数 MB（1 本） |
+| 駅名標・見出し・本文 | BIZ UDPゴシック（Regular 400・Bold 700） | SIL OFL 1.1 | 1 ウェイトあたり約 4.6 MB（2 ウェイトで 2 本） |
+| きっぷ・英字・数字（発車標） | DotGothic16（1 ウェイト） | SIL OFL 1.1 | 約 2.1 MB（1 本） |
+| スタンプの文字 | Kaisei Decol（Bold 700） | SIL OFL 1.1 | 約 20 KB（使う文字だけのサブセット・1 本） |
 
-- サイズはおよその目安です（日本語の書体は字形が多く、1 本あたり数 MB になる）。Kaisei Decol はスタンプの数文字だけなので、採用するなら使う文字だけにサブセット化することを検討します
+- サイズは同梱したファイルのおよその大きさです（日本語の書体は字形が多く、1 本あたり数 MB になる）。Kaisei Decol はスタンプの数文字だけなので、使う文字だけにサブセット化して同梱しています（`Tools/subset_stamp_font.sh`）
 - BIZ UDPゴシックはユニバーサルデザインの書体で、駅の案内のような読みやすさを出せます
 - 日本語と英語の見本はブランドシートに載せています
 

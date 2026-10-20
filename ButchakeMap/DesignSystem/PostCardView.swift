@@ -26,6 +26,8 @@ struct PostCardView: View {
                         .font(.b2Text(size: 15, relativeTo: .subheadline))
                         .foregroundStyle(Color.textSecondary)
                 }
+                // 題名は省略せず折り返す（横の並びの中で 1 行に縮められないように）
+                .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
             }
             stackedLayout(spacing: 8) {

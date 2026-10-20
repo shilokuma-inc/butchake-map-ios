@@ -32,8 +32,13 @@ struct PostMapView: View {
                         )
                 }
                 ForEach(pins) { pin in
+                    let isSelected = pin.id == selectedPinID
                     Annotation(pin.spotName, coordinate: pin.coordinate, anchor: .center) {
-                        MapPinView(pin: pin, isSelected: pin.id == selectedPinID)
+                        MapPinView(
+                            pin: pin,
+                            isSelected: isSelected,
+                            neighbors: isSelected ? viewModel.neighbors(for: pin.id) : nil
+                        )
                     }
                     // 近いスポットの名前が重なって読めなくなるため、名前は地図に出さずシートに出す
                     .annotationTitles(.hidden)
@@ -73,10 +78,13 @@ struct PostMapView: View {
     }
 }
 
-/// 路線図の駅の丸と順位の番号のピン（モックの .map-pin）。選んだピンはインクの二重丸で大きくする（.map-pin.is-selected）
+/// 路線図の駅の丸と順位の番号のピン（モックの .map-pin）。選んだピンはインクの二重丸で大きくし（.map-pin.is-selected）、
+/// 左に小さな駅名標（.pin-sign）を立てる
 struct MapPinView: View {
     let pin: MapPin
     let isSelected: Bool
+    /// 選んだピンの駅名標の帯に出す前後の駅。nil なら駅名標を出さない
+    var neighbors: MapStationNeighbors?
 
     @ScaledMetric(relativeTo: MapPinMetrics.textStyle) private var scale: CGFloat = 1
 
@@ -95,6 +103,22 @@ struct MapPinView: View {
     }
 
     var body: some View {
+        // 駅名標は丸の左に立てる。Annotation は中身の中心を座標に合わせるので、右にも同じ幅の見えない駅名標を置いて丸を中心に保つ
+        // （丸の overlay で外に出すと、MapKit が中身の範囲の外の位置を正しく扱わず、駅名標が丸に重なるため）
+        HStack(spacing: MapPinMetrics.signSpacing) {
+            sign
+            station
+            sign
+                .hidden()
+        }
+        .animation(.snappy, value: isSelected)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(pin.postTitle), Spot \(pin.order), \(pin.spotName)"))
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
+    }
+
+    /// 駅の丸と番号
+    private var station: some View {
         Text(verbatim: String(pin.order))
             .font(.b2Ticket(size: fontSize, relativeTo: MapPinMetrics.textStyle))
             .foregroundStyle(isSelected ? Color.brandPrimary : Color.textPrimary)
@@ -106,10 +130,24 @@ struct MapPinView: View {
             .overlay {
                 rings
             }
-            .animation(.snappy, value: isSelected)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(Text("\(pin.postTitle), Spot \(pin.order), \(pin.spotName)"))
-            .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
+    }
+
+    /// 選んだピンの小さな駅名標（スポット名と、帯に前後の駅の番号）。読み上げはピンの文言に任せる
+    @ViewBuilder private var sign: some View {
+        if isSelected, let neighbors {
+            MaxWidthLayout(maxWidth: MapPinMetrics.signMaxWidth) {
+                StationSign(
+                    name: Text(verbatim: pin.spotName),
+                    previous: neighbors.previous.map { Text(verbatim: String($0)) },
+                    next: neighbors.next.map { Text(verbatim: String($0)) },
+                    nameFont: .b2Heading(size: 15, relativeTo: .subheadline),
+                    nameTracking: 0.6
+                )
+            }
+            // 地図の上で大きくなりすぎないよう、アクセシビリティの最初の大きさで止める（同じ名前はシートに大きく出る）
+            .dynamicTypeSize(...MapPinMetrics.signMaxDynamicTypeSize)
+            .transition(.opacity)
+        }
     }
 
     /// 駅の丸の枠。選んでいないときは路線の緑の 4pt、選んだときはインクの二重丸（外 3pt・白のすき間 3pt・内 1.5pt）
@@ -141,10 +179,40 @@ enum MapPinMetrics {
     static let selectedFontSize: CGFloat = 20
     /// 路線の線の太さ
     static let routeLineWidth: CGFloat = 9
+    /// 駅名標の幅の上限（長いスポット名は折り返す）と、丸との間（モックの margin-left: -32px − 丸の半径 23px）
+    static let signMaxWidth: CGFloat = 180
+    static let signSpacing: CGFloat = 9
+    /// 駅名標を大きくする文字の大きさの上限
+    static let signMaxDynamicTypeSize = DynamicTypeSize.accessibility1
     /// 丸と番号を同じだけ大きくするための文字のスタイル
     static let textStyle: Font.TextStyle = .body
     /// 文字の大きさの設定で丸を大きくするのは 1.5 倍まで（近いピンどうしが重なりすぎないように）
     static let maxScale: CGFloat = 1.5
+}
+
+/// 中身を理想の幅で置き、上限を超えるときだけ上限の幅に収めて折り返させる
+/// （`.fixedSize()` では 1 行のまま伸び、地図の Annotation では幅の提案が無く `.frame(maxWidth:)` が効かないため）
+private struct MaxWidthLayout: Layout {
+    let maxWidth: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard let subview = subviews.first else {
+            return .zero
+        }
+        return subview.sizeThatFits(fittingProposal(for: subview))
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard let subview = subviews.first else {
+            return
+        }
+        subview.place(at: bounds.origin, proposal: fittingProposal(for: subview))
+    }
+
+    private func fittingProposal(for subview: LayoutSubview) -> ProposedViewSize {
+        let idealWidth = subview.sizeThatFits(.unspecified).width
+        return ProposedViewSize(width: min(idealWidth, maxWidth), height: nil)
+    }
 }
 
 /// ピンをタップしたときのハーフシート。どの投稿の何番目のスポットかを出す

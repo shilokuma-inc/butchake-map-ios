@@ -45,6 +45,27 @@ struct StampBookTests {
         #expect(book.count == 2)
     }
 
+    /// 月末の最後まで数え、翌月 1 日 0 時になると 0 こに戻る
+    @Test
+    func countsUntilEndOfMonth() throws {
+        let posts = [post(author: me, createdAt: try date(10, 31, hour: 23, minute: 59))]
+        #expect(viewModel(posts).stampBook(now: try date(10, 31, hour: 23, minute: 59), calendar: calendar).count == 1)
+        let nextMonth = try #require(calendar.date(from: DateComponents(year: 2026, month: 11, day: 1)))
+        #expect(viewModel(posts).stampBook(now: nextMonth, calendar: calendar).stamps.isEmpty)
+        #expect(viewModel([post(author: me, createdAt: nextMonth)]).stampBook(now: try date(10, 20), calendar: calendar).stamps.isEmpty)
+    }
+
+    /// 月の境目は渡したカレンダーのタイムゾーンで決まる（東京の 10/1 0:30 は UTC では 9 月）
+    @Test
+    func boundaryFollowsCalendarTimeZone() throws {
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = try #require(TimeZone(identifier: "UTC"))
+        let posts = [post(author: me, createdAt: try date(10, 1, hour: 0, minute: 30))]
+        let now = try date(10, 20)
+        #expect(viewModel(posts).stampBook(now: now, calendar: calendar).count == 1)
+        #expect(viewModel(posts).stampBook(now: now, calendar: utc).stamps.isEmpty)
+    }
+
     /// 下書きとほかの人の投稿は数えない
     @Test
     func ignoresDraftsAndOthers() throws {
@@ -75,8 +96,8 @@ struct StampBookTests {
             post(author: me, city: "札幌市", createdAt: try date(10, 12))
         ]).stampBook(now: try date(10, 20), calendar: calendar)
         #expect(book.count == 4)
-        #expect(book.stamps.map(\.date) == ["10.18", "10.12", "10.9"])
-        #expect(book.stamps.map(\.place) == ["金沢市", "札幌市", "石川県"])
+        #expect(book.stamps.map(\.date) == ["10.9", "10.12", "10.18"])
+        #expect(book.stamps.map(\.place) == ["石川県", "札幌市", "金沢市"])
     }
 
     /// 公開した直後に数え直すと、数が 1 つ増える

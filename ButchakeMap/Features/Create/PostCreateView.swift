@@ -203,7 +203,7 @@ private struct PostFormContent: View {
             .buttonStyle(.b2Primary)
             .disabled(viewModel.isLoadingPhoto)
             .accessibilityIdentifier("postForm.publish")
-            .modifier(B2ButtonRow())
+            .modifier(B2ButtonRow(isFirst: true, isLast: !viewModel.showsSaveDraftButton))
             if viewModel.showsSaveDraftButton {
                 Button(action: viewModel.saveDraft) {
                     Text("Save Draft")
@@ -212,7 +212,7 @@ private struct PostFormContent: View {
                 .buttonStyle(.b2Secondary)
                 .disabled(!viewModel.canSaveDraft)
                 .accessibilityIdentifier("postForm.saveDraft")
-                .modifier(B2ButtonRow())
+                .modifier(B2ButtonRow(isFirst: false, isLast: true))
             }
         } footer: {
             VStack(alignment: .leading, spacing: 4) {
@@ -283,14 +283,32 @@ private struct PostFormContent: View {
     }
 }
 
-/// B-2 のボタンを置く Form の行。白の行の地と区切り線を消し、ボタンを紙の地に直に置く
-/// （ボタンの下に出る 3pt の影の分も含め、上下に間をとる）
+/// B-2 のボタンを置く Form の行。白の行の地と区切り線を消し、ボタンを紙の地に直に置く。
+/// 行の地を消しても、セクションの最初の行の上と最後の行の下はセクションの角丸で切り抜かれるので、
+/// その側はボタンの角が切れないだけの間をとる（ボタンの下に出る 3pt の影の分も含める）
 private struct B2ButtonRow: ViewModifier {
+    /// セクションの最初の行か
+    let isFirst: Bool
+    /// セクションの最後の行か
+    let isLast: Bool
+
+    /// セクションの端の側の間（セクションの角丸より大きくする）
+    private static let edgeInset: CGFloat = 24
+    /// ボタンとボタンの間の半分（下は影の 3pt を足す）
+    private static let innerInset: CGFloat = 6
+
     func body(content: Content) -> some View {
         content
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 9, trailing: 0))
+            .listRowInsets(
+                EdgeInsets(
+                    top: isFirst ? Self.edgeInset : Self.innerInset,
+                    leading: 0,
+                    bottom: (isLast ? Self.edgeInset : Self.innerInset) + 3,
+                    trailing: 0
+                )
+            )
     }
 }
 

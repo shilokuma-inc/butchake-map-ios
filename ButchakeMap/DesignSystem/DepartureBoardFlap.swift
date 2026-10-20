@@ -189,7 +189,7 @@ struct DepartureBoardFlapCount: View {
     private func card(_ digit: String?, metrics: CardMetrics) -> some View {
         Text(verbatim: digit ?? "")
             .font(metrics.font)
-            .foregroundStyle(Color.surface)
+            .foregroundStyle(Color.textOn)
             .lineLimit(1)
             .minimumScaleFactor(0.5)
             .frame(width: metrics.size.width, height: metrics.size.height)

@@ -8,7 +8,7 @@ import SwiftUI
 /// B-2 のボタン（モックの .rail-button）。2pt の文字色の枠・角丸 8・下に 3pt の文字色の影で、押すと影の分だけ沈む
 struct B2ButtonStyle: ButtonStyle {
     enum Kind {
-        /// インクの地に白の文字（「投稿を見る」「公開する」など）
+        /// インクの地に白（ダークでは地の色）の文字（「投稿を見る」「公開する」など）
         case primary
         /// 白の地に文字色の文字（「マップで開く」など）
         case secondary
@@ -23,7 +23,7 @@ struct B2ButtonStyle: ButtonStyle {
         return configuration.label
             .labelStyle(B2ButtonLabelStyle())
             .font(.b2Heading(size: 15, relativeTo: .subheadline))
-            .foregroundStyle(kind == .primary ? Color.surface : Color.textPrimary)
+            .foregroundStyle(kind == .primary ? Color.textOn : Color.textPrimary)
             .padding(.horizontal, 16)
             .padding(.vertical, 9)
             .background(kind == .primary ? Color.brandPrimary : Color.surface, in: .rect(cornerRadius: 8))

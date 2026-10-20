@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 設定画面（アプリのバージョン・表示言語の案内・アカウント削除のモック）
+/// 設定画面（アプリのバージョン・表示言語の案内・書体のライセンス・アカウント削除のモック）
 struct SettingsView: View {
     @State private var isConfirmingDeletion = false
     @State private var isShowingMockNotice = false
@@ -29,6 +29,11 @@ struct SettingsView: View {
                     Text("Same as Device")
                 } label: {
                     Text("Language")
+                }
+                NavigationLink {
+                    FontLicensesView()
+                } label: {
+                    Text("Font Licenses")
                 }
             } header: {
                 Text("About This App")

@@ -1,0 +1,26 @@
+{
+  "colors": [
+    {"name": "インク（明るい紺）", "hex": "#A3B6F5"},
+    {"name": "路線の緑（明るい緑）", "hex": "#6BC48A"},
+    {"name": "地（夜の紺）", "hex": "#13161F"},
+    {"name": "台紙（暗いクラフト紙）", "hex": "#3B3224"},
+    {"name": "カード・駅名標", "hex": "#1F2330"},
+    {"name": "文字", "hex": "#ECE7DA"},
+    {"name": "補足の文字", "hex": "#B5AE9C"}
+  ],
+  "pairs": [
+    {"name": "本文 / カード", "fg": "#ECE7DA", "bg": "#1F2330", "large": false},
+    {"name": "本文 / 地", "fg": "#ECE7DA", "bg": "#13161F", "large": false},
+    {"name": "本文 / 台紙（スタンプ帳）", "fg": "#ECE7DA", "bg": "#3B3224", "large": false},
+    {"name": "補足の文字 / カード", "fg": "#B5AE9C", "bg": "#1F2330", "large": false},
+    {"name": "補足の文字 / 地", "fg": "#B5AE9C", "bg": "#13161F", "large": false},
+    {"name": "補足の文字（スタンプの空き欄） / 台紙", "fg": "#B5AE9C", "bg": "#3B3224", "large": false},
+    {"name": "インクの文字（きっぷ・スタンプ・いいね） / カード", "fg": "#A3B6F5", "bg": "#1F2330", "large": false},
+    {"name": "インクの文字（スタンプ帳） / 台紙", "fg": "#A3B6F5", "bg": "#3B3224", "large": false},
+    {"name": "インクの文字（いいね済みの件数・シートのスタンプ） / 地", "fg": "#A3B6F5", "bg": "#13161F", "large": false},
+    {"name": "地の色の文字 / インク（属性のバッジ・選んだタブ・ボタン）", "fg": "#13161F", "bg": "#A3B6F5", "large": false},
+    {"name": "地の色の文字 / 路線の緑（駅名標の帯）", "fg": "#13161F", "bg": "#6BC48A", "large": false},
+    {"name": "緑の文字（カテゴリのバッジ） / カード", "fg": "#6BC48A", "bg": "#1F2330", "large": false},
+    {"name": "地の色の文字 / 文字色（掲示板の札）", "fg": "#13161F", "bg": "#ECE7DA", "large": false}
+  ]
+}

@@ -1,0 +1,79 @@
+/*
+ * B-2「駅のスタンプラリー」のダークモード（「夜の駅」）。theme.css とページのスタイルの後に読み込む。
+ * 地を夜の紺に暗くし、紺のインクと路線の緑は明るくして文字や線に使う。インクと緑の地に載せる文字は、白ではなく地の色にする。
+ * 白の地（カード・駅名標・きっぷ）は少し明るい紺、台紙（クラフト紙）は暗い茶にする。値は palette-dark.json と README の表と同じ。
+ */
+:root {
+  --ink: #A3B6F5;          /* スタンプのインク（明るい紺） */
+  --paper: #13161F;        /* 画面の地（夜の紺） */
+  --kraft: #3B3224;        /* 台紙（暗いクラフト紙） */
+  --text: #ECE7DA;
+  --rail: #6BC48A;         /* 路線の色（明るい緑） */
+  --surface: #1F2330;      /* 白の地の代わり（カード・駅名標・きっぷ） */
+  --on-color: #13161F;     /* インク・緑・文字色の地に載せる文字 */
+  --border: #3A3F4F;       /* カードの枠・区切り線 */
+  --ticket-border: #4A5063;
+  --dotted: #7A7461;       /* スタンプの空き欄の点線 */
+  --kraft-border: #5A4D38;
+
+  --color-bg: var(--paper);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-text-secondary: #B5AE9C;
+  --color-primary: var(--ink);
+  --color-accent: var(--rail);
+  --color-on-primary: var(--on-color);
+  --color-like: var(--ink);
+  --color-star: var(--ink);
+  --color-separator: var(--border);
+
+  --status-color: var(--text);
+  --home-indicator: var(--text);
+  --border-card: 1px solid var(--border);
+  --shadow-card: 0 1px 0 var(--border);
+
+  --tabbar-bg: var(--surface);
+  --tabbar-border: 2px solid var(--text);
+  --tabbar-color: var(--text);
+  --tabbar-active: var(--on-color);
+  --tabbar-shadow: 0 3px 0 #000000;
+
+  --map-land: #1C2029;
+  --map-water: #1F3550;
+  --map-park: #1F3326;
+  --map-road: #2C3140;
+  --map-road-minor: #252A36;
+}
+
+html, body { background: var(--paper); color: var(--text); }
+
+.nav-button { background: var(--surface); }
+
+/* 白の地の部品 */
+.sign, .badge, .rank, .notice, .logo, .rail-button.secondary, .map-pin, .map-pin.is-selected, .stop { background: var(--surface); }
+.ticket {
+  background:
+    repeating-linear-gradient(135deg, rgba(107, 196, 138, .05) 0 6px, transparent 6px 12px),
+    var(--surface);
+  border-color: var(--ticket-border);
+}
+.ticket::before { border-color: var(--ticket-border); }
+.stop { border-color: var(--border); }
+.badge-author { background: var(--ink); }
+
+/* インク・緑・文字色の地に載せる文字 */
+.sign-bar, .logo-bar, .badge-author, .notice-label, .rail-button, .tab-item.is-active { color: var(--on-color); }
+.rail-button { box-shadow: 0 3px 0 #000000; }
+.rail-button.secondary { color: var(--text); }
+
+/* スタンプの二重丸の内側の線は、白ではなく地の色で抜く */
+.stamp-mark { box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4.5px var(--ink); }
+.map-pin.is-selected { box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4.5px var(--ink); }
+.stamp-slot { border-color: var(--dotted); }
+
+/* 台紙 */
+.rally-card { border-color: var(--kraft-border); }
+.thumbnail { background: var(--kraft); }
+
+/* マップのシート */
+.grabber { background: var(--dotted); }

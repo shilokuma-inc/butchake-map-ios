@@ -194,13 +194,8 @@ struct HomeCarouselCard: View {
     var body: some View {
         Ticket {
             VStack(alignment: .leading, spacing: 6) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text("Butchake Line")
-                    Spacer(minLength: 8)
-                    Text(post.createdAt, format: .dateTime.year().month(.twoDigits).day(.twoDigits))
-                }
-                .ticketCaption()
-                .lineLimit(1)
+                caption
+                    .ticketCaption()
                 Text(post.title)
                     .font(.b2Heading(size: 15, relativeTo: .subheadline))
                     .foregroundStyle(Color.textPrimary)
@@ -208,11 +203,28 @@ struct HomeCarouselCard: View {
                     .multilineTextAlignment(.leading)
                 Text("Bound for \(post.area)")
                     .ticketRoute()
-                    .lineLimit(1)
+                    .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3 : 1)
                 footer
             }
         }
         .frame(width: min(width, 340))
+    }
+
+    /// 路線名と投稿日。アクセシビリティの大きな文字では、省略されて読めなくならないよう縦に積む
+    @ViewBuilder private var caption: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Butchake Line")
+                Text(post.createdAt, format: .dateTime.year().month(.twoDigits).day(.twoDigits))
+            }
+        } else {
+            HStack(alignment: .firstTextBaseline) {
+                Text("Butchake Line")
+                Spacer(minLength: 8)
+                Text(post.createdAt, format: .dateTime.year().month(.twoDigits).day(.twoDigits))
+            }
+            .lineLimit(1)
+        }
     }
 
     /// カテゴリとスター。アクセシビリティの大きな文字では縦に積む

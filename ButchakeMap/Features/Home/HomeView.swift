@@ -185,6 +185,10 @@ struct HomeCarouselCard: View {
     let post: Post
     let onStar: () -> Void
 
+    /// きっぷの幅（モックの 252）。大きな文字ではカテゴリのバッジが 1 字ずつ折り返さないよう広げ、画面に収まる 340 で止める
+    @ScaledMetric(relativeTo: .subheadline) private var width: CGFloat = 252
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         Ticket {
             VStack(alignment: .leading, spacing: 6) {
@@ -203,14 +207,26 @@ struct HomeCarouselCard: View {
                 Text("Bound for \(post.area)")
                     .ticketRoute()
                     .lineLimit(1)
-                HStack {
-                    CategoryBadge(category: post.category)
-                    Spacer(minLength: 8)
-                    StarButton(post: post, action: onStar)
-                }
+                footer
             }
         }
-        .frame(width: 252)
+        .frame(width: min(width, 340))
+    }
+
+    /// カテゴリとスター。アクセシビリティの大きな文字では縦に積む
+    @ViewBuilder private var footer: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 6) {
+                CategoryBadge(category: post.category)
+                StarButton(post: post, action: onStar)
+            }
+        } else {
+            HStack {
+                CategoryBadge(category: post.category)
+                Spacer(minLength: 8)
+                StarButton(post: post, action: onStar)
+            }
+        }
     }
 }
 

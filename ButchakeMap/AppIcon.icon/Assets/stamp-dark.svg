@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <g transform="rotate(-8 512 470)" fill="none" stroke="#A3B6F5">
+    <circle cx="512" cy="470" r="330" stroke-width="22" stroke-dasharray="40 16"/>
+    <circle cx="512" cy="470" r="290" stroke-width="12"/>
+    <path d="M262 560 L410 380 L460 430 M496 430 L560 350 L762 560" stroke-width="16" stroke-linejoin="round"/>
+    <path fill="#A3B6F5" stroke="none" fill-rule="evenodd" d="M456 420 H568 A54 54 0 0 1 622 474 V596 A54 54 0 0 1 568 650 H456 A54 54 0 0 1 402 596 V474 A54 54 0 0 1 456 420 Z M448 456 H576 A16 16 0 0 1 592 472 V520 A16 16 0 0 1 576 536 H448 A16 16 0 0 1 432 520 V472 A16 16 0 0 1 448 456 Z M432 600 A18 18 0 1 0 468 600 A18 18 0 1 0 432 600 Z M556 600 A18 18 0 1 0 592 600 A18 18 0 1 0 556 600 Z M495 436 H529 A5 5 0 0 1 534 441 A5 5 0 0 1 529 446 H495 A5 5 0 0 1 490 441 A5 5 0 0 1 495 436 Z"/>
+    <rect x="380" y="640" width="264" height="26" rx="13" fill="#A3B6F5" stroke="none"/>
+    <path d="M330 700 H694 M360 735 H664" stroke-width="14" stroke-linecap="round"/>
+    <path d="M400 700 L380 760 M512 700 V760 M624 700 L644 760" stroke-width="12" stroke-linecap="round"/>
+  </g>
+</svg>

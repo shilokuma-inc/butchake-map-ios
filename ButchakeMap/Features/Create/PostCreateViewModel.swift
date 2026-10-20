@@ -111,6 +111,11 @@ final class PostCreateViewModel {
     private(set) var showsRequiredErrors = false
     /// 直近の保存・公開の結果。アラートを閉じたら nil に戻す
     var outcome: Outcome?
+    /// 新しく公開したとき（新規・下書きの公開）に台紙へ押すスタンプ。結果のアラートを閉じたら nil に戻す。
+    /// 公開済みの投稿の編集は新しいスタンプにならないので作らない
+    private(set) var publishStamp: PublishStamp?
+    /// スタンプを押す動きの途中か。途中は結果のアラートを出さない
+    private(set) var isPressingStamp = false
     /// 写真を読み込み・縮小中のスポットの order。読み込み中に保存・公開すると選んだ写真が落ちるので、空になるまで保存・公開させない
     private(set) var loadingPhotoSpots: Set<Int> = []
     /// 直近の写真の読み込みに失敗したスポットの order
@@ -292,6 +297,25 @@ final class PostCreateViewModel {
 
     // MARK: - 保存・公開
 
+    /// 結果のアラートを出すか。公開のスタンプを押す動きが終わるまでは出さない
+    var showsOutcomeAlert: Bool {
+        outcome != nil && !isPressingStamp
+    }
+
+    /// スタンプを押す動きが終わった。結果のアラートを出す
+    func finishPressingStamp() {
+        isPressingStamp = false
+    }
+
+    /// 結果のアラートを閉じる。スタンプも片付け、閉じた結果を返す
+    func dismissOutcome() -> Outcome? {
+        let dismissed = outcome
+        outcome = nil
+        publishStamp = nil
+        isPressingStamp = false
+        return dismissed
+    }
+
     /// 下書き保存し、成功したら新規ならフォームを新しい空の下書きに戻す
     func saveDraft() {
         guard canSaveDraft else {
@@ -314,8 +338,14 @@ final class PostCreateViewModel {
         guard canPublish else {
             return
         }
+        // 公開する前に、新しく公開するのか（公開済みの投稿の編集ではないか）を決めておく
+        let isNewPublication = isNew || post.isDraft
         do {
             try repository.publish(trimmedPost, isNew: isNew)
+            if isNewPublication, let published = repository.post(id: post.id) {
+                publishStamp = PublishStamp.make(book: HomeViewModel(repository: repository).stampBook(), published: published)
+                isPressingStamp = publishStamp != nil
+            }
             finish(with: .published)
         } catch {
             outcome = .failed(error)

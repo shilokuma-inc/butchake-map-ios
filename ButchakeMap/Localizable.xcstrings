@@ -1788,7 +1788,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ライセンスの文を読み込めませんでした。"
+            "value" : "ライセンス文を読み込めませんでした。"
           }
         }
       }

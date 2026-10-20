@@ -71,6 +71,8 @@ struct PublishStampTests {
         #expect(result.isComplete == isComplete)
         #expect(result.date == "10.18")
         #expect(result.place == "金沢市")
+        // 見出しは「今月 N こ」（分母を出さない）
+        #expect(result.monthCount == count)
     }
 
     /// 今月のスタンプに入っていない投稿（先月以前の公開など）では押さない

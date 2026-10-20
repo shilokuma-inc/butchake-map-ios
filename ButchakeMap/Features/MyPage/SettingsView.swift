@@ -22,18 +22,23 @@ struct SettingsView: View {
             Section {
                 LabeledContent {
                     Text(verbatim: appVersion)
+                        .foregroundStyle(Color.textSecondary)
                 } label: {
                     Text("Version")
+                        .foregroundStyle(Color.textPrimary)
                 }
                 LabeledContent {
                     Text("Same as Device")
+                        .foregroundStyle(Color.textSecondary)
                 } label: {
                     Text("Language")
+                        .foregroundStyle(Color.textPrimary)
                 }
                 NavigationLink {
                     FontLicensesView()
                 } label: {
                     Text("Font Licenses")
+                        .foregroundStyle(Color.textPrimary)
                 }
             } header: {
                 Text("About This App")
@@ -56,7 +61,7 @@ struct SettingsView: View {
             }
             .listRowBackground(Color.surface)
         }
-        // B-2: 地は紙、行は白、リンクなどの色はインク
+        // B-2: 地は紙、行は白、行の文字は文字色（値は補足の文字）、リンクなどの色はインク
         .scrollContentBackground(.hidden)
         .background(Color.paper)
         .tint(Color.brandPrimary)

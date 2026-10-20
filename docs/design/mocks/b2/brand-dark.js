@@ -7,6 +7,9 @@ Mock.mount(`<div class="sheet">
     <p>B-2「駅のスタンプラリー」のダークモード（夜の駅）<br>地を夜の紺に暗くし、紺のインクと路線の緑を明るくする。インクと緑の地に載せる文字は地の色にする。</p></div>
   <div class="grid">
     <div>
+      <section class="sheet-section"><h2>アプリアイコン</h2>
+        <div class="icon-row"><img class="icon-big" src="icon.svg" alt=""><img class="small" src="icon.svg" alt=""></div>
+        <p class="note">ライトと同じアイコンをダークの地に置いたとき（左は 240pt、右はホーム画面の 60pt 相当）。ダークの見た目は .icon の Dark で別に書き出す</p></section>
       <section class="sheet-section"><h2>ロゴ</h2>
         <div class="panel logo-panel">${Mock.logo(60)}
           <div class="nav-sample">${Mock.navBar({ large: true, titleHTML: Mock.logo(24) })}</div></div></section>

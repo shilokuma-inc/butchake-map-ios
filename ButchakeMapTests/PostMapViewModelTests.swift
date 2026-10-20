@@ -148,6 +148,89 @@ struct PostMapViewModelTests {
     }
 
     @Test
+    func routeFollowsRankOrderOfSelectedPost() throws {
+        let target = post(spots: [spot(order: 3), spot(order: 1), spot(order: 2)])
+        let other = post(title: "ほかの投稿", createdAt: Date(timeIntervalSinceNow: -100))
+        let viewModel = PostMapViewModel(repository: MockDataRepository(posts: [target, other]))
+        let selected = try #require(viewModel.pins.first { $0.id.postID == target.id && $0.order == 3 })
+
+        let route = viewModel.routePins(for: selected.id)
+        let coordinates = viewModel.routeCoordinates(for: selected.id)
+
+        #expect(route.map(\.order) == [1, 2, 3])
+        #expect(route.allSatisfy { $0.id.postID == target.id })
+        #expect(coordinates.map(\.latitude) == route.map(\.latitude))
+        #expect(coordinates.map(\.longitude) == route.map(\.longitude))
+    }
+
+    @Test
+    func routeSkipsSpotsWithoutCoordinate() throws {
+        let target = post(spots: [
+            spot(order: 1),
+            spot(order: 2, latitude: nil, longitude: nil),
+            spot(order: 3)
+        ])
+        let viewModel = PostMapViewModel(repository: MockDataRepository(posts: [target]))
+        let selected = try #require(viewModel.pins.first)
+
+        #expect(viewModel.routePins(for: selected.id).map(\.order) == [1, 3])
+        #expect(viewModel.routeCoordinates(for: selected.id).count == 2)
+    }
+
+    @Test
+    func routeIsEmptyWithoutSelectionOrPost() throws {
+        let target = post()
+        let repository = MockDataRepository(posts: [target], currentUserName: "テスト")
+        let viewModel = PostMapViewModel(repository: repository)
+        let pinID = try #require(viewModel.pins.first).id
+
+        #expect(viewModel.routePins(for: nil).isEmpty)
+        #expect(viewModel.routeCoordinates(for: nil).isEmpty)
+
+        repository.delete(postID: target.id)
+
+        #expect(viewModel.routePins(for: pinID).isEmpty)
+        #expect(viewModel.neighbors(for: pinID) == .none)
+    }
+
+    @Test
+    func neighborsAreAdjacentStationsOnRoute() throws {
+        let target = post()
+        let viewModel = PostMapViewModel(repository: MockDataRepository(posts: [target]))
+        let pins = viewModel.pins
+        try #require(pins.count == 3)
+
+        #expect(viewModel.neighbors(for: pins[0].id) == MapStationNeighbors(previous: nil, next: 2))
+        #expect(viewModel.neighbors(for: pins[1].id) == MapStationNeighbors(previous: 1, next: 3))
+        #expect(viewModel.neighbors(for: pins[2].id) == MapStationNeighbors(previous: 2, next: nil))
+    }
+
+    @Test
+    func neighborsSkipSpotsWithoutCoordinate() throws {
+        let target = post(spots: [
+            spot(order: 1),
+            spot(order: 2, latitude: nil, longitude: nil),
+            spot(order: 3)
+        ])
+        let viewModel = PostMapViewModel(repository: MockDataRepository(posts: [target]))
+        let pins = viewModel.pins
+        try #require(pins.count == 2)
+
+        #expect(viewModel.neighbors(for: pins[0].id) == MapStationNeighbors(previous: nil, next: 3))
+        #expect(viewModel.neighbors(for: pins[1].id) == MapStationNeighbors(previous: 1, next: nil))
+    }
+
+    @Test
+    func singleStationHasNoNeighbors() throws {
+        let target = post(spots: [spot(order: 1), spot(order: 2, latitude: nil, longitude: nil)])
+        let viewModel = PostMapViewModel(repository: MockDataRepository(posts: [target]))
+        let pinID = try #require(viewModel.pins.first).id
+
+        #expect(viewModel.routePins(for: pinID).count == 1)
+        #expect(viewModel.neighbors(for: pinID) == .none)
+    }
+
+    @Test
     func regionFitsAllCoordinatesWithPadding() {
         let coordinates = [
             CLLocationCoordinate2D(latitude: 33.0, longitude: 130.0),

@@ -60,7 +60,7 @@ struct SpotLocationPickerView: View {
                 }
                 .safeAreaInset(edge: .bottom) {
                     Text("Move the map to put the pin on the spot.")
-                        .font(.footnote)
+                        .font(.b2Text(size: 13, relativeTo: .footnote))
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
                         .background(.regularMaterial, in: .capsule)
@@ -85,19 +85,26 @@ struct SpotLocationPickerView: View {
                     }
                 }
         }
+        .tint(Color.brandPrimary)
     }
 
-    /// 地図の中心に立てるピン。針の先が中心に来るよう、アイコンの高さの半分だけ上にずらす
+    /// 地図の中心に立てるピン。路線図の駅の丸（スポットの番号）の下に路線の緑の針を付ける。
+    /// 針の先が中心に来るよう、ピンの下端を中心にそろえる
     private var centerPin: some View {
-        Image(systemName: "mappin")
-            .font(.system(size: 40))
-            .foregroundStyle(Color.brandAccent)
-            .shadow(color: .black.opacity(0.25), radius: 3, y: 1)
-            .alignmentGuide(VerticalAlignment.center) { dimensions in
-                dimensions[.bottom]
-            }
-            .allowsHitTesting(false)
-            .accessibilityHidden(true)
+        VStack(spacing: 0) {
+            RouteRankBadge(number: order, style: .station)
+            Capsule()
+                .fill(Color.brandAccent)
+                .frame(width: 4, height: 18)
+                // 丸の枠に重ねて、丸と針の間を空けない
+                .padding(.top, -2)
+        }
+        .shadow(color: .black.opacity(0.25), radius: 3, y: 1)
+        .alignmentGuide(VerticalAlignment.center) { dimensions in
+            dimensions[.bottom]
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }
 

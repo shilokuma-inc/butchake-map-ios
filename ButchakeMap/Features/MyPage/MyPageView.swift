@@ -236,7 +236,7 @@ private struct ProfileStatDivider: View {
     }
 }
 
-/// 自分の投稿 / 保存した三大 / 下書きの切り替え（B-2 のタブと同じ、白の地にインクの枠、選んだものはインクの地に白の文字）。
+/// 自分の投稿 / 保存した三大 / 下書きの切り替え（B-2 のタブと同じ、白の地にインクの枠、選んだものはインクの地に白（ダークでは地の色）の文字）。
 /// アクセシビリティの大きな文字では横に収まらないので縦に積む。
 /// VoiceOver では「一覧」のまとまりの中の 3 つのボタンとして読み、選んでいるものに「選択中」を付ける
 /// （.segmented の Picker を accessibilityRepresentation にすると、縦に積んだときに読み上げの枠が横並びのままになり、別の項目を選んでしまう）
@@ -271,7 +271,7 @@ private struct MyPageSectionPicker: View {
         } label: {
             Text(section.title)
                 .font(.b2Heading(size: 14, relativeTo: .subheadline))
-                .foregroundStyle(isSelected ? Color.surface : Color.textPrimary)
+                .foregroundStyle(isSelected ? Color.textOn : Color.textPrimary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, minHeight: 32)
                 .padding(.horizontal, 4)

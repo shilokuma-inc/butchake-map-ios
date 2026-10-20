@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """B-2「駅のスタンプラリー」のロゴ（駅名標の形のロゴタイプ「ぶっちゃけmap」）を SVG に書き出す。
 
-    $FONTTOOLS_PYTHON Tools/make_logo_svg.py
+    $FONTTOOLS_PYTHON Tools/make_logo_svg.py                 # ライト（logo.svg）
+    $FONTTOOLS_PYTHON Tools/make_logo_svg.py --theme dark    # ダーク（logo-dark.svg）
+
+色は --theme の値（light は theme.css、dark は theme-dark.css の色）を使い、--text などで 1 色ずつ変えられる。
+書き出し先は --output で変えられる（何度も指定できる）。
 
 fontTools が要る（標準ライブラリだけでは動かない）。FONTTOOLS_PYTHON には fontTools を入れた Python を指定する。例:
 
@@ -20,13 +24,14 @@ CSS のレイアウト（padding・letter-spacing・line-height 1・中央寄せ
 - 縦の位置は line-height 1 のときのブラウザ（WebKit）と同じく、hhea の ascent・descent の高さを行の高さに中央寄せして基線を決める
 - 基準の大きさ（CSS の font-size）は BASE_SIZE。viewBox はロゴの外形（枠の外側）にぴったり合わせる（余白なし）
 
-出力（同じ内容）:
-    docs/design/mocks/b2/logo.svg
-    ButchakeMap/Assets.xcassets/Logo.imageset/logo.svg
+出力:
+    ライト（同じ内容）: docs/design/mocks/b2/logo.svg・ButchakeMap/Assets.xcassets/Logo.imageset/logo.svg
+    ダーク: ButchakeMap/Assets.xcassets/Logo.imageset/logo-dark.svg（Logo の dark の appearance）
 
 Asset Catalog の SVG でも崩れないように、clipPath・stroke・transform は使わず、塗りの rect と path だけで描く。
 """
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -40,17 +45,35 @@ except ImportError:
 ROOT = Path(__file__).resolve().parent.parent
 FONT_GOTHIC = ROOT / "ButchakeMap/Resources/Fonts/BIZUDPGothic/BIZUDPGothic-Bold.ttf"
 FONT_DOT = ROOT / "ButchakeMap/Resources/Fonts/DotGothic16/DotGothic16-Regular.ttf"
-OUTPUTS = [
-    ROOT / "docs/design/mocks/b2/logo.svg",
-    ROOT / "ButchakeMap/Assets.xcassets/Logo.imageset/logo.svg",
-]
+OUTPUTS = {
+    "light": [
+        ROOT / "docs/design/mocks/b2/logo.svg",
+        ROOT / "ButchakeMap/Assets.xcassets/Logo.imageset/logo.svg",
+    ],
+    "dark": [
+        ROOT / "ButchakeMap/Assets.xcassets/Logo.imageset/logo-dark.svg",
+    ],
+}
 
-# 色（theme.css のライトの値。ダークの値は別に用意する）
-COLOR_TEXT = "#1B1F2A"       # --text（枠と「ぶっちゃけ」）
-COLOR_INK = "#24387F"        # --ink（「map」）
-COLOR_SECONDARY = "#4F566A"  # --color-text-secondary（「BUTCHAKE MAP」）
-COLOR_RAIL = "#2F7A45"       # --rail（下の帯）
-COLOR_SURFACE = "#FFFFFF"    # 地と帯の文字
+# 色（light は theme.css、dark は theme-dark.css の値）
+THEMES = {
+    "light": {
+        "text": "#1B1F2A",       # --text（枠と「ぶっちゃけ」）
+        "ink": "#24387F",        # --ink（「map」）
+        "secondary": "#4F566A",  # --color-text-secondary（「BUTCHAKE MAP」）
+        "rail": "#2F7A45",       # --rail（下の帯）
+        "surface": "#FFFFFF",    # 地
+        "on_color": "#FFFFFF",   # 帯の文字
+    },
+    "dark": {
+        "text": "#ECE7DA",
+        "ink": "#A3B6F5",
+        "secondary": "#BDB6A4",
+        "rail": "#6BC48A",
+        "surface": "#2A2F40",
+        "on_color": "#1E2230",   # --on-color
+    },
+}
 
 # 寸法（theme.css の値。em は BASE_SIZE を掛ける）
 BASE_SIZE = 60.0             # Mock.logo(size) の size（「ぶっちゃけ」の文字の大きさ）
@@ -138,7 +161,7 @@ def rounded_rect_path(x, y, width, height, top_radius, bottom_radius):
     return "".join(parts) + "Z"
 
 
-def build_svg():
+def build_svg(colors):
     gothic = Face(FONT_GOTHIC)
     dot = Face(FONT_DOT)
 
@@ -192,13 +215,13 @@ def build_svg():
     bar_right_x = inner_right - bar_pad_x - bar_right_width
 
     paths = [
-        ("枠", COLOR_TEXT, rounded_rect_path(0, 0, width, height, RADIUS, RADIUS)),
-        ("地", COLOR_SURFACE, rounded_rect_path(left, BORDER, content_width, content_height, inner_radius, inner_radius)),
-        ("帯", COLOR_RAIL, rounded_rect_path(left, bar_top, content_width, bar_bottom - bar_top, 0, inner_radius)),
-        ("ぶっちゃけ", COLOR_TEXT, gothic.outline(name_main, name_x, name_baseline, name_size, name_spacing)),
-        ("map", COLOR_INK, gothic.outline(name_map, map_x, name_baseline, name_size, name_spacing)),
-        ("BUTCHAKE MAP", COLOR_SECONDARY, dot.outline(en_text, en_x, en_baseline, en_size, en_spacing)),
-        (BAR_LEFT + " / " + BAR_RIGHT, COLOR_SURFACE,
+        ("枠", colors["text"], rounded_rect_path(0, 0, width, height, RADIUS, RADIUS)),
+        ("地", colors["surface"], rounded_rect_path(left, BORDER, content_width, content_height, inner_radius, inner_radius)),
+        ("帯", colors["rail"], rounded_rect_path(left, bar_top, content_width, bar_bottom - bar_top, 0, inner_radius)),
+        ("ぶっちゃけ", colors["text"], gothic.outline(name_main, name_x, name_baseline, name_size, name_spacing)),
+        ("map", colors["ink"], gothic.outline(name_map, map_x, name_baseline, name_size, name_spacing)),
+        ("BUTCHAKE MAP", colors["secondary"], dot.outline(en_text, en_x, en_baseline, en_size, en_spacing)),
+        (BAR_LEFT + " / " + BAR_RIGHT, colors["on_color"],
          gothic.outline(BAR_LEFT, bar_left_x, bar_baseline, bar_size, 0)
          + gothic.outline(BAR_RIGHT, bar_right_x, bar_baseline, bar_size, 0)),
     ]
@@ -215,12 +238,39 @@ def build_svg():
     return "\n".join(lines) + "\n"
 
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="B-2 のロゴを SVG に書き出す")
+    parser.add_argument("--theme", choices=sorted(THEMES), default="light", help="色と書き出し先の組（既定は light）")
+    for key, help_text in [
+        ("text", "枠と「ぶっちゃけ」の色"),
+        ("ink", "「map」の色"),
+        ("secondary", "「BUTCHAKE MAP」の色"),
+        ("rail", "下の帯の色"),
+        ("surface", "地の色"),
+        ("on_color", "帯の文字の色"),
+    ]:
+        parser.add_argument(f"--{key.replace('_', '-')}", dest=key, metavar="#RRGGBB", help=f"{help_text}（--theme の値を変える）")
+    parser.add_argument("--output", action="append", type=Path, help="書き出し先（何度も指定できる。既定は --theme の書き出し先）")
+    return parser.parse_args()
+
+
 def main():
-    svg = build_svg()
-    for output in OUTPUTS:
+    arguments = parse_arguments()
+    colors = dict(THEMES[arguments.theme])
+    for key in colors:
+        value = getattr(arguments, key)
+        if value is not None:
+            colors[key] = value
+    svg = build_svg(colors)
+    for output in arguments.output or OUTPUTS[arguments.theme]:
+        output = output.resolve()
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(svg, encoding="utf-8")
-        print(f"書き出しました: {output.relative_to(ROOT)}")
+        try:
+            shown = output.relative_to(ROOT)
+        except ValueError:
+            shown = output
+        print(f"書き出しました: {shown}")
 
 
 if __name__ == "__main__":

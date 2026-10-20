@@ -164,7 +164,7 @@ struct SearchView: View {
 }
 
 /// カテゴリの絞り込みのチップ（B-2 のバッジと同じ形）。
-/// 選んでいないときは白の地に緑の枠と文字、選んだときは緑の地に白の文字（どちらも 5.26:1）
+/// 選んでいないときは白の地に緑の枠と文字、選んだときは緑の地に白（ダークでは地の色）の文字（ライトはどちらも 5.26:1）
 struct CategoryChip: View {
     let title: LocalizedStringResource
     let symbolName: String
@@ -179,7 +179,7 @@ struct CategoryChip: View {
                 Image(systemName: symbolName)
             }
             .font(.b2Heading(size: 15, relativeTo: .subheadline))
-            .foregroundStyle(isSelected ? Color.surface : Color.brandAccent)
+            .foregroundStyle(isSelected ? Color.textOn : Color.brandAccent)
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .background(isSelected ? Color.brandAccent : Color.surface, in: .capsule)

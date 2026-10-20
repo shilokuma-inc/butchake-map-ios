@@ -53,6 +53,8 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 - スタイルは `theme-dark.css`（`theme.css` とページのスタイルの後に読み込む）、色の組は `palette-dark.json`
 - 画面は `home-dark.html`・`detail-dark.html`・`map-dark.html`（ライトのページと同じ `<ページ>.css`・`<ページ>.js` を読み、`theme-dark.css` を足しただけ）。ブランドシートは `brand-dark.html`
 - 空の状態のイラスト（`empty-posts.svg`・`empty-search.svg`）とアプリアイコンは、ライトと同じ色のままダークの地に置いています
+  - アプリでは、ライトの色のままだと白い地と暗い線がダークの地で浮くため、イラストにダークの色の SVG（`ButchakeMap/Assets.xcassets/EmptyPosts.imageset/empty-posts-dark.svg`・`EmptySearch.imageset/empty-search-dark.svg`。上の表のダークの値に置き換えたもの）を dark の appearance に足しています
+- ロゴは、アプリでは `Tools/make_logo_svg.py --theme dark` で `theme-dark.css` の色で書き出した `ButchakeMap/Assets.xcassets/Logo.imageset/logo-dark.svg` を dark の appearance に置いています（シェアカードは画像なので常にライト）
 
 ライトとダークの値（アプリの Color Set の名前は、色の土台のタスクで足す名前の案。ダークの値はダークモードのタスクで dark の appearance に入れる）:
 

@@ -78,7 +78,7 @@ struct StationSign: View {
             }
         }
         .font(.b2Heading(size: 13, relativeTo: .footnote))
-        .foregroundStyle(Color.surface)
+        .foregroundStyle(Color.textOn)
         .padding(.horizontal, 10)
         .padding(.vertical, 2)
         .frame(maxWidth: .infinity)

@@ -33,7 +33,7 @@ struct DepartureBoardNumber: View {
             ForEach(Array(Self.digits(of: value).enumerated()), id: \.offset) { _, digit in
                 Text(verbatim: digit)
                     .font(.b2Ticket(size: fontSize, relativeTo: Self.textStyle))
-                    .foregroundStyle(Color.surface)
+                    .foregroundStyle(Color.textOn)
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
                     .frame(width: Self.cardSize.width * factor, height: Self.cardSize.height * factor)

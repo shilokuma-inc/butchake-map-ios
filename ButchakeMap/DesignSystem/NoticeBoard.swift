@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-/// B-2 の駅の掲示板（文字色の地に白の文字の札と、その下の本文）。ぶっちゃけコメントに使う
+/// B-2 の駅の掲示板（文字色の地に白（ダークでは地の色）の文字の札と、その下の本文）。ぶっちゃけコメントに使う
 ///
 /// 札と本文はまとめて 1 つの要素として読む（「ぶっちゃけコメント、本文」）
 struct NoticeBoard: View {
@@ -21,7 +21,7 @@ struct NoticeBoard: View {
                     .tracking(1)
             }
             .font(.b2Ticket(size: 13, relativeTo: .footnote))
-            .foregroundStyle(Color.surface)
+            .foregroundStyle(Color.textOn)
             .padding(.horizontal, 10)
             .padding(.vertical, 3)
             .frame(maxWidth: .infinity, alignment: .leading)

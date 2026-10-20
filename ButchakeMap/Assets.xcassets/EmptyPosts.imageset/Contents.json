@@ -3,6 +3,16 @@
     {
       "filename" : "empty-posts.svg",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "empty-posts-dark.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {

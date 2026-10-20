@@ -5,10 +5,11 @@
 
 import SwiftUI
 
-/// B-2 のボタン（モックの .rail-button）。2pt の文字色の枠・角丸 8・下に 3pt の文字色の影で、押すと影の分だけ沈む
+/// B-2 のボタン（モックの .rail-button）。2pt の文字色の枠・角丸 8・下に 3pt の文字色の影で、押すと影の分だけ沈む。
+/// ダークでは文字色が明るくなるので、影は黒にする（モックの theme-dark.css の box-shadow: 0 3px 0 #000000）
 struct B2ButtonStyle: ButtonStyle {
     enum Kind {
-        /// インクの地に白の文字（「投稿を見る」「公開する」など）
+        /// インクの地に白（ダークでは地の色）の文字（「投稿を見る」「公開する」など）
         case primary
         /// 白の地に文字色の文字（「マップで開く」など）
         case secondary
@@ -17,13 +18,18 @@ struct B2ButtonStyle: ButtonStyle {
     var kind: Kind = .primary
 
     @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var shadowColor: Color {
+        colorScheme == .dark ? .black : .textPrimary
+    }
 
     func makeBody(configuration: Configuration) -> some View {
         let isPressed = configuration.isPressed
         return configuration.label
             .labelStyle(B2ButtonLabelStyle())
             .font(.b2Heading(size: 15, relativeTo: .subheadline))
-            .foregroundStyle(kind == .primary ? Color.surface : Color.textPrimary)
+            .foregroundStyle(kind == .primary ? Color.textOn : Color.textPrimary)
             .padding(.horizontal, 16)
             .padding(.vertical, 9)
             .background(kind == .primary ? Color.brandPrimary : Color.surface, in: .rect(cornerRadius: 8))
@@ -33,7 +39,7 @@ struct B2ButtonStyle: ButtonStyle {
             }
             .background {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.textPrimary)
+                    .fill(shadowColor)
                     .offset(y: isPressed ? 0 : 3)
             }
             .offset(y: isPressed ? 3 : 0)

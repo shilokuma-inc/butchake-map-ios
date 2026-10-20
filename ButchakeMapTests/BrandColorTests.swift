@@ -23,7 +23,26 @@ struct BrandColorTests {
         ("CardBorder", 0xD9CFB6),
         ("SeparatorLine", 0xCFC4AA),
         ("TicketBorder", 0xC9C0A8),
-        ("DottedLine", 0xB9AE92)
+        ("DottedLine", 0xB9AE92),
+        ("TextOnColor", 0xFFFFFF)
+    ]
+
+    /// Color Set の名前と、ダークの値（docs/design/mocks/b2 の theme-dark.css と README の「ダークモードの配色（夜の駅）」の表）
+    nonisolated static let darkColors: [(name: String, hex: UInt32)] = [
+        ("AccentColor", 0xA3B6F5),
+        ("BrandPrimary", 0xA3B6F5),
+        ("BrandAccent", 0x6BC48A),
+        ("Paper", 0x1E2230),
+        ("Kraft", 0x4A3F2E),
+        ("KraftBorder", 0x66573F),
+        ("Surface", 0x2A2F40),
+        ("TextPrimary", 0xECE7DA),
+        ("TextSecondary", 0xBDB6A4),
+        ("CardBorder", 0x474D60),
+        ("SeparatorLine", 0x474D60),
+        ("TicketBorder", 0x565D72),
+        ("DottedLine", 0x9F987F),
+        ("TextOnColor", 0x1E2230)
     ]
 
     /// すべての Color Set がアプリのバンドルから読める
@@ -35,7 +54,25 @@ struct BrandColorTests {
     /// ライトの値がモックの色と同じ（打ち間違いで別の色にならないように）
     @Test(arguments: lightColors)
     func lightValueMatchesMock(name: String, hex: UInt32) throws {
-        let color = try #require(UIColor(named: name, in: .main, compatibleWith: UITraitCollection(userInterfaceStyle: .light)))
+        try expectColor(name: name, style: .light, hex: hex)
+    }
+
+    /// ダークの値がモックの色と同じ
+    @Test(arguments: darkColors)
+    func darkValueMatchesMock(name: String, hex: UInt32) throws {
+        try expectColor(name: name, style: .dark, hex: hex)
+    }
+
+    /// ライトとダークで同じ Color Set を確かめている（ダークの値の確かめ忘れが無いように）
+    @Test
+    func everyColorSetHasDarkValue() {
+        #expect(Self.lightColors.map(\.name) == Self.darkColors.map(\.name))
+    }
+
+    private func expectColor(name: String, style: UIUserInterfaceStyle, hex: UInt32) throws {
+        let traits = UITraitCollection(userInterfaceStyle: style)
+        // UIColor(named:) は外観で変わる色を返すので、Simulator の外観によらずその外観の値に解決してから読む
+        let color = try #require(UIColor(named: name, in: .main, compatibleWith: traits)).resolvedColor(with: traits)
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0

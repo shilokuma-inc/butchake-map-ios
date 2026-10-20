@@ -42,10 +42,12 @@ struct HomeViewModel {
         guard let month = calendar.dateInterval(of: .month, for: now) else {
             return StampBook(count: 0, stamps: [])
         }
+        // 終わりの時刻（翌月 1 日 0 時）は翌月に入れる
         let posts = repository.myPosts
-            .filter { month.contains($0.createdAt) }
+            .filter { $0.createdAt >= month.start && $0.createdAt < month.end }
             .sorted { $0.createdAt > $1.createdAt }
-        let stamps = posts.prefix(StampBook.visibleStampLimit).map { post in
+        // 押すのは新しい 3 こ。並べるのは古い順にし、次に押す空き欄が最新のスタンプの隣に来るようにする
+        let stamps = posts.prefix(StampBook.visibleStampLimit).reversed().map { post in
             StampBook.Stamp(
                 id: post.id,
                 date: PostDetailViewModel.stampDate(of: post, calendar: calendar),
@@ -70,12 +72,12 @@ struct HomeViewModel {
 
 /// ホームのスタンプ帳に出す内容
 struct StampBook: Equatable {
-    /// 押して見せるスタンプの数（新しい順）。その後ろに次の 1 こ分の空き欄を置く
+    /// 押して見せるスタンプの数。その後ろに次の 1 こ分の空き欄を置く
     static let visibleStampLimit = 3
 
     /// 今月の自分の公開済みの投稿の数
     let count: Int
-    /// 押して見せるスタンプ（今月の新しい順に visibleStampLimit こまで）
+    /// 押して見せるスタンプ（今月の新しい visibleStampLimit こを、古い順に）
     let stamps: [Stamp]
 
     struct Stamp: Equatable, Identifiable {

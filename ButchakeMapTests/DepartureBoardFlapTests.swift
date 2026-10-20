@@ -149,3 +149,53 @@ struct DepartureBoardFlapTests {
         #expect(DepartureBoardFlap.heartFill(at: 1) == 1)
     }
 }
+
+/// いいねの札の回し方と、止まったときのハプティクスを鳴らすか
+struct LikeFlapTurnTests {
+    private let start = Date(timeIntervalSince1970: 1_800_000_000)
+
+    /// 押したあとの変化だけ鳴らす。押していない変化（ほかの画面で押した・同期など）では鳴らさない
+    @Test
+    func playsHapticOnlyAfterTap() {
+        var turn = LikeFlapTurn(count: 128)
+        let untapped = turn.countChanged(to: 129, at: start)
+        turn.tapped()
+        let tapped = turn.countChanged(to: 130, at: start.addingTimeInterval(1))
+        // 鳴らしたら待ちは消える（次の押していない変化では鳴らさない）
+        let afterTapped = turn.countChanged(to: 131, at: start.addingTimeInterval(2))
+        #expect(!untapped)
+        #expect(tapped)
+        #expect(!afterTapped)
+    }
+
+    /// 止まった後の変化は、今の数字から回す
+    @Test
+    func turnsFromCurrentValueAfterSettled() {
+        var turn = LikeFlapTurn(count: 128)
+        _ = turn.countChanged(to: 129, at: start)
+        _ = turn.countChanged(to: 128, at: start.addingTimeInterval(1))
+        #expect(turn.from == 129)
+        #expect(turn.to == 128)
+    }
+
+    /// 札が回り始める前（ハートを塗っている間）に続けて変わったら、まだ見えている前の数字から回し直す
+    @Test
+    func keepsShownValueWhenChangedBeforeTurn() {
+        var turn = LikeFlapTurn(count: 128)
+        _ = turn.countChanged(to: 129, at: start)
+        _ = turn.countChanged(to: 128, at: start.addingTimeInterval(DepartureBoardFlap.heartFillDuration / 2))
+        #expect(turn.from == 128)
+        #expect(turn.to == 128)
+    }
+
+    /// 別の投稿に入れ替わったら、回さずに入れ替え、押した待ちも消す
+    @Test
+    func resetClearsTurnAndTap() {
+        var turn = LikeFlapTurn(count: 128)
+        turn.tapped()
+        turn.reset(count: 5)
+        #expect(turn == LikeFlapTurn(count: 5))
+        let changed = turn.countChanged(to: 6, at: start)
+        #expect(!changed)
+    }
+}

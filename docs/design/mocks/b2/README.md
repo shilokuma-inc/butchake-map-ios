@@ -99,7 +99,7 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 ## アイコン・ロゴ・イラスト
 
 - アプリアイコン（`icon.svg`、1024x1024）: クラフト紙の台紙に、紺一色の駅スタンプ（点線と二重の丸・電車・山・線路）。下に路線の緑の帯。インクのかすれも描く。角丸は描かない
-- ロゴ: 駅名標の形のロゴタイプ。「ぶっちゃけ」は BIZ UDPゴシック、「map」をインクの紺、下に `BUTCHAKE MAP`、緑の帯に「◀ ほんね ／ たび ▶」（HTML と CSS で描いている。採用したら SVG に起こす）
+- ロゴ: 駅名標の形のロゴタイプ。「ぶっちゃけ」は BIZ UDPゴシック、「map」をインクの紺、下に `BUTCHAKE MAP`、緑の帯に「◀ ほんね ／ たび ▶」。`logo.svg` に SVG で起こし、アプリの `ButchakeMap/Assets.xcassets/Logo.imageset/logo.svg` と同じものを置いている。どちらも `Tools/make_logo_svg.py` が theme.css の `.logo` の寸法（基準の大きさ 60px）を計算し直し、同梱の書体（BIZ UDPゴシック Bold・DotGothic16）から fontTools で文字をアウトライン（path）にして書き出す（`$FONTTOOLS_PYTHON Tools/make_logo_svg.py`。手で直さない）。ブランドシートでは HTML と CSS の見本の下に並べて比べている
 - 空の状態のイラスト: `empty-posts.svg`（スタンプ帳の台紙。最初の 1 こを押す欄が空いている）・`empty-search.svg`（駅名が「？」で、前後の駅も空白の駅名標）
 
 ## 動き

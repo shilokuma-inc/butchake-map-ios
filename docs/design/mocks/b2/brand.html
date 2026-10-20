@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="mock-size" content="1400x2720">
+<meta name="mock-size" content="1400x2920">
 <meta name="mock-scale" content="2">
 <title>B-2 駅のスタンプラリー — ブランドシート</title>
 <meta name="mock-fonts" content="BIZ UDPGothic|DotGothic16|Kaisei Decol">
@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="../../template/frame.css">
 <link rel="stylesheet" href="theme.css">
 <style>
-  .sheet { width: 1400px; height: 2720px; padding: 56px; background: var(--paper); }
+  .sheet { width: 1400px; height: 2920px; padding: 56px; background: var(--paper); }
   .sheet-head { display: flex; align-items: center; gap: 32px; }
   .sheet-head p { font-size: 18px; font-weight: 700; line-height: 1.6; }
   .grid { display: grid; grid-template-columns: 600px 1fr; gap: 48px; margin-top: 8px; }
@@ -25,6 +25,8 @@
   .home-app img, .home-app span.dummy { width: 60px; height: 60px; border-radius: 13.4px; }
   .home-app span.dummy { background: rgba(255, 255, 255, .55); }
   .logo-panel { display: flex; flex-direction: column; gap: 26px; align-items: flex-start; }
+  .logo-svg { display: block; width: 528.82px; height: 131.34px; margin-top: -8px; }
+  .logo-svg-note { margin-top: -18px; }
   .nav-sample { width: 402px; border: 2px solid var(--text); overflow: hidden; background: var(--paper); }
   .nav-sample .nav-large-title { padding: 10px 18px 14px; }
   .empty-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -113,6 +115,8 @@
           <p class="icon-note">ホーム画面の大きさ（60pt 相当）</p></section>
         <section class="sheet-section"><h2>ロゴ</h2>
           <div class="panel logo-panel">${Mock.logo(60)}
+            <img class="logo-svg" src="logo.svg" alt="">
+            <p class="icon-note logo-svg-note">上: HTML と CSS で描いた見本 ／ 下: logo.svg（Tools/make_logo_svg.py で文字をアウトラインにした SVG。アプリの Assets の Logo）</p>
             <div class="nav-sample">${Mock.navBar({ large: true, titleHTML: Mock.logo(24) })}</div>
             <p class="icon-note">ナビゲーションに置いたとき（ホームの大きなタイトルの位置）</p></div></section>
         <section class="sheet-section"><h2>空の状態のイラスト</h2>

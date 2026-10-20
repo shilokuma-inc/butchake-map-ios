@@ -39,6 +39,9 @@ struct PublishStampView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.paper.ignoresSafeArea())
+        // 重ねた台紙は飾り（読み上げない。結果はアラートで伝える）。スタンプは文字の大きさで最大 2 倍になり、
+        // 3 こ並べると幅の狭い iPhone からはみ出し、スタンプ台とも大きさが合わなくなるので、標準の大きさで止める
+        .dynamicTypeSize(...DynamicTypeSize.large)
         // 押した瞬間に重く、3 こそろったら成功の通知のハプティクス
         .sensoryFeedback(.impact(weight: .heavy), trigger: pressCount)
         .sensoryFeedback(.success, trigger: completeCount)

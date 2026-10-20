@@ -5,11 +5,13 @@
 
 import SwiftUI
 
-/// フィード・検索・マイページに並べる投稿カード
+/// フィード・検索・マイページに並べる投稿カード（B-2: スタンプラリーの台紙。3 つのスポットと、投稿日のスタンプ）
 struct PostCardView: View {
     let post: Post
     let onLike: () -> Void
     let onStar: () -> Void
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -17,28 +19,37 @@ struct PostCardView: View {
                 PostThumbnail(post: post)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(post.title)
-                        .font(.headline)
-                        .foregroundStyle(.primary)
+                        .font(.b2Heading(size: 17, relativeTo: .headline))
+                        .foregroundStyle(Color.textPrimary)
                         .multilineTextAlignment(.leading)
                     Text(post.area)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .font(.b2Text(size: 15, relativeTo: .subheadline))
+                        .foregroundStyle(Color.textSecondary)
                 }
                 Spacer(minLength: 0)
             }
-            HStack(spacing: 8) {
+            stackedLayout(spacing: 8) {
                 CategoryBadge(category: post.category)
                 AuthorTypeBadge(authorType: post.authorType)
             }
-            VStack(alignment: .leading, spacing: 4) {
-                ForEach(post.spots) { spot in
-                    SpotNameRow(spot: spot)
+            stackedLayout(spacing: 10) {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(post.spots) { spot in
+                        SpotNameRow(spot: spot)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                // 台紙に押した投稿日のスタンプ（上は年、真ん中は「M.d」、下は市区町村）。飾りなので読み上げない
+                StampMark(
+                    top: Self.stampYear(of: post),
+                    main: PostDetailViewModel.stampDate(of: post),
+                    bottom: PostDetailViewModel.stampPlace(of: post)
+                )
             }
             HStack(spacing: 16) {
                 Text(post.authorName)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .font(.b2Text(size: 13, relativeTo: .footnote))
+                    .foregroundStyle(Color.textSecondary)
                     .lineLimit(1)
                 Spacer(minLength: 0)
                 LikeButton(post: post, action: onLike)
@@ -47,26 +58,37 @@ struct PostCardView: View {
         }
         .cardStyle()
     }
+
+    /// 投稿日の年（スタンプの上の小さな文字。端末のカレンダー）
+    static func stampYear(of post: Post, calendar: Calendar = .current) -> String {
+        String(calendar.component(.year, from: post.createdAt))
+    }
+
+    /// 通常は横に、アクセシビリティの大きな文字では縦（左寄せ）に並べる
+    private func stackedLayout<Content: View>(spacing: CGFloat, @ViewBuilder content: () -> Content) -> some View {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+            : AnyLayout(HStackLayout(spacing: spacing))
+        return layout(content)
+    }
 }
 
-/// 番号付きのスポット名の 1 行
+/// 番号付きのスポット名の 1 行（路線図の駅の番号の丸と名前）
 struct SpotNameRow: View {
     let spot: Spot
 
     var body: some View {
-        Label {
+        HStack(spacing: 8) {
+            RouteRankBadge(number: spot.order, style: .compact)
             Text(spot.name)
-                .font(.subheadline)
-                .foregroundStyle(.primary)
+                .font(.b2Text(size: 15, relativeTo: .subheadline))
+                .foregroundStyle(Color.textPrimary)
                 .lineLimit(1)
-        } icon: {
-            Image(systemName: "\(spot.order).circle.fill")
-                .foregroundStyle(Color.brandPrimary)
         }
     }
 }
 
-/// 投稿カードのサムネイル。スポットの写真があれば 1 枚目を、無ければカテゴリのアイコンを出す
+/// 投稿カードのサムネイル。スポットの写真があれば 1 枚目を、無ければカテゴリのアイコンを出す（B-2: インクの枠の丸）
 struct PostThumbnail: View {
     let post: Post
     var size: CGFloat = 56
@@ -75,24 +97,32 @@ struct PostThumbnail: View {
         if let photoData = post.coverPhotoData {
             SpotPhotoImage(data: photoData)
                 .frame(width: size, height: size)
-                .clipShape(.rect(cornerRadius: 12))
+                .clipShape(.circle)
+                .overlay {
+                    Circle()
+                        .strokeBorder(Color.brandPrimary, lineWidth: 2)
+                }
         } else {
             CategoryThumbnail(category: post.category, size: size)
         }
     }
 }
 
-/// 写真の代わりに出すカテゴリのアイコン
+/// 写真の代わりに出すカテゴリのアイコン（台紙の地にインクのアイコンと枠の丸）
 struct CategoryThumbnail: View {
     let category: Category
     var size: CGFloat = 56
 
     var body: some View {
         Image(systemName: category.symbolName)
-            .font(.system(size: size * 0.4))
-            .foregroundStyle(Color.brandAccent)
+            .font(.system(size: size * 0.42))
+            .foregroundStyle(Color.brandPrimary)
             .frame(width: size, height: size)
-            .background(Color.brandAccent.opacity(0.12), in: .rect(cornerRadius: 12))
+            .background(Color.kraft, in: .circle)
+            .overlay {
+                Circle()
+                    .strokeBorder(Color.brandPrimary, lineWidth: 2)
+            }
             .accessibilityHidden(true)
     }
 }
@@ -109,8 +139,8 @@ struct LikeButton: View {
             } icon: {
                 Image(systemName: post.isLiked ? "heart.fill" : "heart")
             }
-            .font(.subheadline)
-            .foregroundStyle(post.isLiked ? Color.pink : Color.secondary)
+            .font(.b2Heading(size: 15, relativeTo: .subheadline))
+            .foregroundStyle(post.isLiked ? Color.brandPrimary : Color.textPrimary)
         }
         .buttonStyle(.borderless)
         .accessibilityLabel(Text("Like"))
@@ -131,8 +161,8 @@ struct StarButton: View {
             } icon: {
                 Image(systemName: post.isStarred ? "star.fill" : "star")
             }
-            .font(.subheadline)
-            .foregroundStyle(post.isStarred ? Color.yellow : Color.secondary)
+            .font(.b2Heading(size: 15, relativeTo: .subheadline))
+            .foregroundStyle(post.isStarred ? Color.brandPrimary : Color.textPrimary)
         }
         .buttonStyle(.borderless)
         .accessibilityLabel(Text("Save"))

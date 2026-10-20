@@ -36,6 +36,27 @@ struct HomeViewModel {
         repository.publishedPosts
     }
 
+    /// スタンプ帳（Discussion #77 の Q1）: 自分が今月公開した投稿 1 つ = スタンプ 1 こ。
+    /// 「今月」は端末のカレンダーとタイムゾーンの今月 1 日 0 時から。下書きとほかの人の投稿は数えない
+    func stampBook(now: Date = Date(), calendar: Calendar = .current) -> StampBook {
+        guard let month = calendar.dateInterval(of: .month, for: now) else {
+            return StampBook(count: 0, stamps: [])
+        }
+        // 終わりの時刻（翌月 1 日 0 時）は翌月に入れる
+        let posts = repository.myPosts
+            .filter { $0.createdAt >= month.start && $0.createdAt < month.end }
+            .sorted { $0.createdAt > $1.createdAt }
+        // 押すのは新しい 3 こ。並べるのは古い順にし、次に押す空き欄が最新のスタンプの隣に来るようにする
+        let stamps = posts.prefix(StampBook.visibleStampLimit).reversed().map { post in
+            StampBook.Stamp(
+                id: post.id,
+                date: PostDetailViewModel.stampDate(of: post, calendar: calendar),
+                place: PostDetailViewModel.stampPlace(of: post)
+            )
+        }
+        return StampBook(count: posts.count, stamps: Array(stamps))
+    }
+
     func toggleLike(_ post: Post) {
         repository.toggleLike(postID: post.id)
     }
@@ -46,5 +67,24 @@ struct HomeViewModel {
 
     private static func score(_ post: Post) -> Int {
         post.likeCount + post.starCount
+    }
+}
+
+/// ホームのスタンプ帳に出す内容
+struct StampBook: Equatable {
+    /// 押して見せるスタンプの数。その後ろに次の 1 こ分の空き欄を置く
+    static let visibleStampLimit = 3
+
+    /// 今月の自分の公開済みの投稿の数
+    let count: Int
+    /// 押して見せるスタンプ（今月の新しい visibleStampLimit こを、古い順に）
+    let stamps: [Stamp]
+
+    struct Stamp: Equatable, Identifiable {
+        let id: Post.ID
+        /// 上の小さな文字（投稿日の「M.d」）
+        let date: String
+        /// 真ん中の文字（市区町村、空なら都道府県）
+        let place: String
     }
 }

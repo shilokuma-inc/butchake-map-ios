@@ -193,6 +193,38 @@
         }
       }
     },
+    "Bound for %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bound for %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ゆき"
+          }
+        }
+      }
+    },
+    "Butchake Line" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Butchake Line"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ぶっちゃけ線"
+          }
+        }
+      }
+    },
     "Butchake Map" : {
       "localizations" : {
         "en" : {

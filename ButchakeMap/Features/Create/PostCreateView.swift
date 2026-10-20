@@ -160,7 +160,13 @@ private struct PostFormContent: View {
             )
             textField("Honest Comment", text: spot.recommendation, field: .spotRecommendation(order: order), axis: .vertical)
         } header: {
-            sectionHeader(Text("Spot \(order)"))
+            // 詳細の路線図と同じ駅の番号の丸を添える（丸は読み上げず、読み上げは「スポット 1」のまま）
+            HStack(spacing: 8) {
+                RouteRankBadge(number: order, style: .compact)
+                sectionHeader(Text("Spot \(order)"))
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isHeader)
         }
         .listRowBackground(Color.surface)
     }

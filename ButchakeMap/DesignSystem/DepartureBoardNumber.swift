@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// 発車標の数字（いいねの件数など）。桁ごとの札（文字色の地に白の DotGothic16）を並べる。
-/// 札を回す動きはまだ付けていない。VoiceOver では数字として読む
+/// いいねの札を回す動きは DepartureBoardFlapCount（DepartureBoardFlap.swift）。VoiceOver では数字として読む
 struct DepartureBoardNumber: View {
     let value: Int
 

@@ -129,25 +129,133 @@ struct CategoryThumbnail: View {
     }
 }
 
-/// いいねの切り替えボタン（件数つき）
+/// いいねの切り替えボタン（件数つき）。件数は発車標の札で出し、変わる桁だけパタパタ回す（B-2 の動き。モックの motion.html）。
+/// 視差効果を減らす設定では札を回さず、ハートの塗りと件数をクロスフェードする
 struct LikeButton: View {
     let post: Post
     let action: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// 札の桁ごとの前後の数字（件数が変わるたびに、前の件数から新しい件数へ入れ替える）
+    @State private var flapSlots: [DepartureBoardFlapSlot]
+    /// 札の前後の数字と、押したあとの変化か
+    @State private var turn: LikeFlapTurn
+    /// 札を回し始めるたびに増やす（KeyframeAnimator のきっかけ）
+    @State private var turnCount = 0
+    /// 押したあとの変化で、札が止まるたびに増やす（selection のハプティクスのきっかけ）
+    @State private var settledCount = 0
+    /// 止まったときにハプティクスを鳴らすための待ち（続けて押したら取り消して、最後の 1 回だけ鳴らす）
+    @State private var hapticTask: Task<Void, Never>?
+
+    init(post: Post, action: @escaping () -> Void) {
+        self.post = post
+        self.action = action
+        _flapSlots = State(initialValue: DepartureBoardFlap.slots(from: post.likeCount, to: post.likeCount))
+        _turn = State(initialValue: LikeFlapTurn(count: post.likeCount))
+    }
+
     var body: some View {
-        Button(action: action) {
-            Label {
-                Text(post.likeCount, format: .number)
-            } icon: {
-                Image(systemName: post.isLiked ? "heart.fill" : "heart")
+        Button {
+            turn.tapped()
+            action()
+        } label: {
+            LikeButtonLabel(
+                heartFill: post.isLiked ? 1 : 0,
+                heartAnimation: reduceMotion
+                    ? .easeInOut(duration: DepartureBoardFlap.crossfadeDuration)
+                    : .easeOut(duration: DepartureBoardFlap.heartFillDuration)
+            ) {
+                count
             }
-            .font(.b2Heading(size: 15, relativeTo: .subheadline))
-            .foregroundStyle(post.isLiked ? Color.brandPrimary : Color.textPrimary)
         }
         .buttonStyle(.borderless)
         .accessibilityLabel(Text("Like"))
         .accessibilityValue(Text(post.likeCount, format: .number))
         .accessibilityAddTraits(post.isLiked ? .isSelected : [])
+        .onChange(of: LikeCountKey(postID: post.id, count: post.likeCount)) { oldKey, newKey in
+            guard oldKey.postID == newKey.postID else {
+                // 別の投稿に変わったときは回さずに入れ替える
+                turn.reset(count: newKey.count)
+                flapSlots = DepartureBoardFlap.slots(from: newKey.count, to: newKey.count)
+                return
+            }
+            let isTapped = turn.countChanged(to: newKey.count, at: Date())
+            flapSlots = DepartureBoardFlap.slots(from: turn.from, to: turn.to)
+            turnCount &+= 1
+            // 押していない変化（ほかの画面で押した・同期など）では鳴らさない。続けて押したら最後の 1 回だけ鳴らす
+            hapticTask?.cancel()
+            hapticTask = nil
+            guard isTapped else {
+                return
+            }
+            let duration = reduceMotion ? DepartureBoardFlap.crossfadeDuration : DepartureBoardFlap.totalDuration
+            hapticTask = Task {
+                try? await Task.sleep(for: .seconds(duration))
+                guard !Task.isCancelled else {
+                    return
+                }
+                settledCount &+= 1
+            }
+        }
+        .onDisappear {
+            hapticTask?.cancel()
+            hapticTask = nil
+        }
+        .sensoryFeedback(.selection, trigger: settledCount)
+    }
+
+    @ViewBuilder private var count: some View {
+        if reduceMotion {
+            // 札を回さず、件数を入れ替えてクロスフェードする
+            ZStack {
+                DepartureBoardFlapCount(value: post.likeCount)
+                    .id(post.likeCount)
+                    .transition(.opacity)
+            }
+            .animation(.easeInOut(duration: DepartureBoardFlap.crossfadeDuration), value: post.likeCount)
+        } else {
+            KeyframeAnimator(initialValue: 1.0, trigger: turnCount) { progress in
+                DepartureBoardFlapCount(slots: flapSlots, progress: progress)
+            } keyframes: { _ in
+                // ハートを塗る間は止めておき、塗り終えたら 2 段（上半分・下半分）を通しで回す（段ごとの easeIn は札の側で掛ける）
+                MoveKeyframe(0.0)
+                LinearKeyframe(0.0, duration: DepartureBoardFlap.heartFillDuration)
+                LinearKeyframe(1.0, duration: DepartureBoardFlap.turnDuration)
+            }
+        }
+    }
+
+    /// 件数の変わり目を、同じ投稿の中の変化か、別の投稿への入れ替えかで分けるための値
+    private struct LikeCountKey: Equatable {
+        let postID: Post.ID
+        let count: Int
+    }
+}
+
+/// いいねのボタンの中身（ハートと件数）。ハートは枠と塗りを重ね、塗りの進み具合（0〜1）で入れ替える。
+/// Preview・画像の書き出しで、動きの途中の見た目を進み具合を渡して描けるよう分けている
+struct LikeButtonLabel<Count: View>: View {
+    /// ハートの塗りの進み具合（0 は枠だけ、1 は塗り）
+    let heartFill: Double
+    /// 塗りを変えるときの動き（nil なら動かさない）
+    var heartAnimation: Animation?
+    @ViewBuilder let count: Count
+
+    var body: some View {
+        Label {
+            count
+        } icon: {
+            ZStack {
+                Image(systemName: "heart")
+                    .foregroundStyle(Color.textPrimary)
+                    .opacity(1 - heartFill)
+                Image(systemName: "heart.fill")
+                    .foregroundStyle(Color.brandPrimary)
+                    .opacity(heartFill)
+            }
+            .animation(heartAnimation, value: heartFill)
+        }
+        .font(.b2Heading(size: 15, relativeTo: .subheadline))
     }
 }
 

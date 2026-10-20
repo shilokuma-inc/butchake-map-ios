@@ -1,0 +1,22 @@
+.map-screen .screen-scroll { z-index: 1; pointer-events: none; }
+.map-screen .status-bar, .map-screen .nav-bar { background: var(--paper); }
+.map-screen .nav-bar { border-bottom: 2px solid var(--text); }
+.map-screen .nav-inline-title { font-size: 18px; letter-spacing: .12em; }
+.map-illustration { top: 106px; }
+.map-illustration .map-pin { z-index: 3; }
+.map-illustration svg.route { inset: 0; z-index: 2; }
+.pin-sign { position: absolute; z-index: 4; transform: translate(-100%, -50%); margin-left: -32px; }
+.pin-sign .sign-name { font-size: 15px; padding: 3px 10px 1px; letter-spacing: .04em; }
+.pin-sign .sign-bar { font-size: 13px; padding: 1px 8px; }
+.sheet-panel { position: absolute; left: 0; right: 0; bottom: 0; height: 420px; padding: 10px 16px 34px; z-index: 5;
+  border-top: 2px solid var(--text); border-radius: 18px 18px 0 0; background: var(--paper); display: flex; flex-direction: column; gap: 10px; }
+.grabber { align-self: center; width: 40px; height: 5px; border-radius: 3px; background: #B9AE92; }
+.sheet-title { font-size: 19px; font-weight: 700; line-height: 1.4; }
+.sheet-area { display: flex; align-items: center; gap: 4px; margin-top: 2px; font-size: 15px; color: var(--color-text-secondary); }
+.spot-line { display: flex; align-items: center; gap: 10px; }
+.spot-line .stamp-mark strong { font-size: 14px; }
+.spot-name { font-size: 17px; font-weight: 700; }
+.spot-address { margin-top: 3px; font-size: 14px; color: var(--color-text-secondary); }
+.notice-text { font-size: 15px; padding: 8px 12px; }
+.sheet-actions { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+.sheet-actions .rail-button { margin-left: auto; }

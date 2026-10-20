@@ -17,7 +17,8 @@
 //   - 読み込めなかった CSS・スクリプト・画像、Web フォントを読み込んでいるのに mock-fonts が無いページ
 // ページが window.mockReady（Promise）を置いていれば、それが終わるまで待ってから検査する（iframe で別のページを並べる比較シートのため）。
 // ページと同じディレクトリに palette.json があれば、読み込む前に window.MOCK_PALETTE として渡す
-// （ブランドシートでコントラスト比の表を描くため）。
+// （ブランドシートでコントラスト比の表を描くため）。ダークモードのブランドシートのように別の配色を描くページは、
+// <meta name="mock-palette" content="palette-dark.json"> で同じディレクトリの別のファイルを指定する（無ければエラー）。
 
 import AppKit
 import Foundation
@@ -65,7 +66,11 @@ struct MockPage {
             throw RenderError("mock-scale の値「\(scaleText)」を読めません（例: 3）")
         }
         let fonts = Self.metaContent(named: "mock-fonts", in: html) ?? ""
-        let paletteURL = htmlURL.deletingLastPathComponent().appendingPathComponent("palette.json")
+        let paletteName = Self.metaContent(named: "mock-palette", in: html)
+        if let paletteName, paletteName.isEmpty || paletteName.contains("/") || !paletteName.hasSuffix(".json") {
+            throw RenderError("mock-palette の値「\(paletteName)」は、同じディレクトリの .json のファイル名で書いてください")
+        }
+        let paletteURL = htmlURL.deletingLastPathComponent().appendingPathComponent(paletteName ?? "palette.json")
 
         self.htmlURL = htmlURL
         outputURL = outputDirectory
@@ -76,6 +81,9 @@ struct MockPage {
         fontFamilies = fonts.split(separator: "|")
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
+        if paletteName != nil, !FileManager.default.fileExists(atPath: paletteURL.path) {
+            throw RenderError("mock-palette で指定した \(paletteURL.path) がありません")
+        }
         paletteJSON = try Self.readPalette(at: paletteURL)
     }
 

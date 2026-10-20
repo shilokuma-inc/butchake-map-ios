@@ -55,7 +55,8 @@ struct PostDetailView: View {
 
     private func content(post: Post) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            // 上の路線の帯の紺の丸が、一覧（前の駅）からこの投稿（次の駅）へ進む。初めて表示されたときだけ動かす
+            NextStationArrival(spacing: 16) {
                 header(post: post)
                 // 削除後の戻るアニメーション中も出せるよう、Repository ではなく受け取った投稿から並べる
                 RouteLine {

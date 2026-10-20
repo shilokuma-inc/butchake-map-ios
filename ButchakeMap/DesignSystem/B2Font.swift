@@ -31,7 +31,7 @@ enum B2Font {
     /// 文字がすべてスタンプの書体（サブセット）にあるか。無い文字（市区町村の名前など）は代わりの書体で黙って出てしまうので、
     /// スタンプの部品は false のとき別の書体（BIZ UDPゴシック Bold）を選ぶ
     static func stampFontCovers(_ text: String) -> Bool {
-        guard let font = UIFont(name: Name.stamp, size: 17) else {
+        guard let font = stampFont else {
             return false
         }
         let characters = Array(text.utf16)
@@ -39,8 +39,11 @@ enum B2Font {
             return true
         }
         var glyphs = [CGGlyph](repeating: 0, count: characters.count)
-        return CTFontGetGlyphsForCharacters(font as CTFont, characters, &glyphs, characters.count)
+        return CTFontGetGlyphsForCharacters(font, characters, &glyphs, characters.count)
     }
+
+    /// 文字があるかを調べるためのスタンプの書体（部品の body から何度も呼ばれるので 1 回だけ作る）
+    private static let stampFont: CTFont? = UIFont(name: Name.stamp, size: 17).map { $0 as CTFont }
 }
 
 extension Font {
@@ -69,20 +72,38 @@ extension Font {
 }
 
 extension UIFont {
-    /// ナビゲーションバーのタイトルの書体（BIZ UDPゴシック Bold を、文字の大きさの設定に合わせた大きさにする）
-    static func b2NavigationTitle(size: CGFloat, textStyle: UIFont.TextStyle) -> UIFont {
-        let base = UIFont(name: B2Font.Name.gothicBold, size: size) ?? .systemFont(ofSize: size, weight: .bold)
-        return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: base)
+    /// ナビゲーションバーの通常（インライン）のタイトルの書体（BIZ UDPゴシック Bold 17pt）。
+    /// システムのインラインのタイトルと同じく、文字の大きさの設定では大きくしない（44pt のバーからはみ出さないため。大きな文字は Large Content Viewer が補う）
+    static var b2InlineNavigationTitle: UIFont {
+        UIFont(name: B2Font.Name.gothicBold, size: 17) ?? .systemFont(ofSize: 17, weight: .semibold)
+    }
+
+    /// ナビゲーションバーの大きなタイトルの書体（BIZ UDPゴシック Bold 34pt を、文字の大きさの設定に合わせた大きさにする）
+    static var b2LargeNavigationTitle: UIFont {
+        let base = UIFont(name: B2Font.Name.gothicBold, size: 34) ?? .systemFont(ofSize: 34, weight: .bold)
+        return UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: base)
     }
 }
 
 enum B2NavigationBarAppearance {
     /// ナビゲーションバーのタイトル（通常と大きなタイトル）を BIZ UDPゴシック Bold にする。
+    /// `.toolbarBackground` を付けた画面でも効くよう、titleTextAttributes ではなく UINavigationBarAppearance で当てる。
+    /// 背景はシステムの既定のまま（スクロールの端では透明、それ以外は既定の背景）。
     /// UIFontMetrics の大きさは作ったときの設定で決まるので、アプリの起動時に 1 回呼ぶ
     static func apply() {
-        let appearance = UINavigationBar.appearance()
-        appearance.titleTextAttributes = [.font: UIFont.b2NavigationTitle(size: 17, textStyle: .headline)]
-        appearance.largeTitleTextAttributes = [.font: UIFont.b2NavigationTitle(size: 34, textStyle: .largeTitle)]
+        let standard = UINavigationBarAppearance()
+        standard.configureWithDefaultBackground()
+        let scrollEdge = UINavigationBarAppearance()
+        scrollEdge.configureWithTransparentBackground()
+        for appearance in [standard, scrollEdge] {
+            appearance.titleTextAttributes = [.font: UIFont.b2InlineNavigationTitle]
+            appearance.largeTitleTextAttributes = [.font: UIFont.b2LargeNavigationTitle]
+        }
+        let proxy = UINavigationBar.appearance()
+        proxy.standardAppearance = standard
+        proxy.compactAppearance = standard
+        proxy.scrollEdgeAppearance = scrollEdge
+        proxy.compactScrollEdgeAppearance = scrollEdge
     }
 }
 

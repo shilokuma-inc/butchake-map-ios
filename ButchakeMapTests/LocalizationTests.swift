@@ -7,7 +7,7 @@
 //    （テストは Simulator で動くので、ビルドした Mac のリポジトリのファイルを読める）
 //  - アプリのバンドルにコンパイルされた en.lproj / ja.lproj の Localizable.strings が同じキーを持つこと
 //    （String Catalog で片方の言語が無いキーは、その言語の Localizable.strings から抜ける）
-//  - コードの LocalizedStringResource（タブ・カテゴリ・投稿者属性・マイページの一覧・保存の結果など）が両方の言語にあること
+//  - コードの LocalizedStringResource（タブ・カテゴリ・投稿者属性・マイページの一覧・保存の結果・公開のスタンプなど）が両方の言語にあること
 //
 
 @testable import ButchakeMap
@@ -85,6 +85,7 @@ struct LocalizationTests {
             + outcomes.map(\.title)
             + outcomes.compactMap(\.message)
             + fieldErrors.map(\.message)
+            + [PublishStamp.mainText]
     }
 
     /// アプリのバンドルにある <言語>.lproj の Localizable.strings（と、複数形などの Localizable.stringsdict）のキー

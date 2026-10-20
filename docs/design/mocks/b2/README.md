@@ -65,11 +65,11 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 | 白（カード・駅名標・きっぷ） | `Surface` | `#FFFFFF` | `#1F2330` |
 | 文字 | `TextPrimary` | `#1B1F2A` | `#ECE7DA` |
 | 補足の文字 | `TextSecondary` | `#4F566A` | `#B5AE9C` |
-| インク・緑・文字色の地に載せる文字 | （白の文字。ダークでは地の色） | `#FFFFFF` | `#13161F` |
+| インク・緑・文字色の地に載せる文字 | `TextOnColor`（足す。ライトの白の文字を置き換える） | `#FFFFFF` | `#13161F` |
 | カードの枠・区切り線 | `CardBorder`・`Separator` | `#D9CFB6`・`#CFC4AA` | `#3A3F4F` |
 | きっぷの枠 | `TicketBorder` | `#C9C0A8` | `#4A5063` |
-| 点線（スタンプの空き欄） | `DottedLine` | `#B9AE92` | `#7A7461` |
-| 台紙の枠（スタンプ帳） | — | `#CDBF9C` | `#5A4D38` |
+| 点線（スタンプの空き欄） | `DottedLine` | `#B9AE92` | `#8F8873` |
+| 台紙の枠（スタンプ帳） | `KraftBorder`（足す） | `#CDBF9C` | `#5A4D38` |
 
 コントラスト比（`python3 Tools/check_design_contrast.py docs/design/mocks/b2` の `palette-dark.json` の表）:
 
@@ -82,6 +82,7 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 | 地の色の文字 / 路線の緑（駅名標の帯） | 8.51:1 |
 | 緑の文字（カテゴリのバッジ） / カード | 7.37:1 |
 | 地の色の文字 / 文字色（掲示板の札） | 14.63:1 |
+| 点線（スタンプの空き欄。文字以外なので 3:1） / 台紙 | 3.56:1 |
 
 ## 書体
 

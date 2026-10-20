@@ -54,11 +54,13 @@ python3 Tools/check_design_contrast.py docs/design/mocks/b2   # 配色のコン�
   - ページの JavaScript のエラー・Promise のエラー（`unhandledrejection`）
   - 読み込めない CSS・スクリプト・画像
   - Web フォント（`fonts.googleapis.com`）を読み込んでいるのに `<meta name="mock-fonts">` が無いページ（Web フォントを使うページでは `mock-fonts` が必須）
-  - JSON のオブジェクトとして読めない `palette.json`
+  - JSON のオブジェクトとして読めない `palette.json`、`mock-palette` で指定したのに無い・読めない配色のファイル
   - 英小文字・数字・ハイフン・下線以外を含む案 ID
 - iframe で別のページを並べるページは、`window.mockReady`（Promise）を置くと、書き出しはそれを待ってから検査・撮影する
-- `check_design_contrast.py` は案の `palette.json` の組ごとに WCAG のコントラスト比を出し、AA 未満（通常の文字で 4.5:1、大きな文字で 3:1）があれば 0 以外で終わります。
-  出した表は PR 本文に載せます。ブランドシートには、同じ式で計算した表を `Mock.paletteTable()` で描きます
+- `check_design_contrast.py` は案の `palette.json` と、ほかの配色の `palette-<名前>.json`（ダークモードの `palette-dark.json` など）の組ごとに WCAG のコントラスト比を出し、
+  AA 未満（通常の文字で 4.5:1、大きな文字で 3:1）があれば 0 以外で終わります。出した表は PR 本文に載せます。
+  ブランドシートには、同じ式で計算した表を `Mock.paletteTable()` で描きます。ページに渡す配色は既定で `palette.json` で、
+  ダークのブランドシートのように別の配色を描くページは `<meta name="mock-palette" content="palette-dark.json">` で指定します
 - `current` は今のアプリを写した比較の基準なので、AA 未満の組（オレンジの小さな文字など）もそのまま載せています。`check_design_contrast.py` が通らなくてよいのは `current` だけです
 
 ## ページの作り方
@@ -71,6 +73,7 @@ python3 Tools/check_design_contrast.py docs/design/mocks/b2   # 配色のコン�
 | `brand.html` | ブランドシート: アプリアイコン（1024 と 60pt 相当）・ロゴ・空の状態のイラスト・カラーパレットとコントラスト比・書体見本（日本語と英語）・主な部品 |
 | `motion.html` | 動きのコマ割り: 1 つの動きを 3〜4 コマに分け、時間・イージング・ハプティクス・Reduce Motion のときの代わりを注記する（3 つ以上） |
 | `palette.json` | 色の見本（`colors`）と、文字色と背景色の組（`pairs`。`large` は大きな文字か） |
+| `*-dark.html`・`theme-dark.css`・`palette-dark.json` | ダークモードの画面・ブランドシート・配色（作った案だけ。`b2` にある） |
 | `README.md` | コンセプト・「面白さ」の出し方・配色・書体（名前・ライセンス・同梱するおよそのサイズ）・アイコン／ロゴ／イラスト・動き・本実装の注意 |
 | `*.svg` | 自分で描いたアイコン・ロゴ・イラスト |
 

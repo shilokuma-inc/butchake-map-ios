@@ -1489,6 +1489,38 @@
         }
       }
     },
+    "Stamp Book" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stamp Book"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スタンプ帳"
+          }
+        }
+      }
+    },
+    "Stamp book, %lld this month" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stamp book, %lld this month"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スタンプ帳、今月 %lld こ"
+          }
+        }
+      }
+    },
     "Tap the star on a post to save it here." : {
       "localizations" : {
         "en" : {
@@ -1613,6 +1645,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "モックのため、何も削除されていません。"
+          }
+        }
+      }
+    },
+    "This month: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This month: %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今月 %lld こ"
           }
         }
       }

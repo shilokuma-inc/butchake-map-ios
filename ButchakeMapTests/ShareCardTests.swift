@@ -77,4 +77,37 @@ struct ShareCardTests {
 
         #expect(decode(image) == [target.shareURL.absoluteString])
     }
+
+    @Test
+    @MainActor
+    func renderedShareCardWithLongTextContainsReadableQRCode() throws {
+        var target = post()
+        target.title = String(repeating: "とても長い題名", count: 10)
+        target.prefecture = "和歌山県"
+        target.city = String(repeating: "西牟婁郡すさみ町", count: 4)
+        target.spots = (1...3).map { Spot(order: $0, name: String(repeating: "長いスポット名", count: 6), address: "", recommendation: "") }
+        let image = try #require(ShareCardButton.renderUIImage(post: target)?.cgImage)
+
+        #expect(image.width == 1_080)
+        #expect(image.height == 1_350)
+        #expect(decode(image) == [target.shareURL.absoluteString])
+    }
+
+    /// カードの中は文字の大きさの設定に左右されない（共有先で見た目がそろうよう、固定の大きさで描く）
+    @Test
+    @MainActor
+    func shareCardIgnoresDynamicTypeSize() throws {
+        let target = post()
+        let standard = try #require(render(ShareCardView(post: target)))
+        let large = try #require(render(ShareCardView(post: target).environment(\.dynamicTypeSize, .accessibility5)))
+
+        #expect(standard == large)
+    }
+
+    @MainActor
+    private func render(_ content: some View) -> Data? {
+        let renderer = ImageRenderer(content: content)
+        renderer.scale = ShareCardView.renderScale
+        return renderer.uiImage?.pngData()
+    }
 }

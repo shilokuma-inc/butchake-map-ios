@@ -56,7 +56,7 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
   - アプリでは、ライトの色のままだと白い地と暗い線がダークの地で浮くため、イラストにダークの色の SVG（`ButchakeMap/Assets.xcassets/EmptyPosts.imageset/empty-posts-dark.svg`・`EmptySearch.imageset/empty-search-dark.svg`。上の表のダークの値に置き換えたもの）を dark の appearance に足しています
 - ロゴは、アプリでは `Tools/make_logo_svg.py --theme dark` で `theme-dark.css` の色で書き出した `ButchakeMap/Assets.xcassets/Logo.imageset/logo-dark.svg` を dark の appearance に置いています（シェアカードは画像なので常にライト）
 
-ライトとダークの値（アプリの Color Set の名前は、色の土台のタスクで足す名前の案。ダークの値はダークモードのタスクで dark の appearance に入れる）:
+ライトとダークの値（アプリの Color Set の名前。ダークの値は dark の appearance に入れている）:
 
 | 色 | Color Set | ライト | ダーク |
 | --- | --- | --- | --- |
@@ -67,11 +67,11 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 | 白（カード・駅名標・きっぷ） | `Surface` | `#FFFFFF` | `#2A2F40` |
 | 文字 | `TextPrimary` | `#1B1F2A` | `#ECE7DA` |
 | 補足の文字 | `TextSecondary` | `#4F566A` | `#BDB6A4` |
-| インク・緑・文字色の地に載せる文字 | `TextOnColor`（足す。ライトの白の文字を置き換える） | `#FFFFFF` | `#1E2230` |
-| カードの枠・区切り線 | `CardBorder`・`Separator` | `#D9CFB6`・`#CFC4AA` | `#474D60` |
+| インク・緑・文字色の地に載せる文字 | `TextOnColor`（ライトの白の文字を置き換える） | `#FFFFFF` | `#1E2230` |
+| カードの枠・区切り線 | `CardBorder`・`SeparatorLine` | `#D9CFB6`・`#CFC4AA` | `#474D60` |
 | きっぷの枠 | `TicketBorder` | `#C9C0A8` | `#565D72` |
 | 点線（スタンプの空き欄） | `DottedLine` | `#B9AE92` | `#9F987F` |
-| 台紙の枠（スタンプ帳） | `KraftBorder`（足す） | `#CDBF9C` | `#66573F` |
+| 台紙の枠（スタンプ帳） | `KraftBorder` | `#CDBF9C` | `#66573F` |
 
 コントラスト比（`python3 Tools/check_design_contrast.py docs/design/mocks/b2` の `palette-dark.json` の表）:
 
@@ -88,13 +88,13 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 
 ## 書体
 
-| 用途 | 書体 | ライセンス | 採用したときに同梱するおよそのサイズ |
+| 用途 | 書体 | ライセンス | 同梱するおよそのサイズ |
 | --- | --- | --- | --- |
-| 駅名標・見出し・本文 | BIZ UDPゴシック（Regular 400・Bold 700） | SIL OFL 1.1 | 1 ウェイトあたり数 MB（2 ウェイトで 2 本） |
-| きっぷ・英字・数字（発車標） | DotGothic16（1 ウェイト） | SIL OFL 1.1 | 数 MB（1 本） |
-| スタンプの文字 | Kaisei Decol（Bold 700） | SIL OFL 1.1 | 数 MB（1 本） |
+| 駅名標・見出し・本文 | BIZ UDPゴシック（Regular 400・Bold 700） | SIL OFL 1.1 | 1 ウェイトあたり約 4.6 MB（2 ウェイトで 2 本） |
+| きっぷ・英字・数字（発車標） | DotGothic16（1 ウェイト） | SIL OFL 1.1 | 約 2.1 MB（1 本） |
+| スタンプの文字 | Kaisei Decol（Bold 700） | SIL OFL 1.1 | 約 20 KB（使う文字だけのサブセット・1 本） |
 
-- サイズはおよその目安です（日本語の書体は字形が多く、1 本あたり数 MB になる）。Kaisei Decol はスタンプの数文字だけなので、採用するなら使う文字だけにサブセット化することを検討します
+- サイズは同梱したファイルのおよその大きさです（日本語の書体は字形が多く、1 本あたり数 MB になる）。Kaisei Decol はスタンプの数文字だけなので、使う文字だけにサブセット化して同梱しています（`Tools/subset_stamp_font.sh`）
 - BIZ UDPゴシックはユニバーサルデザインの書体で、駅の案内のような読みやすさを出せます
 - 日本語と英語の見本はブランドシートに載せています
 
@@ -114,14 +114,25 @@ Discussion #77 の Q3 で、ダークの配色はモックで確かめてから�
 
 点滅はしません。
 
-## 採用したときの本実装の注意
+## 本実装で決めたこと
 
-- **Dynamic Type**: 3 書体を `Font.custom(_:size:relativeTo:)` で登録する。駅名標は文字が大きいと横にあふれるので、2 行に折り返すか、帯の前後の見出しを省く
-- **スタンプ帳**: 「今月あつめたスタンプ」は今のアプリに無い機能の見せ方です。採用するなら、自分の投稿の数から数えるなど、今あるデータで出せる形に決め直す（モックの「2 / 3 こ」は飾り）
-- **路線図の駅のスタンプ「済」「未」**: 今のアプリに「行った」の記録は無いので、採用するなら飾りにとどめるか、別の機能として検討する。VoiceOver ではスタンプを読み上げない
-- **発車標の数字**: 回転は見た目だけにし、件数は今のアプリと同じく数字で読ませる
-- **UI テスト**: 見た目だけの変更で、アクセシビリティの識別子と文言は変えない。ホームの大きなタイトルを駅名標のロゴにするので、ナビゲーションのタイトル（「ぶっちゃけmap」）は読み上げ用に残す
-- **App Store の素材**: アイコンとスクリーンショットの差し替えが要る（`AppStore/` のクリエイティブも作り直し）。アイコンは 1024 の PNG（アルファなし）に書き出す
+Discussion #77 で B-2 をアプリに組み込みました（PR の一覧は [`docs/design/README.md` の「B-2 の本実装」](../../README.md#b-2-の本実装)）。モックから決め直したこと:
+
+- **スタンプ帳**: 自分が今月公開した投稿 1 つをスタンプ 1 こと数える（Q1。今月は端末のカレンダーの 1 日 0 時から。下書きとほかの人の投稿は数えない）。
+  分母は出さず、「スタンプ帳」「今月 N こ」と、新しい 3 こまでのスタンプ（日付と地名）と次の 1 こ分の空き欄を並べる（モックの「2 / 3 こ」は使わない）。`HomeViewModel.stampBook` / `StampBook`
+- **路線図の駅のスタンプ「済」**: 今のアプリに「行った」の記録は無いので、飾りとしてすべてのスポットに「済」を押す（投稿日と地名入り）。点線の空き欄「未」は投稿詳細では使わない。VoiceOver ではスタンプを読み上げない
+- **駅名標の英字**: 都市の駅名標の英字は、市区町村ではなく都道府県のローマ字（`Prefecture.romanizedName`。例: 金沢市の下に `ISHIKAWA`）。帯の前後はカテゴリと投稿者の属性
+- **ダークの配色**: 上の「ダークモードの配色（夜の駅）」の表の値を Color Set の dark の appearance に入れた（PR #120）。色の地に載せる文字は `TextOnColor`（コードでは `Color.textOn`）、ボタンの影はダークでは黒。
+  地図は MapKit のシステムのダークの地図のまま（ピンと路線は Color Set の色）。シェアカードは画像として書き出すので、常にライト
+- **Dynamic Type**: 3 書体を `Font.custom(_:size:relativeTo:)` で登録した（`B2Font`。`Font.b2Body` / `b2Heading` / `b2Text` / `b2Ticket` / `b2Stamp`）。駅名標は大きな文字で駅名を折り返し、アクセシビリティの大きな文字では帯の前後の見出しを縦に積む。
+  スタンプ・路線図の駅などの部品は、文字の大きさに合わせて大きくするのを 2 倍までにする（`B2PartScale`）
+- **スタンプの書体**: Kaisei Decol は使う文字だけにサブセット化して同梱した（`Tools/subset_stamp_font.sh`・`Tools/stamp_font_glyphs.txt`）。サブセットに無い文字（市区町村の名前など）は BIZ UDPゴシック Bold で描く（`B2Font.stampFontCovers`）
+- **発車標の数字**: 回転は見た目だけで、件数は数字で読ませる
+- **動き**: いいね（発車標のパタパタ）・投稿の公開（スタンプを押す）・画面遷移（次の駅へ）を、上の「動き」の表のとおりに入れた。Reduce Motion のときは動きをやめ、クロスフェードかフェードにする
+- **UI テスト**: アクセシビリティの識別子と文言は変えていない。ホームの大きなタイトルは駅名標のロゴにし、ナビゲーションのタイトル（「ぶっちゃけmap」）は読み上げ用に残した
+- **アプリアイコン**: アプリのアイコンの元は `ButchakeMap/AppIcon.icon`（ライトとダークの `stamp.svg`・`band.svg`）。ビルドに使われるのは `.icon` だけで、iOS 17〜25 用の画像も `.icon` から作られる。
+  `ButchakeMap/Assets.xcassets/AppIcon.appiconset/AppIcon.png`（1024・アルファなし）は App Store の素材用に残している（`AppStore/app.json` の `appIcon` がこれを指す）
+- **App Store の素材**: スクリーンショットとクリエイティブ（`AppStore/`）は、この組み込みでは作り直していない
 
 ## モックで省いたこと
 

@@ -6,7 +6,7 @@
 import SwiftUI
 
 /// きっぷの形（角丸 4 の四角の左の中ほどに、改札のはさみの切り込み）
-struct TicketShape: Shape {
+nonisolated struct TicketShape: Shape {
     /// 切り込みの深さと高さ（モックの 10x18）
     var notchDepth: CGFloat = 10
     var notchHeight: CGFloat = 18
